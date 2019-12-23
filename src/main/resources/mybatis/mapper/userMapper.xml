@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisco.rbac.mapper.UserMapper">
+
+    <!--添加新用户-->
+    <insert id="insertUser" parameterType="com.cisco.rbac.entity.User">
+insert into
+  tuser(id,user_name,password)
+values (#{id},#{name},#{password})
+    </insert>
+
+    <!--根据id查找用户信息-->
+    <select id="getUserById" resultType="com.cisco.rbac.entity.User" parameterType="int">
+  select *
+  from tuser
+  where id=#{id}
+    </select>
+
+    <select id="queryUserrights" parameterType="int" resultType="com.cisco.rbac.entity.Rolerightrelation">
+        select t2.id,t2.role_id,t2.right_id,t2.right_type
+        from  tuserrolerelation t1  join trolerightrelation t2 on t1.role_id=t2.role_id
+        where t1.user_id=#{id}
+
+    </select>
+
+    <!--查询所有用户信息-->
+    <select id="queryUser" resultType="com.cisco.rbac.entity.User">
+        select  *
+        from  user
+    </select>
+
+    <!--删除用户信息-->
+    <delete id="deleteUserById" parameterType="int">
+        delete
+        from user
+        where id=#{id}
+    </delete>
+
+
+<!--    给用户加角色-->
+    <insert id="insertUserrolerelation" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert  into
+        tuserrolerelation(id,user_id,role_id)
+        values (#{id},#{user_id},#{role_id})
+    </insert>
+
+</mapper>

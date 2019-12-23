@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cisco.rbac.mapper.RightMapper">
+
+    <!--添加新权限-->
+    <insert id="insertRight" parameterType="com.cisco.rbac.entity.Right">
+insert into
+  tright(id,right_name,description)
+values (#{id},#{name},#{description})
+    </insert>
+
+
+
+    <!--查询所有权限信息-->
+    <select id="queryRight" resultType="com.cisco.rbac.entity.Right">
+        select  *
+        from  tright
+    </select>
+
+    <!--删除权限信息-->
+    <delete id="deleteRightById" parameterType="int">
+        delete
+        from tright
+        where id=#{id}
+    </delete>
+</mapper>
+
