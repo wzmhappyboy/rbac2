@@ -1,8 +1,8 @@
 package com.cisco.rbac.service;
 
-import com.cisco.rbac.entity.Rolerightrelation;
+import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
-import com.cisco.rbac.entity.Userrolerelation;
+import com.cisco.rbac.entity.UserRoleRelation;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface UserService {
 
     boolean deleteUserById(int id);
 
-    boolean insertUserrolerelation(Userrolerelation urr);
+    boolean insertUserrolerelation(UserRoleRelation urr);
 
-    List<Rolerightrelation> queryUserrights(int id);
+    List<RolePermissionRelation> queryUserrights(int id);
 }

@@ -1,8 +1,8 @@
 package com.cisco.rbac.mapper;
 
-import com.cisco.rbac.entity.Rolerightrelation;
+import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
-import com.cisco.rbac.entity.Userrolerelation;
+import com.cisco.rbac.entity.UserRoleRelation;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,8 +23,8 @@ public interface UserMapper {
     List<User> queryUser();
 
     //添加用户角色关系
-    int insertUserrolerelation(Userrolerelation urr);
+    int insertUserrolerelation(UserRoleRelation urr);
 
     //查看用户所有权限的权限号、权限类别
-    List<Rolerightrelation> queryUserrights(int id);
+    List<RolePermissionRelation> queryUserrights(int id);
 }

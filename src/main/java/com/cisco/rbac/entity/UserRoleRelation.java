@@ -2,15 +2,15 @@ package com.cisco.rbac.entity;
 
 import org.springframework.data.relational.core.sql.In;
 
-public class Userrolerelation {
+public class UserRoleRelation {
     Integer id;
     Integer user_id;
     Integer role_id;
 
-    public Userrolerelation() {
+    public UserRoleRelation() {
     }
 
-    public Userrolerelation(Integer id, Integer role_id, Integer user_id) {
+    public UserRoleRelation(Integer id, Integer role_id, Integer user_id) {
         this.id = id;
         this.role_id=role_id;
         this.user_id=user_id;

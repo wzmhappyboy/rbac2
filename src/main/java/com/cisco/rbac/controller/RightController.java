@@ -1,7 +1,7 @@
 package com.cisco.rbac.controller;
 
-import com.cisco.rbac.entity.Right;
-import com.cisco.rbac.service.impl.RightServiceImpl;
+import com.cisco.rbac.entity.Permission;
+import com.cisco.rbac.service.impl.PermissionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,16 +11,16 @@ import java.util.Map;
 @RestController
 public class RightController {
     @Autowired
-    RightServiceImpl rightService;
+    PermissionServiceImpl rightService;
 
-    @PostMapping("/right")
+    @PostMapping("/rights")
     public  String insertUser(@RequestBody Map<String,String> userMap){
-        Right right=new Right();
-        int id=Integer.parseInt(userMap.get("id"));
-        right.setId(id);
-        right.setName(userMap.get("name"));
-        right.setDescription(userMap.get("description"));
-        boolean result =rightService.insertRight(right);
+        Permission permission =new Permission();
+       // int id=Integer.parseInt(userMap.get("id"));
+      //  permission.setId(id);
+        permission.setName(userMap.get("name"));
+        permission.setDescription(userMap.get("description"));
+        boolean result =rightService.insertRight(permission);
         if (result){
             return  "success";
         }
@@ -31,13 +31,13 @@ public class RightController {
 
 
 
-    @GetMapping("queryRight")
+    @GetMapping("rights")
     public  String getAllRight(){
-        List<Right> rightList=rightService.queryRight();
-        return  rightList.toString();
+        List<Permission> permissionList =rightService.queryRight();
+        return  permissionList.toString();
     }
 
-    @DeleteMapping("/right/{id}")
+    @DeleteMapping("/rights/{id}")
     public  String deleteUserById(@PathVariable("id") int id){
         boolean result=rightService.deleteRightById(id);
         if (result)

@@ -1,14 +1,14 @@
 package com.cisco.rbac.entity;
 
-public class Right {
+public class Permission {
 private  Integer id;
 private  String name;
 private  String description;
 
-    public Right() {
+    public Permission() {
     }
 
-    public Right(Integer id, String name, String description) {
+    public Permission(Integer id, String name, String description) {
         this.id = id;
         this.name=name;
         this.description=description;

@@ -3,11 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cisco.rbac.mapper.UserMapper">
+    <resultMap id="permissionRM" type="com.cisco.rbac.entity.RolePermissionRelation">
+        <id column="id" property="id"/>
+        <result column="role_id" property="role_id"/>
+        <result column="right_id" property="right_id"/>
+        <result column="right_type" property="right_type"/>
+
+    </resultMap>
+
+
 
     <!--添加新用户-->
-    <insert id="insertUser" parameterType="com.cisco.rbac.entity.User">
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id"  parameterType="com.cisco.rbac.entity.User">
 insert into
-  tuser(id,user_name,password)
+  tuser(id,name,password)
 values (#{id},#{name},#{password})
     </insert>
 
@@ -18,9 +27,10 @@ values (#{id},#{name},#{password})
   where id=#{id}
     </select>
 
-    <select id="queryUserrights" parameterType="int" resultType="com.cisco.rbac.entity.Rolerightrelation">
-        select t2.id,t2.role_id,t2.right_id,t2.right_type
-        from  tuserrolerelation t1  join trolerightrelation t2 on t1.role_id=t2.role_id
+    <select id="queryUserrights" resultMap="permissionRM" parameterType="int">
+         select t2.id,t2.role_id,right_id,right_type
+
+         from  tuserrolerelation t1  join trolerightrelation t2 on t1.role_id=t2.role_id
         where t1.user_id=#{id}
 
     </select>
@@ -28,7 +38,7 @@ values (#{id},#{name},#{password})
     <!--查询所有用户信息-->
     <select id="queryUser" resultType="com.cisco.rbac.entity.User">
         select  *
-        from  user
+        from  tuser
     </select>
 
     <!--删除用户信息-->

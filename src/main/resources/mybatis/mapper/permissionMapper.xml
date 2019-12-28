@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cisco.rbac.mapper.RightMapper">
+<mapper namespace="com.cisco.rbac.mapper.PermissionMapper">
 
     <!--添加新权限-->
-    <insert id="insertRight" parameterType="com.cisco.rbac.entity.Right">
+    <insert id="insertRight" parameterType="com.cisco.rbac.entity.Permission">
 insert into
   tright(id,right_name,description)
 values (#{id},#{name},#{description})
@@ -14,7 +14,7 @@ values (#{id},#{name},#{description})
 
 
     <!--查询所有权限信息-->
-    <select id="queryRight" resultType="com.cisco.rbac.entity.Right">
+    <select id="queryRight" resultType="com.cisco.rbac.entity.Permission">
         select  *
         from  tright
     </select>

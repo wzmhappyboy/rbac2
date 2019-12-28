@@ -1,8 +1,8 @@
 package com.cisco.rbac.service.impl;
 
-import com.cisco.rbac.entity.Right;
-import com.cisco.rbac.mapper.RightMapper;
-import com.cisco.rbac.service.RightService;
+import com.cisco.rbac.entity.Permission;
+import com.cisco.rbac.mapper.PermissionMapper;
+import com.cisco.rbac.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,18 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class RightServiceImpl implements RightService {
+public class PermissionServiceImpl implements PermissionService {
     @Autowired
-    RightMapper rightMapper;
+    PermissionMapper permissionMapper;
 
     @Transactional
     @Override
-    public  boolean insertRight(Right right){
-        if(right.getId()!=null&&!"".equals(right.getId())){
+    public  boolean insertRight(Permission permission){
+        if(permission.getId()!=null&&!"".equals(permission.getId())){
             try {
-                int effecteNum = rightMapper.insertRight(right);
+                int effecteNum = permissionMapper.insertRight(permission);
                 if (effecteNum > 0) {
-                    System.out.println("增加权限成功，id为" + right.getId());
+                    System.out.println("增加权限成功，id为" + permission.getId());
                     return true;
                 } else {
                     throw new RuntimeException("插入信息失败，插入行数有误");
@@ -40,14 +40,14 @@ public class RightServiceImpl implements RightService {
 
 
     @Override
-    public List<Right> queryRight(){
-        return rightMapper.queryRight();
+    public List<Permission> queryRight(){
+        return permissionMapper.queryRight();
     }
 
     @Override
     public  boolean deleteRightById(int id){
         try {
-            int effecteNum=rightMapper.deleteRightById(id);
+            int effecteNum= permissionMapper.deleteRightById(id);
             if (effecteNum>0){
                 return  true;
             }

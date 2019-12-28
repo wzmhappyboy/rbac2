@@ -1,10 +1,8 @@
 package com.cisco.rbac.service.impl;
 
 import com.cisco.rbac.entity.Role;
-import com.cisco.rbac.entity.Rolerightrelation;
-import com.cisco.rbac.entity.User;
+import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.mapper.RoleMapper;
-import com.cisco.rbac.mapper.UserMapper;
 import com.cisco.rbac.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,7 @@ RoleMapper roleMapper;
     @Transactional
     @Override
     public  boolean insertRole(Role role){
-        if(role.getId()!=null&&!"".equals(role.getId())){
+//        if(role.getId()!=null&&!"".equals(role.getId())){
             try {
                 int effecteNum = roleMapper.insertRole(role);
                 if (effecteNum > 0) {
@@ -32,17 +30,17 @@ RoleMapper roleMapper;
             catch (Exception e){
                 throw new RuntimeException("插入信息失败"+e.getMessage());
             }
-        }
-        else {
-            throw  new RuntimeException("id不能为空！！！");
-        }
+   //     }
+//        else {
+//            throw  new RuntimeException("id不能为空！！！");
+//        }
     }
 
     //增加权限
     @Transactional
     @Override
-    public  boolean insertRolerightrelation(Rolerightrelation rrr){
-        if(rrr.getId()!=null&&!"".equals(rrr.getId())){
+    public  boolean insertRolerightrelation(RolePermissionRelation rrr){
+//        if(rrr.getId()!=null&&!"".equals(rrr.getId())){
             try {
                 int effecteNum = roleMapper.insertRolerightrelation(rrr);
                 if (effecteNum > 0) {
@@ -56,14 +54,14 @@ RoleMapper roleMapper;
                 throw new RuntimeException("插入信息失败"+e.getMessage());
             }
         }
-        else {
-            throw  new RuntimeException("id不能为空！！！");
-        }
-    }
+//        else {
+//            throw  new RuntimeException("id不能为空！！！");
+//        }
+//    }
 
     @Transactional
     @Override
-    public  boolean updateRolerightrelation(Rolerightrelation rrr){
+    public  boolean updateRolerightrelation(RolePermissionRelation rrr){
         if (rrr.getId()!=null&&!"".equals(rrr.getId())){
             try {
                 boolean effecteNum=roleMapper.updateRolerightrelation(rrr);

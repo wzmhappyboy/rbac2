@@ -1,9 +1,9 @@
 package com.cisco.rbac.service.impl;
 
 
-import com.cisco.rbac.entity.Rolerightrelation;
+import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
-import com.cisco.rbac.entity.Userrolerelation;
+import com.cisco.rbac.entity.UserRoleRelation;
 import com.cisco.rbac.mapper.UserMapper;
 import com.cisco.rbac.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public  boolean insertUser(User user){
-        if(user.getId()!=null&&!"".equals(user.getId())){
+//        if(user.getId()!=null&&!"".equals(user.getId())){
             try {
                 int effecteNum = userMapper.insertUser(user);
                 if (effecteNum > 0) {
@@ -34,10 +34,10 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException("插入信息失败"+e.getMessage());
             }
             }
-        else {
-            throw  new RuntimeException("id不能为空！！！");
-        }
-        }
+//        else {
+//            throw  new RuntimeException("id不能为空！！！");
+//        }
+//        }
 
         @Override
         public  User getUserById(int id){
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         }
 
         @Override
-        public  List<Rolerightrelation> queryUserrights(int id){return  userMapper.queryUserrights(id);}
+        public  List<RolePermissionRelation> queryUserrights(int id){return  userMapper.queryUserrights(id);}
 
     @Override
     public  boolean deleteUserById(int id){
@@ -72,8 +72,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public  boolean insertUserrolerelation(Userrolerelation urr){
-        if(urr.getId()!=null&&!"".equals(urr.getId())){
+    public  boolean insertUserrolerelation(UserRoleRelation urr){
+ //       if(urr.getId()!=null&&!"".equals(urr.getId())){
             try {
                 int effecteNum = userMapper.insertUserrolerelation(urr);
                 if (effecteNum > 0) {
@@ -86,10 +86,10 @@ public class UserServiceImpl implements UserService {
             catch (Exception e){
                 throw new RuntimeException("插入信息失败"+e.getMessage());
             }
-        }
-        else {
-            throw  new RuntimeException("id不能为空！！！");
-        }
+ //       }
+//        else {
+//            throw  new RuntimeException("id不能为空！！！");
+//        }
     }
 
 
