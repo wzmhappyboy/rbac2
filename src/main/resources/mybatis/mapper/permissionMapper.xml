@@ -25,5 +25,12 @@ values (#{id},#{name},#{description})
         from tright
         where id=#{id}
     </delete>
+
+<!--给权限改信息-->
+    <update id="updatePermission" parameterType="com.cisco.rbac.entity.Permission">
+        update  tright
+        set right_name=#{name},description=#{description}
+        where id=#{id}
+    </update>
 </mapper>
 

@@ -6,6 +6,7 @@ import com.cisco.rbac.service.impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -80,5 +81,39 @@ public class RoleController {
         else{
             return  "fail";
         }
+    }
+
+    @DeleteMapping("/roles/{id}")
+    public  String deleteRoleById(@PathVariable("id") int id){
+        boolean result=roleService.deleteRoleById(id);
+        if (result)
+        {
+            return  "success";
+        }
+        else{
+            return  "fail";
+        }
+    }
+
+    //改角色信息
+    @PostMapping("/newroles")
+    public  String updateRole(@RequestBody Map<String,String> rrrMap){
+        Role r=new Role();
+        r.setDescription(rrrMap.get("description"));
+        r.setId(Integer.valueOf(rrrMap.get("id")));
+        r.setName(rrrMap.get("name"));
+        boolean result =roleService.updateRole(r);
+        if (result){
+            return  "success";
+        }
+        else {
+            return  "fail";
+        }
+    }
+
+    @GetMapping("roles")
+    public  String getAllPermissions(){
+        List<Role> permissionList = roleService.queryRole();
+        return  permissionList.toString();
     }
 }

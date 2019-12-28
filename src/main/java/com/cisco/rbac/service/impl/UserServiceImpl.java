@@ -70,6 +70,23 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public  boolean deleteUserrolerelationById(int id){
+        try {
+            int effecteNum=userMapper.deleteUserrolerelation(id);
+            if (effecteNum>0){
+                return  true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return  false;
+        }
+    }
+
     @Transactional
     @Override
     public  boolean insertUserrolerelation(UserRoleRelation urr){
@@ -92,6 +109,26 @@ public class UserServiceImpl implements UserService {
 //        }
     }
 
+    @Transactional
+    @Override
+    public  boolean updateUser(User user){
+        if (user.getId()!=null&&!"".equals(user.getId())){
+            try {
+                boolean effecteNum=userMapper.updateUser(user);
+                if (effecteNum) {
+                    System.out.println("更新成功，主键为："+user.getId());
+                    return  true;
+                }else {
+                    throw  new RuntimeException("更新信息失败，插入行数有误");
+                }
+            } catch (Exception e){
+                throw  new RuntimeException("更新信息失败了："+e.getMessage());
+            }
 
+        }
+        else {
+            throw  new RuntimeException("信息不能为空！！");
+        }
+    }
     }
 

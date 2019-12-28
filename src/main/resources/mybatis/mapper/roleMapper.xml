@@ -31,4 +31,24 @@ values (#{id},#{name},#{description})
         from trolerightrelation
         where id=#{id}
     </delete>
+
+<!--    删除角色-->
+    <delete id="deleteRoleById" parameterType="int">
+        delete
+        from trole
+        where id=#{id}
+
+    </delete>
+
+    <update id="updateRole" parameterType="com.cisco.rbac.entity.Role">
+        update  trole
+        set role_name=#{name},description=#{description}
+        where id=#{id}
+    </update>
+
+
+    <select id="queryRole" resultType="com.cisco.rbac.entity.Role">
+        select  *
+        from  trole
+    </select>
 </mapper>

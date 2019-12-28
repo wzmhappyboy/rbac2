@@ -9,11 +9,14 @@ import java.util.List;
 @Mapper
 public interface PermissionMapper {
     //增加权限
-    int insertRight(Permission user);
+    int insertPermission(Permission user);
 
     //根据id删除权限信息
-    int deleteRightById(int id);
+    int deletePermissionById(int id);
 
     //查询所有权限信息
-    List<Permission> queryRight();
+    List<Permission> queryPermission();
+
+    //改权限信息
+    boolean updatePermission(Permission P);
 }

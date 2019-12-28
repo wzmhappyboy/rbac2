@@ -22,8 +22,16 @@ public interface UserMapper {
     //查询所有用户信息
     List<User> queryUser();
 
+    //改变用户信息
+    boolean updateUser(User user);
+
     //添加用户角色关系
     int insertUserrolerelation(UserRoleRelation urr);
+
+    //删除用户角色关系
+    int deleteUserrolerelation(int id);
+
+
 
     //查看用户所有权限的权限号、权限类别
     List<RolePermissionRelation> queryUserrights(int id);

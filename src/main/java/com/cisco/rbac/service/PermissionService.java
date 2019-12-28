@@ -5,10 +5,14 @@ import com.cisco.rbac.entity.Permission;
 import java.util.List;
 
 public interface PermissionService {
-    boolean insertRight(Permission permission);
+    boolean insertPermission(Permission permission);
 
-    List<Permission> queryRight();
+    List<Permission> queryPermission();
 
-    boolean deleteRightById(int id);
+    boolean deletePermissionById(int id);
+
+    boolean updatePermission(Permission permission);
+
+
 
 }

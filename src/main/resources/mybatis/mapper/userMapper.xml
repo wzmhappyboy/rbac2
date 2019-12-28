@@ -56,4 +56,15 @@ values (#{id},#{name},#{password})
         values (#{id},#{user_id},#{role_id})
     </insert>
 
+    <update id="updateUser" parameterType="com.cisco.rbac.entity.User">
+        update  tuser
+        set name=#{name},password=#{pssword}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteUserrolerelation" parameterType="int">
+        delete
+        from  tuserrolerelation
+        where id=#{id}
+    </delete>
 </mapper>

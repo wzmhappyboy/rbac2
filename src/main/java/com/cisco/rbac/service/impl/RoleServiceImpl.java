@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 @Autowired
@@ -72,14 +74,14 @@ RoleMapper roleMapper;
                     throw  new RuntimeException("更新信息失败，插入行数有误");
                 }
             } catch (Exception e){
-                throw  new RuntimeException("更新信息失败了："+e.getMessage());
-            }
+        throw  new RuntimeException("更新信息失败了："+e.getMessage());
+        }
 
         }
         else {
-            throw  new RuntimeException("信息不能为空！！");
+        throw  new RuntimeException("信息不能为空！！");
         }
-    }
+        }
 
     @Override
     public  boolean deleteRolerightrelationById(int id){
@@ -96,5 +98,50 @@ RoleMapper roleMapper;
             e.printStackTrace();
             return  false;
         }
+    }
+
+
+    @Override
+    public  boolean deleteRoleById(int id){
+        try {
+            int effecteNum=roleMapper.deleteRolerightrelationById(id);
+            if (effecteNum>0){
+                return  true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return  false;
+        }
+    }
+
+    @Transactional
+    @Override
+    public  boolean updateRole(Role role){
+        if (role.getId()!=null&&!"".equals(role.getId())){
+            try {
+                boolean effecteNum=roleMapper.updateRole(role);
+                if (effecteNum) {
+                    System.out.println("更新成功，主键为："+role.getId());
+                    return  true;
+                }else {
+                    throw  new RuntimeException("更新信息失败，插入行数有误");
+                }
+            } catch (Exception e){
+                throw  new RuntimeException("更新信息失败了："+e.getMessage());
+            }
+
+        }
+        else {
+            throw  new RuntimeException("信息不能为空！！");
+        }
+    }
+
+    @Override
+    public List<Role> queryRole(){
+        return roleMapper.queryRole();
     }
 }

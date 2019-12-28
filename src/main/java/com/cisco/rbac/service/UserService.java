@@ -14,9 +14,13 @@ public interface UserService {
 
     List<User> queryUser();
 
+    boolean updateUser(User user);
+
     boolean deleteUserById(int id);
 
     boolean insertUserrolerelation(UserRoleRelation urr);
 
     List<RolePermissionRelation> queryUserrights(int id);
+
+    boolean deleteUserrolerelationById(int id);
 }

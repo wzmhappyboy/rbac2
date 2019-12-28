@@ -63,6 +63,17 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/userrolerelations/{id}")
+    public  String deleteUserrolerelaitonById(@PathVariable("id") int id){
+        boolean result=userService.deleteUserrolerelationById(id);
+        if (result)
+        {
+            return  "success";
+        }
+        else{
+            return  "fail";
+        }
+    }
 
 //    用户添加角色
 @PostMapping("/userrolerelations")
@@ -81,4 +92,19 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
         return  "fail";
     }
 }
+
+    @PostMapping("/newusers")
+    public  String updateUser(@RequestBody Map<String,String> rrrMap){
+        User user=new User();
+        user.setName(rrrMap.get("name"));
+        user.setId(Integer.valueOf(rrrMap.get("id")));
+        user.setPassword(rrrMap.get("password"));
+        boolean result =userService.updateUser(user);
+        if (result){
+            return  "success";
+        }
+        else {
+            return  "fail";
+        }
+    }
 }
