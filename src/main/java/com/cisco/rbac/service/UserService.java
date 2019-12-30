@@ -23,4 +23,6 @@ public interface UserService {
     List<RolePermissionRelation> queryUserrights(int id);
 
     boolean deleteUserrolerelationById(int id);
+
+    User getByIdWithResult(int id);
 }

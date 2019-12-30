@@ -1,11 +1,22 @@
 package com.cisco.rbac.entity;
 
+import java.util.List;
+
 public class User {
 
     private Integer id;
     private String password;
     private String name;
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    private List<Role> roles;
     public User(Integer id,String password,String name) {
         this.id = id;
         this.name=name;

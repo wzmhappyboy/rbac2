@@ -8,9 +8,28 @@
         <result column="role_id" property="role_id"/>
         <result column="right_id" property="right_id"/>
         <result column="right_type" property="right_type"/>
-
     </resultMap>
 
+<resultMap id="userResultMapWithSelect" type="com.cisco.rbac.entity.User">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="password" column="password"/>
+    <collection property="roles" ofType="com.cisco.rbac.entity.Role" column="id" select="com.cisco.rbac.mapper.UserMapper.findRoleByUserId"></collection>
+</resultMap>
+<resultMap id="roleResultMap" type="com.cisco.rbac.entity.Role">
+    <id property="id" column="id"/>
+    <result property="name" column="role_name"/>
+    <result property="description" column="description"/>
+</resultMap>
+
+    <select id="getByIdWithSelect" parameterType="int" resultMap="userResultMapWithSelect">
+        select  * from tuser where id=#{id}
+    </select>
+
+    <select id="findRoleByUserId" parameterType="int" resultMap="roleResultMap">
+        select r.* from tuserrolerelation t,trole r where t.role_id=r.id and t.user_id=#{id}
+
+    </select>
 
 
     <!--添加新用户-->
@@ -67,4 +86,7 @@ values (#{id},#{name},#{password})
         from  tuserrolerelation
         where id=#{id}
     </delete>
+    
+    
+    
 </mapper>

@@ -1,9 +1,22 @@
 package com.cisco.rbac.entity;
 
+import java.util.List;
+
 public class Role {
     private  Integer id;
     private  String name;
     private  String description;
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    private List<User> users;
+
 
     public Role(Integer id,String name,String description) {
         this.id = id;

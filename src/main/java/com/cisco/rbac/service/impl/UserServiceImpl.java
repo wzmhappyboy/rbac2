@@ -44,6 +44,10 @@ public class UserServiceImpl implements UserService {
         return  userMapper.getUserById(id);
         }
 
+        @Override
+        public  User getByIdWithResult(int id){
+        return  userMapper.getByIdWithSelect(id);
+        }
 
         @Override
         public List<User> queryUser(){
@@ -130,5 +134,6 @@ public class UserServiceImpl implements UserService {
             throw  new RuntimeException("信息不能为空！！");
         }
     }
+
     }
 

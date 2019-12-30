@@ -1,5 +1,6 @@
 package com.cisco.rbac.mapper;
 
+import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
 import com.cisco.rbac.entity.UserRoleRelation;
@@ -12,6 +13,10 @@ public interface UserMapper {
 
 //    添加用户信息
     int insertUser(User user);
+
+    //
+    User getByIdWithSelect(int id);
+    List<Role> findRoleByUserId(int id);
 
     //根据id删除用户信息
     int deleteUserById(int id);

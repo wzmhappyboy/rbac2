@@ -18,8 +18,8 @@ public class RoleController {
     @PostMapping("/roles")
     public  String insertRole(@RequestBody Map<String,String> userMap){
         Role role=new Role();
-        int id=Integer.parseInt(userMap.get("id"));
-        role.setId(id);
+     int id=Integer.parseInt(userMap.get("id"));
+       role.setId(id);
         role.setName(userMap.get("name"));
         role.setDescription(userMap.get("description"));
         boolean result =roleService.insertRole(role);

@@ -1,6 +1,7 @@
 package com.cisco.rbac.controller;
 
 
+import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
 import com.cisco.rbac.entity.UserRoleRelation;
@@ -106,5 +107,15 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
         else {
             return  "fail";
         }
+    }
+
+    //返还类内的list<角色>
+    @GetMapping("/usersbyid/{id}")
+    public  String getUserByIdWithResult(@PathVariable("id") int id){
+        User user=userService.getByIdWithResult(id);
+        System.out.println(user);
+        List<Role> roleList=user.getRoles();
+        roleList.forEach(n->System.out.println(n));
+        return  user.toString();
     }
 }
