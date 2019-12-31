@@ -3,6 +3,30 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cisco.rbac.mapper.RoleMapper">
+    <resultMap id="roleResultMapWithSelect" type="com.cisco.rbac.entity.Role">
+        <id property="id" column="id"/>
+        <result property="name" column="role_name"/>
+        <result property="description" column="description"/>
+        <collection property="users" column="id"
+                    select="com.cisco.rbac.mapper.RoleMapper.findUserByRoleId"></collection>
+
+    </resultMap>
+
+    <select id="getByIdWithSelect" parameterType="int" resultMap="roleResultMapWithSelect">
+        select  * from trole where id=#{id}
+    </select>
+
+
+<resultMap id="userResultMap" type="com.cisco.rbac.entity.User">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="password" column="password"/>
+</resultMap>
+
+    <select id="findUserByRoleId" parameterType="int" resultMap="userResultMap">
+        select  u.* from tuserrolerelation t,tuser u where t.user_id=u.id and t.role_id=#{id}
+
+    </select>
 
     <!--添加新角色-->
     <insert id="insertRole" parameterType="com.cisco.rbac.entity.Role">
@@ -15,7 +39,7 @@ values (#{id},#{name},#{description})
     <insert id="insertRolerightrelation" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert  into
         trolerightrelation(id,role_id,right_id,right_type)
-        values (#{id},#{role_id},#{right_id},#{right_type})
+        values (#{id},#{role_id},#{permission_id},#{permission_type})
     </insert>
 
     <!--给角色改权限-->

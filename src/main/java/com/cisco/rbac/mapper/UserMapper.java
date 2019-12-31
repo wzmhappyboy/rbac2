@@ -1,9 +1,6 @@
 package com.cisco.rbac.mapper;
 
-import com.cisco.rbac.entity.Role;
-import com.cisco.rbac.entity.RolePermissionRelation;
-import com.cisco.rbac.entity.User;
-import com.cisco.rbac.entity.UserRoleRelation;
+import com.cisco.rbac.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,6 +15,8 @@ public interface UserMapper {
     User getByIdWithSelect(int id);
     List<Role> findRoleByUserId(int id);
 
+    User getPerssionById(int id);
+    List<Permission> findPermissionByUserId(int id);
     //根据id删除用户信息
     int deleteUserById(int id);
 

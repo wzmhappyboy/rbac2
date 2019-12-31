@@ -1,10 +1,7 @@
 package com.cisco.rbac.controller;
 
 
-import com.cisco.rbac.entity.Role;
-import com.cisco.rbac.entity.RolePermissionRelation;
-import com.cisco.rbac.entity.User;
-import com.cisco.rbac.entity.UserRoleRelation;
+import com.cisco.rbac.entity.*;
 import com.cisco.rbac.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -116,6 +113,14 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
         System.out.println(user);
         List<Role> roleList=user.getRoles();
         roleList.forEach(n->System.out.println(n));
+        return  user.toString();
+    }
+    @GetMapping("/permissionsbyid/{id}")
+    public  String getPerssionById(@PathVariable("id") int id){
+        User user=userService.getPerssionById(id);
+        System.out.println(user);
+        List<Permission> permissions=user.getPermissions();
+        permissions.forEach(n->System.out.println(n));
         return  user.toString();
     }
 }

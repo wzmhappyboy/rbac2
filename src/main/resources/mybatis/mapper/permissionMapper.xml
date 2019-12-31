@@ -5,7 +5,7 @@
 <mapper namespace="com.cisco.rbac.mapper.PermissionMapper">
 
     <!--添加新权限-->
-    <insert id="insertRight" parameterType="com.cisco.rbac.entity.Permission">
+    <insert id="insertPermission" parameterType="com.cisco.rbac.entity.Permission">
 insert into
   tright(id,right_name,description)
 values (#{id},#{name},#{description})

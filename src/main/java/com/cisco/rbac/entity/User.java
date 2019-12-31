@@ -8,6 +8,15 @@ public class User {
     private String password;
     private String name;
 
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    private  List<Permission> permissions;
     public List<Role> getRoles() {
         return roles;
     }

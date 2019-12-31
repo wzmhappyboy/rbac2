@@ -2,6 +2,7 @@ package com.cisco.rbac.service;
 
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
+import com.cisco.rbac.entity.User;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface RoleService {
     boolean updateRolerightrelation(RolePermissionRelation rolePermissionRelation);
 
     boolean deleteRolerightrelationById(int id);
+
+    Role getByIdWithResult(int id);
 }

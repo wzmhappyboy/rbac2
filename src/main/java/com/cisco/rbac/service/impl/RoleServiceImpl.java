@@ -2,6 +2,7 @@ package com.cisco.rbac.service.impl;
 
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
+import com.cisco.rbac.entity.User;
 import com.cisco.rbac.mapper.RoleMapper;
 import com.cisco.rbac.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,5 +144,10 @@ RoleMapper roleMapper;
     @Override
     public List<Role> queryRole(){
         return roleMapper.queryRole();
+    }
+
+    @Override
+    public Role  getByIdWithResult(int id){
+        return  roleMapper.getByIdWithSelect(id);
     }
 }

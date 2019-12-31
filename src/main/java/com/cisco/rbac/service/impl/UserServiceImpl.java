@@ -50,6 +50,9 @@ public class UserServiceImpl implements UserService {
         }
 
         @Override
+        public  User getPerssionById(int id){return  userMapper.getPerssionById(id);}
+
+        @Override
         public List<User> queryUser(){
         return userMapper.queryUser();
         }

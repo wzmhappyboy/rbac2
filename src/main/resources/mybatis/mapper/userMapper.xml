@@ -16,11 +16,32 @@
     <result property="password" column="password"/>
     <collection property="roles" ofType="com.cisco.rbac.entity.Role" column="id" select="com.cisco.rbac.mapper.UserMapper.findRoleByUserId"></collection>
 </resultMap>
+
+    <resultMap id="userResultMapWithSelect2" type="com.cisco.rbac.entity.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <collection property="permissions" ofType="com.cisco.rbac.entity.Permission" column="id" select="com.cisco.rbac.mapper.UserMapper.findPermissionByUserId"></collection>
+    </resultMap>
+
+    <select id="getByIdWithSelect2" parameterType="int" resultMap="userResultMapWithSelect2">
+        select  * from tuser where id=#{id}
+    </select>
+
+    <resultMap id="permissionResultMap" type="com.cisco.rbac.entity.Permission">
+        <id property="id" column="id"/>
+        <result property="name" column="right_name"/>
+        <result property="description" column="description"/>
+
+
+    </resultMap>
 <resultMap id="roleResultMap" type="com.cisco.rbac.entity.Role">
     <id property="id" column="id"/>
     <result property="name" column="role_name"/>
     <result property="description" column="description"/>
 </resultMap>
+
+
 
     <select id="getByIdWithSelect" parameterType="int" resultMap="userResultMapWithSelect">
         select  * from tuser where id=#{id}
@@ -52,6 +73,12 @@ values (#{id},#{name},#{password})
          from  tuserrolerelation t1  join trolerightrelation t2 on t1.role_id=t2.role_id
         where t1.user_id=#{id}
 
+    </select>
+
+    <select id="findPermissionByUserId" parameterType="int" resultMap="permissionResultMap">
+        select t3.*
+        from tuserrolerelation t1,trolerightrelation t2,tright t3
+        where t1.user_id=#{id} and t1.role_id=t2.role_id and t2.role_id=t3.id
     </select>
 
     <!--查询所有用户信息-->

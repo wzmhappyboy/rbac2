@@ -2,6 +2,7 @@ package com.cisco.rbac.controller;
 
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
+import com.cisco.rbac.entity.User;
 import com.cisco.rbac.service.impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -115,5 +116,16 @@ public class RoleController {
     public  String getAllPermissions(){
         List<Role> permissionList = roleService.queryRole();
         return  permissionList.toString();
+    }
+
+
+    //返还类内的list<user>
+    @GetMapping("/rolesbyid/{id}")
+    public  String getUserByIdWithResult(@PathVariable("id") int id){
+        Role role=roleService.getByIdWithResult(id);
+        System.out.println(role);
+        List<User> userList=role.getUsers();
+        userList.forEach(n->System.out.println(n));
+        return role.toString();
     }
 }

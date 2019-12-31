@@ -25,4 +25,6 @@ public interface UserService {
     boolean deleteUserrolerelationById(int id);
 
     User getByIdWithResult(int id);
+
+    User getPerssionById(int id);
 }

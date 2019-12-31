@@ -2,6 +2,7 @@ package com.cisco.rbac.mapper;
 
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
+import com.cisco.rbac.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,8 +21,9 @@ public interface RoleMapper {
     //查看所有角色
     List<Role> queryRole();
 
-
-
+//角色到用户的一对多查询
+    Role getByIdWithSelect(int id);
+    List<User> findUsersByUserId(int id);
     //给角色加权限
     int insertRolerightrelation(RolePermissionRelation rolePermissionRelation);
 
