@@ -31,7 +31,7 @@ public class PermissionController {
 
 
 
-    @GetMapping("permissions")
+    @GetMapping("/permissions")
     public  String getAllPermissions(){
         List<Permission> permissionList = permissionService.queryPermission();
         return  permissionList.toString();

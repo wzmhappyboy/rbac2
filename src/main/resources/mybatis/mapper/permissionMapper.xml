@@ -14,13 +14,13 @@ values (#{id},#{name},#{description})
 
 
     <!--查询所有权限信息-->
-    <select id="queryRight" resultType="com.cisco.rbac.entity.Permission">
+    <select id="queryPermission" resultType="com.cisco.rbac.entity.Permission">
         select  *
         from  tright
     </select>
 
     <!--删除权限信息-->
-    <delete id="deleteRightById" parameterType="int">
+    <delete id="deletePermissionById" parameterType="int">
         delete
         from tright
         where id=#{id}
