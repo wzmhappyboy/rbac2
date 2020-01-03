@@ -16,6 +16,7 @@ public class RoleController {
     @Autowired
     RoleServiceImpl roleService;
 
+    //增加角色
     @PostMapping("/roles")
     public  String insertRole(@RequestBody Map<String,String> userMap){
         Role role=new Role();
@@ -84,6 +85,8 @@ public class RoleController {
         }
     }
 
+
+    //删除角色
     @DeleteMapping("/roles/{id}")
     public  String deleteRoleById(@PathVariable("id") int id){
         boolean result=roleService.deleteRoleById(id);
@@ -112,6 +115,8 @@ public class RoleController {
         }
     }
 
+
+    //列出所有权限
     @GetMapping("roles")
     public  String getAllPermissions(){
         List<Role> permissionList = roleService.queryRole();
@@ -119,7 +124,7 @@ public class RoleController {
     }
 
 
-    //返还类内的list<user>
+    //返还类内的list<role>
     @GetMapping("/rolesbyid/{id}")
     public  String getUserByIdWithResult(@PathVariable("id") int id){
         Role role=roleService.getByIdWithResult(id);

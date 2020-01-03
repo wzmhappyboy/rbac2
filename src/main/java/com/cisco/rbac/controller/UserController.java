@@ -15,6 +15,8 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
+
+    //插入用户
     @PostMapping("/users")
     public  String insertUser(@RequestBody Map<String,String> userMap){
         User user=new User();
@@ -31,24 +33,28 @@ public class UserController {
         }
     }
 
+    //查询指定用户
     @GetMapping("/users/{id}")
     public  String getUserById(@PathVariable("id") int id){
         User user=userService.getUserById(id);
         return  user.toString();
     }
 
+    //显示指定用户权限
     @GetMapping("userrights/{id}")
     public  String getUserrights(@PathVariable("id") int id){
         List<RolePermissionRelation> rightsList=userService.queryUserrights(id);
         return  rightsList.toString();
     }
 
+    //列出所有用户
     @GetMapping("users")
     public  String getAllUser(){
         List<User> userList=userService.queryUser();
         return  userList.toString();
     }
 
+    //删除指定用户
     @DeleteMapping("/users/{id}")
     public  String deleteUserById(@PathVariable("id") int id){
         boolean result=userService.deleteUserById(id);
@@ -61,6 +67,7 @@ public class UserController {
         }
     }
 
+    //删除用户权限
     @DeleteMapping("/userrolerelations/{id}")
     public  String deleteUserrolerelaitonById(@PathVariable("id") int id){
         boolean result=userService.deleteUserrolerelationById(id);
@@ -91,6 +98,7 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
     }
 }
 
+//更新用户信息
     @PostMapping("/newusers")
     public  String updateUser(@RequestBody Map<String,String> rrrMap){
         User user=new User();
@@ -115,6 +123,8 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
         roleList.forEach(n->System.out.println(n));
         return  user.toString();
     }
+
+    //返回List<权限>
     @GetMapping("/permissionsbyid/{id}")
     public  String getPerssionById(@PathVariable("id") int id){
         User user=userService.getPerssionById(id);

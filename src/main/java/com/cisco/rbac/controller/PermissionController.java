@@ -13,6 +13,8 @@ public class PermissionController {
     @Autowired
     PermissionServiceImpl permissionService;
 
+
+    //新增权限
     @PostMapping("/permissions")
     public  String insertPermission(@RequestBody Map<String,String> userMap){
         Permission permission =new Permission();
@@ -31,12 +33,14 @@ public class PermissionController {
 
 
 
+    //查询所有权限
     @GetMapping("/permissions")
     public  String getAllPermissions(){
         List<Permission> permissionList = permissionService.queryPermission();
         return  permissionList.toString();
     }
 
+    //删除指定权限
     @DeleteMapping("/rights/{id}")
     public  String deleteUserById(@PathVariable("id") int id){
         boolean result= permissionService.deletePermissionById(id);
@@ -50,6 +54,7 @@ public class PermissionController {
     }
 
 
+    //更改权限
     @PostMapping("/permission")
     public  String updatePermission(@RequestBody Map<String,String> rrrMap){
 
