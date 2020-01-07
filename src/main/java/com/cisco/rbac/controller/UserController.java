@@ -87,8 +87,8 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
 //    int id=Integer.parseInt(userMap.get("id"));
 //    user.setId(id);
 //    urr.setId(Integer.valueOf(userMap.get("id")));
-    urr.setRole_id(Integer.valueOf(userMap.get("role_id")));
-    urr.setUser_id(Integer.valueOf(userMap.get("user_id")));
+    urr.setRoleId(Integer.valueOf(userMap.get("role_id")));
+    urr.setUserId(Integer.valueOf(userMap.get("user_id")));
     boolean result =userService.insertUserrolerelation(urr);
     if (result){
         return  "success";
@@ -100,11 +100,23 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
 
 //更新用户信息
     @PostMapping("/newusers")
-    public  String updateUser(@RequestBody Map<String,String> rrrMap){
+    public  String updateUser(@RequestBody Map rrrMap){
         User user=new User();
-        user.setName(rrrMap.get("name"));
-        user.setId(Integer.valueOf(rrrMap.get("id")));
-        user.setPassword(rrrMap.get("password"));
+        user.setName((String) rrrMap.get("name"));
+        int userId=Integer.valueOf((String) rrrMap.get("id"));
+        user.setId(Integer.valueOf((String) rrrMap.get("id")));
+        user.setPassword((String) rrrMap.get("password"));
+        userService.deleteUserrolerelationById(Integer.valueOf((String) rrrMap.get("id")));
+      //  roleidlist.forEach();
+        List<Integer> roleidlist =(List<Integer>) rrrMap.get("rolelist");
+        for (int i=0;i<roleidlist.size();i++){
+            int  roleId=roleidlist.get(i);
+            UserRoleRelation urr=new UserRoleRelation();
+            urr.setUserId(userId);
+            urr.setRoleId(roleId);
+            userService.insertUserrolerelation(urr);
+        }
+
         boolean result =userService.updateUser(user);
         if (result){
             return  "success";
@@ -125,12 +137,12 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
     }
 
     //返回List<权限>
-    @GetMapping("/permissionsbyid/{id}")
-    public  String getPerssionById(@PathVariable("id") int id){
-        User user=userService.getPerssionById(id);
-        System.out.println(user);
-        List<Permission> permissions=user.getPermissions();
-        permissions.forEach(n->System.out.println(n));
-        return  user.toString();
-    }
+//    @GetMapping("/permissionsbyid/{id}")
+//    public  String getPerssionById(@PathVariable("id") int id){
+//        User user=userService.getPerssionById(id);
+//        System.out.println(user);
+//        List<Permission> permissions=user.getPermissions();
+//        permissions.forEach(n->System.out.println(n));
+//        return  user.toString();
+//    }
 }
