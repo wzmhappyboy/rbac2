@@ -10,18 +10,20 @@
         <result column="right_type" property="right_type"/>
     </resultMap>
 
-<resultMap id="userResultMapWithSelect" type="com.cisco.rbac.entity.User">
-    <id property="id" column="id"/>
-    <result property="name" column="name"/>
-    <result property="password" column="password"/>
-    <collection property="roles" ofType="com.cisco.rbac.entity.Role" column="id" select="com.cisco.rbac.mapper.UserMapper.findRoleByUserId"></collection>
-</resultMap>
+    <resultMap id="userResultMapWithSelect" type="com.cisco.rbac.entity.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <collection property="roles" ofType="com.cisco.rbac.entity.Role" column="id"
+                    select="com.cisco.rbac.mapper.UserMapper.findRoleByUserId"></collection>
+    </resultMap>
 
     <resultMap id="userResultMapWithSelect2" type="com.cisco.rbac.entity.User">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="password" column="password"/>
-        <collection property="permissions" ofType="com.cisco.rbac.entity.Permission" column="id" select="com.cisco.rbac.mapper.UserMapper.findPermissionByUserId"></collection>
+        <collection property="permissions" ofType="com.cisco.rbac.entity.Permission" column="id"
+                    select="com.cisco.rbac.mapper.UserMapper.findPermissionByUserId"></collection>
     </resultMap>
 
     <select id="getByIdWithSelect2" parameterType="int" resultMap="userResultMapWithSelect2">
@@ -35,12 +37,11 @@
 
 
     </resultMap>
-<resultMap id="roleResultMap" type="com.cisco.rbac.entity.Role">
-    <id property="id" column="id"/>
-    <result property="name" column="role_name"/>
-    <result property="description" column="description"/>
-</resultMap>
-
+    <resultMap id="roleResultMap" type="com.cisco.rbac.entity.Role">
+        <id property="id" column="id"/>
+        <result property="name" column="role_name"/>
+        <result property="description" column="description"/>
+    </resultMap>
 
 
     <select id="getByIdWithSelect" parameterType="int" resultMap="userResultMapWithSelect">
@@ -54,7 +55,8 @@
 
 
     <!--添加新用户-->
-    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id"  parameterType="com.cisco.rbac.entity.User">
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+            parameterType="com.cisco.rbac.entity.User">
 insert into
   tuser(id,name,password)
 values (#{id},#{name},#{password})
@@ -95,7 +97,7 @@ values (#{id},#{name},#{password})
     </delete>
 
 
-<!--    给用户加角色-->
+    <!--    给用户加角色-->
     <insert id="insertUserrolerelation" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert  into
         tuserrolerelation(id,user_id,role_id)
@@ -104,16 +106,15 @@ values (#{id},#{name},#{password})
 
     <update id="updateUser" parameterType="com.cisco.rbac.entity.User">
         update  tuser
-        set name=#{name},password=#{pssword}
+        set name=#{name},password=#{password}
         where id=#{id}
     </update>
 
     <delete id="deleteUserrolerelation" parameterType="int">
         delete
         from  tuserrolerelation
-        where id=#{id}
+        where user_id=#{id}
     </delete>
-    
-    
-    
+
+
 </mapper>

@@ -60,7 +60,7 @@ public class PermissionController {
 
         Permission permission=new Permission();
         permission.setId(Integer.valueOf(rrrMap.get("id")));
-        permission.setName(rrrMap.get("permission_name"));
+        permission.setName(rrrMap.get("permissionName"));
         permission.setDescription(rrrMap.get("description"));
         boolean result =permissionService.updatePermission(permission);
         if (result){

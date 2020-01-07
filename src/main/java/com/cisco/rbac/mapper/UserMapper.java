@@ -8,35 +8,45 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-//    添加用户信息
+//    int insert(User user);
+//
+//    int delete(int userId);
+//
+//    int update(User user);
+//    int deleteUserRoles(int userId);
+//    int addUserRoles(UserRoleRelation userRoleRelation);
+//
+//    User selectById(int userId);
+//    List<User> selectAll();
+//    List<Permission> selectAllPermissions(int userId);
     int insertUser(User user);
 
-    //
-    User getByIdWithSelect(int id);
-    List<Role> findRoleByUserId(int id);
-
-    User getPerssionById(int id);
-    List<Permission> findPermissionByUserId(int id);
-    //根据id删除用户信息
     int deleteUserById(int id);
 
-    //根据用户id查用户信息
-    User getUserById(int id);
-
-    //查询所有用户信息
-    List<User> queryUser();
-
-    //改变用户信息
-    boolean updateUser(User user);
-
-    //添加用户角色关系
+    boolean    updateUser(User user);
     int insertUserrolerelation(UserRoleRelation urr);
-
-    //删除用户角色关系
     int deleteUserrolerelation(int id);
 
+    User getUserById(int id);
+    List<User> queryUser();
+    List<Permission> findPermissionByUserId(int id);
 
 
-    //查看用户所有权限的权限号、权限类别
+
+
+
+
+
+
+
+
+
+    User getPerssionById(int id);
+
     List<RolePermissionRelation> queryUserrights(int id);
+
+    User getByIdWithSelect(int id);
+
+    List<Role> findRoleByUserId(int id);
+
 }

@@ -41,8 +41,8 @@ public class RoleController {
         int role_id=Integer.parseInt(userMap.get("role_id"));
         int right_id=Integer.parseInt(userMap.get("right_id"));
         int right_type= Integer.parseInt(userMap.get("right_type"));
-        rrr.setPermission_id(right_id);
-        rrr.setPermission_type(right_type);
+        rrr.setPermissionId(right_id);
+        rrr.setPermissionType(right_type);
         rrr.setRole_id(role_id);
 //        rrr.setId(id);
 
@@ -61,8 +61,8 @@ public class RoleController {
         RolePermissionRelation rrr=new RolePermissionRelation();
         rrr.setId(Integer.valueOf(rrrMap.get("id")));
         rrr.setRole_id(Integer.valueOf(rrrMap.get("role_id")));
-        rrr.setPermission_type(Integer.valueOf(rrrMap.get("right_type")));
-        rrr.setPermission_id(Integer.valueOf(rrrMap.get("right_id")));
+        rrr.setPermissionType(Integer.valueOf(rrrMap.get("right_type")));
+        rrr.setPermissionId(Integer.valueOf(rrrMap.get("right_id")));
         boolean result =roleService.updateRolerightrelation(rrr);
         if (result){
             return  "success";

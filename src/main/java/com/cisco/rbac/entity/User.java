@@ -3,33 +3,13 @@ package com.cisco.rbac.entity;
 import java.util.List;
 
 public class User {
-
+    
     private Integer id;
     private String password;
     private String name;
-
-    public List<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
-    }
-
-    private  List<Permission> permissions;
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
     private List<Role> roles;
-    public User(Integer id,String password,String name) {
-        this.id = id;
-        this.name=name;
-        this.password=password;
+
+    public User() {
     }
 
     public Integer getId() {
@@ -40,6 +20,14 @@ public class User {
         this.id = id;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
@@ -48,11 +36,12 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public User() {
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -61,10 +50,7 @@ public class User {
                 "id=" + id +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
+                ", roles=" + roles +
                 '}';
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

@@ -9,27 +9,18 @@ import java.util.List;
 
 @Mapper
 public interface RoleMapper {
-    //添加角色
     int insertRole(Role role);
 
-    //删除角色
     int deleteRoleById(int id);
 
-    //改角色信息
     boolean updateRole(Role role);
-
-    //查看所有角色
-    List<Role> queryRole();
-
-//角色到用户的一对多查询
-    Role getByIdWithSelect(int id);
-    List<User> findUsersByUserId(int id);
-    //给角色加权限
     int insertRolerightrelation(RolePermissionRelation rolePermissionRelation);
+    int deleteRolerightrelationById(int id);
 
-    //给角色改权限
     boolean updateRolerightrelation(RolePermissionRelation rolePermissionRelation);
 
-    //给角色删权限
-    int deleteRolerightrelationById(int id);
+    Role getByIdWithSelect(int id);
+
+    List<Role> queryRole();
+    List<User> findUsersByUserId(int id);
 }

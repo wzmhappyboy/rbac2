@@ -7,16 +7,25 @@ import com.cisco.rbac.entity.UserRoleRelation;
 import java.util.List;
 
 public interface UserService {
+//    int insert(User user);
+//    int delete(int userId);
+//    int update(User user);
+//    User selectById(int userId);
+//    List<User> selectAll();
+//    List<Permission> selectAllPermissions(int userId);
+
+
 
     boolean insertUser(User user);
-
-    User getUserById(int id);
-
-    List<User> queryUser();
+    boolean deleteUserById(int id);
 
     boolean updateUser(User user);
 
-    boolean deleteUserById(int id);
+    User getUserById(int id);
+    List<User> queryUser();
+    User getByIdWithResult(int id);
+
+
 
     boolean insertUserrolerelation(UserRoleRelation urr);
 
@@ -24,7 +33,6 @@ public interface UserService {
 
     boolean deleteUserrolerelationById(int id);
 
-    User getByIdWithResult(int id);
 
     User getPerssionById(int id);
 }

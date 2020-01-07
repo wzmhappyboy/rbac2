@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
             try {
                 int effecteNum = userMapper.insertUserrolerelation(urr);
                 if (effecteNum > 0) {
-                    System.out.println("增加成功，id为" + urr.getId());
+                    System.out.println("增加角色成功，角色id为" + urr.getRoleId());
                     return true;
                 } else {
                     throw new RuntimeException("插入信息失败，插入行数有误");

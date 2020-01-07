@@ -1,35 +1,33 @@
 package com.cisco.rbac.entity;
 
-import org.springframework.data.relational.core.sql.In;
-
 public class UserRoleRelation {
     Integer id;
-    Integer user_id;
-    Integer role_id;
+    Integer userId;
+    Integer roleId;
 
     public UserRoleRelation() {
     }
 
-    public UserRoleRelation(Integer id, Integer role_id, Integer user_id) {
+    public UserRoleRelation(Integer id, Integer roleId, Integer userId) {
         this.id = id;
-        this.role_id=role_id;
-        this.user_id=user_id;
+        this.roleId = roleId;
+        this.userId = userId;
     }
 
-    public Integer getRole_id() {
-        return role_id;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(Integer role_id) {
-        this.role_id = role_id;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getId() {

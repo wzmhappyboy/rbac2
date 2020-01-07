@@ -3,17 +3,17 @@ package com.cisco.rbac.entity;
 public class RolePermissionRelation {
     Integer id;
     Integer role_id;
-    Integer permission_id;
-    Integer permission_type;
+    Integer permissionId;
+    Integer permissionType;
 
     public RolePermissionRelation() {
     }
 
-    public RolePermissionRelation(Integer id, Integer role_id, Integer permission_id, Integer permission_type) {
+    public RolePermissionRelation(Integer id, Integer role_id, Integer permissionId, Integer permissionType) {
         this.id = id;
-        this.permission_id = permission_id;
+        this.permissionId = permissionId;
         this.role_id=role_id;
-        this.permission_type = permission_type;
+        this.permissionType = permissionType;
     }
 
     @Override
@@ -21,25 +21,25 @@ public class RolePermissionRelation {
         return "Rolerightrelation{" +
                 "id=" + id +
                 ", role_id=" + role_id +
-                ", right_id=" + permission_id +
-                ", right_type=" + permission_type +
+                ", right_id=" + permissionId +
+                ", right_type=" + permissionType +
                 '}';
     }
 
-    public Integer getPermission_type() {
-        return permission_type;
+    public Integer getPermissionType() {
+        return permissionType;
     }
 
-    public void setPermission_type(Integer permission_type) {
-        this.permission_type = permission_type;
+    public void setPermissionType(Integer permissionType) {
+        this.permissionType = permissionType;
     }
 
-    public Integer getPermission_id() {
-        return permission_id;
+    public Integer getPermissionId() {
+        return permissionId;
     }
 
-    public void setPermission_id(Integer permission_id) {
-        this.permission_id = permission_id;
+    public void setPermissionId(Integer permissionId) {
+        this.permissionId = permissionId;
     }
 
     public Integer getRole_id() {

@@ -45,7 +45,8 @@ values (#{id},#{name},#{description})
     <!--给角色改权限-->
     <update id="updateRolerightrelation" parameterType="com.cisco.rbac.entity.RolePermissionRelation">
         update  trolerightrelation
-        set role_id=#{role_id},right_id=#{right_id},right_type=#{right_type}
+            set role_id=#{role_id},right_id=#{right_id},right_type=#{right_type}
+
         where id=#{id}
     </update>
 
