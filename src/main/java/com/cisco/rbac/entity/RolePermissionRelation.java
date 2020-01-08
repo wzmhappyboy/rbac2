@@ -2,7 +2,7 @@ package com.cisco.rbac.entity;
 
 public class RolePermissionRelation {
     Integer id;
-    Integer role_id;
+    Integer roleId;
     Integer permissionId;
     Integer permissionType;
 
@@ -12,7 +12,7 @@ public class RolePermissionRelation {
     public RolePermissionRelation(Integer id, Integer role_id, Integer permissionId, Integer permissionType) {
         this.id = id;
         this.permissionId = permissionId;
-        this.role_id=role_id;
+        this.roleId =role_id;
         this.permissionType = permissionType;
     }
 
@@ -20,9 +20,9 @@ public class RolePermissionRelation {
     public String toString() {
         return "Rolerightrelation{" +
                 "id=" + id +
-                ", role_id=" + role_id +
-                ", right_id=" + permissionId +
-                ", right_type=" + permissionType +
+                ", roleId=" + roleId +
+                ", rightId=" + permissionId +
+                ", rightType=" + permissionType +
                 '}';
     }
 
@@ -42,12 +42,12 @@ public class RolePermissionRelation {
         this.permissionId = permissionId;
     }
 
-    public Integer getRole_id() {
-        return role_id;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(Integer role_id) {
-        this.role_id = role_id;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public Integer getId() {

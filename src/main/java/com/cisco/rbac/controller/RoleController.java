@@ -43,7 +43,7 @@ public class RoleController {
         int right_type= Integer.parseInt(userMap.get("right_type"));
         rrr.setPermissionId(right_id);
         rrr.setPermissionType(right_type);
-        rrr.setRole_id(role_id);
+        rrr.setRoleId(role_id);
 //        rrr.setId(id);
 
         boolean result =roleService.insertRolerightrelation(rrr);
@@ -57,12 +57,25 @@ public class RoleController {
 
     //给角色改权限
     @PostMapping("/newrolerightrelations")
-    public  String updateRolerightrelation(@RequestBody Map<String,String> rrrMap){
+    public  String updateRolerightrelation(@RequestBody Map rrrMap){
         RolePermissionRelation rrr=new RolePermissionRelation();
-        rrr.setId(Integer.valueOf(rrrMap.get("id")));
-        rrr.setRole_id(Integer.valueOf(rrrMap.get("role_id")));
-        rrr.setPermissionType(Integer.valueOf(rrrMap.get("right_type")));
-        rrr.setPermissionId(Integer.valueOf(rrrMap.get("right_id")));
+        rrr.setId(Integer.valueOf((String) rrrMap.get("id")));
+        rrr.setRoleId(Integer.valueOf((String) rrrMap.get("role_id")));
+        rrr.setPermissionType(Integer.valueOf((String) rrrMap.get("right_type")));
+        rrr.setPermissionId(Integer.valueOf((String) rrrMap.get("right_id")));
+        roleService.deleteRolerightrelationById(Integer.valueOf((String) rrrMap.get("role_id")));
+
+        List<Integer> rightlist =(List<Integer>) rrrMap.get("rightlist");
+        for(int i=0;i<rightlist.size();i++)
+        {
+            int rightId=rightlist.get(i);
+            RolePermissionRelation rpr=new RolePermissionRelation();
+            rpr.setPermissionId(rightId);
+            rpr.setRoleId(Integer.valueOf((String) rrrMap.get("role_id")));
+            rpr.setPermissionType(0);
+            roleService.insertRolerightrelation(rpr);
+        }
+
         boolean result =roleService.updateRolerightrelation(rrr);
         if (result){
             return  "success";

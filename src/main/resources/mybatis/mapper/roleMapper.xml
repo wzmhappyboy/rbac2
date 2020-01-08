@@ -54,7 +54,7 @@ values (#{id},#{name},#{description})
     <delete id="deleteRolerightrelationById" parameterType="int">
         delete
         from trolerightrelation
-        where id=#{id}
+        where role_id=#{id}
     </delete>
 
 <!--    删除角色-->
