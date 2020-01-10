@@ -4,7 +4,9 @@ package com.cisco.rbac.controller;
 import com.cisco.rbac.entity.*;
 import com.cisco.rbac.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -46,6 +48,7 @@ public class UserController {
         List<RolePermissionRelation> rightsList=userService.queryUserrights(id);
         return  rightsList.toString();
     }
+
 
     //列出所有用户
     @GetMapping("users")
@@ -134,6 +137,15 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
         List<Role> roleList=user.getRoles();
         roleList.forEach(n->System.out.println(n));
         return  user.toString();
+    }
+
+    @GetMapping("/")
+    public ModelAndView index(ModelAndView model){
+        List<User> userList=userService.queryUser();
+        model.addObject("users",userList);
+        model.setViewName("index");
+//      System.out.println(userList.get(0).toString());
+        return model;
     }
 
     //返回List<权限>

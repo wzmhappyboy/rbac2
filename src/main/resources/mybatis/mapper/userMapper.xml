@@ -5,9 +5,9 @@
 <mapper namespace="com.cisco.rbac.mapper.UserMapper">
     <resultMap id="permissionRM" type="com.cisco.rbac.entity.RolePermissionRelation">
         <id column="id" property="id"/>
-        <result column="role_id" property="role_id"/>
-        <result column="right_id" property="right_id"/>
-        <result column="right_type" property="right_type"/>
+        <result column="role_id" property="roleId"/>
+        <result column="right_id" property="permissionId"/>
+        <result column="right_type" property="permissionType"/>
     </resultMap>
 
     <resultMap id="userResultMapWithSelect" type="com.cisco.rbac.entity.User">
@@ -101,7 +101,7 @@ values (#{id},#{name},#{password})
     <insert id="insertUserrolerelation" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert  into
         tuserrolerelation(id,user_id,role_id)
-        values (#{id},#{user_id},#{role_id})
+        values (#{id},#{userId},#{roleId})
     </insert>
 
     <update id="updateUser" parameterType="com.cisco.rbac.entity.User">

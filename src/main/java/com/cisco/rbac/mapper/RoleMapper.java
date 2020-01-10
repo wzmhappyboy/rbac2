@@ -17,10 +17,12 @@ public interface RoleMapper {
     int insertRolerightrelation(RolePermissionRelation rolePermissionRelation);
     int deleteRolerightrelationById(int id);
 
-    boolean updateRolerightrelation(RolePermissionRelation rolePermissionRelation);
 
     Role getByIdWithSelect(int id);
-
     List<Role> queryRole();
     List<User> findUsersByUserId(int id);
+
+
+    boolean updateRolerightrelation(RolePermissionRelation rolePermissionRelation);
+
 }

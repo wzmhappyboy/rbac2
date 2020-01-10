@@ -39,13 +39,13 @@ values (#{id},#{name},#{description})
     <insert id="insertRolerightrelation" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert  into
         trolerightrelation(id,role_id,right_id,right_type)
-        values (#{id},#{role_id},#{permission_id},#{permission_type})
+        values (#{id},#{roleId},#{permissionId},#{permissionType})
     </insert>
 
     <!--给角色改权限-->
     <update id="updateRolerightrelation" parameterType="com.cisco.rbac.entity.RolePermissionRelation">
         update  trolerightrelation
-            set role_id=#{role_id},right_id=#{right_id},right_type=#{right_type}
+            set role_id=#{roleId},right_id=#{rightId},right_type=#{permissionType}
 
         where id=#{id}
     </update>
