@@ -36,5 +36,4 @@ public interface UserService {
 
     User getPerssionById(int id);
 
-    String getToken(String username);
 }

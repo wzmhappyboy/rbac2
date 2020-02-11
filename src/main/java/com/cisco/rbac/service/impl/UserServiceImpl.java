@@ -6,7 +6,6 @@ import com.cisco.rbac.entity.User;
 import com.cisco.rbac.entity.UserRoleRelation;
 import com.cisco.rbac.mapper.UserMapper;
 import com.cisco.rbac.service.UserService;
-import com.cisco.rbac.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -155,21 +154,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public  String getToken(String username){
-        Map claims=new HashMap<String,Integer>();
-        claims.put("admin_username",username);
-        String subject="admin";
-        String token=null;
-        try {
-            token= JWTUtils.createJWT(claims,subject,1000*60*60*12);
-        }
-        catch (Exception e){
-            throw new RuntimeException("创建token失败");
-        }
-        System.out.println("token:"+token);
-        return token;
-    }
+
 
 
     }

@@ -27,3 +27,10 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
 
+
+jwt:
+  name: Hilox
+
+  base64Secret: SG1sb3g=
+
+  jwtExpires: 120

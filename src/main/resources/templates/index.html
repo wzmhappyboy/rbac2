@@ -15,13 +15,14 @@
                 type: "post",
                 dataType: "json",
                 data: {"id":id,
-                "password":password},
+                    "password":password},
                 async: true,
                 success: function(data){
                     var r=data.r;
+                    var a=data.a;
                     if(r==1)
                     {
-                        window.location.href='gouserhome/'+id;
+                        window.location.href='gouserhome/'+id+'/'+a;
 
                     }
                     else {
@@ -38,7 +39,6 @@
         }
 
         /*]]>*/
-
 
     </script>
 </head>

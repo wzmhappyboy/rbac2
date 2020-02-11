@@ -14,16 +14,20 @@
             );
                     $('#showrights tr:gt(0)').remove();
 
-        var id = $("#id").val();
-
+        var id =[[${id}]];
+        var a=[[${a}]];
         $.ajax({
             url: "/userrights/",
+            headers: {'Authorization': a},
             type: "post",
             dataType: "json",
             // contentType: "application/json",
             data:  {"id":id,
                 },
             async: true,
+            // beforesend: function(request){
+            //     request.setRequestHeader("Authorization",a)
+            // },
             success: function(data){
 
 
@@ -57,7 +61,6 @@
     <p th:text="'用户id:'+${id}"/>
 
 
-    <input th:type="hidden" value="1" id="id">
 <!--    <button >显示拥有角色信息</button>&nbsp;&nbsp;-->
     <button onclick="ajaxSubmit()">显示拥有权限信息</button>
 <table style="text-align: center;margin-left: 250px">

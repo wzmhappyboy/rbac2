@@ -1,6 +1,7 @@
 package com.cisco.rbac.controller;
 
 
+import com.cisco.rbac.JwtIgnore;
 import com.cisco.rbac.entity.*;
 import com.cisco.rbac.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,6 +146,7 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
     }
 
     @GetMapping("/")
+    @JwtIgnore
     public ModelAndView index(ModelAndView model){
         List<User> userList=userService.queryUser();
         model.addObject("users",userList);
