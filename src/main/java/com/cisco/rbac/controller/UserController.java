@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,10 +43,15 @@ public class UserController {
     }
 
     //显示指定用户权限
-    @GetMapping("userrights/{id}")
-    public  String getUserrights(@PathVariable("id") int id){
-        List<RolePermissionRelation> rightsList=userService.queryUserrights(id);
-        return  rightsList.toString();
+    @ResponseBody
+    @RequestMapping("/userrights/")
+    public  Map<String,Object> getUserrights(@RequestParam("id") String id){
+        System.out.println("显示用户权限的用户id:"+id);
+        int id2=Integer.parseInt(id);
+        List<RolePermissionRelation> rightsList=userService.queryUserrights(id2);
+            Map<String,Object> result=new HashMap<>();
+            result.put("rightlist",rightsList);
+            return result;
     }
 
 

@@ -14,7 +14,7 @@ public interface UserService {
 //    List<User> selectAll();
 //    List<Permission> selectAllPermissions(int userId);
 
-
+    boolean checkUserAndPassword(Integer id,String password);
 
     boolean insertUser(User user);
     boolean deleteUserById(int id);
@@ -35,4 +35,6 @@ public interface UserService {
 
 
     User getPerssionById(int id);
+
+    String getToken(String username);
 }

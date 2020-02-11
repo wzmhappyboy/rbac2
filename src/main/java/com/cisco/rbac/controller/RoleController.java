@@ -138,6 +138,7 @@ public class RoleController {
 
 
     //返还类内的list<role>
+    //实现错误，最终返回的是根据角色Id的角色本身
     @GetMapping("/rolesbyid/{id}")
     public  String getUserByIdWithResult(@PathVariable("id") int id){
         Role role=roleService.getByIdWithResult(id);

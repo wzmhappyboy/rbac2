@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户权限</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        function ajaxSubmit(){
+
+            $("#showrights").append(
+                "<tr><td>角色ID</td><td>权限ID</td><td>权限类型</td>"
+
+
+            );
+                    $('#showrights tr:gt(0)').remove();
+
+        var id = $("#id").val();
+
+        $.ajax({
+            url: "/userrights/",
+            type: "post",
+            dataType: "json",
+            // contentType: "application/json",
+            data:  {"id":id,
+                },
+            async: true,
+            success: function(data){
+
+
+
+
+
+                        var list=data.rightlist;
+                    for(var i=0;i<list.length;i++)
+
+                        $("#showrights").append(
+                            "<tr><td>"+list[i].roleId+"</td>"
+                            +"<td>"+list[i].permissionId+"</ta></td>"
+                            +"<td>"+list[i].permissionType+"</td></tr>"
+
+
+
+                );
+
+            },
+            error:function (data) {
+                alert("发送失败，id:"+id);
+            }
+        });
+        }
+
+    </script>
+
+        </head>
+<body>
+<div style="text-align: center">
+    <p th:text="'用户id:'+${id}"/>
+
+
+    <input th:type="hidden" value="1" id="id">
+<!--    <button >显示拥有角色信息</button>&nbsp;&nbsp;-->
+    <button onclick="ajaxSubmit()">显示拥有权限信息</button>
+<table style="text-align: center;margin-left: 250px">
+<tbody id="showrights">
+
+
+</tbody>
+</table>
+</div>
+</body>
+</html>

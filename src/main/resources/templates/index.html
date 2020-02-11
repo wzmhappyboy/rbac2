@@ -2,34 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Thymeleaf Ajax Test</title>
+    <title>RBAC System</title>
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
 
         /*<![CDATA[*/
         function ajaxSubmit(){
             var id = $("#id").val();
-
+            var password =$("#password").val();
             $.ajax({
-                url: "permissionin",
-            type: "post",
+                url: "/login",
+                type: "post",
                 dataType: "json",
-                contentType: "application/json",
-                data: id,
+                data: {"id":id,
+                "password":password},
                 async: true,
                 success: function(data){
-                    sessionStorage.setItem("list",data.list);
-                    var list=data.list;
-                    var td=list[0];
-                alert("data[0]:"+data.list[0]);
-                window.location.href='showpermission';
+                    var r=data.r;
+                    if(r==1)
+                    {
+                        window.location.href='gouserhome/'+id;
+
+                    }
+                    else {
+                        alert("Log in faild!");
+
+                    }
 
 
-            },
+                },
                 error:function (data) {
                     alert("系统错误");
                 }
-        });
+            });
         }
 
         /*]]>*/
@@ -38,8 +43,13 @@
     </script>
 </head>
 <body>
-<input type="text" name="id" id="id">
-<button onclick="ajaxSubmit()">查看</button>
+
+<div style="text-align: center">
+    <h2>Welcome to RBAC</h2><br>
+<input type="text" name="id" id="id" placeholder="请输入账户"><br><br>
+    <input type="password" id="password" placeholder="请输入密码" ><br><br>
+<button onclick="ajaxSubmit()">登陆</button>
+</div>
 
 </body>
 </html>

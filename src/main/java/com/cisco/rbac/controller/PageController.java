@@ -23,19 +23,22 @@ public class PageController {
     UserServiceImpl userService;
 
     @ResponseBody
-    @PostMapping(value = "/login")
-    public Map<String,String> login(@RequestBody Map<String,String> userMap) {
-        int id = Integer.parseInt(userMap.get("id"));
-        String password = userMap.get("password");
-        boolean result = userService.checkUserAndPassword(id, password);
+    @RequestMapping(value = "/login")
+    public Map<String,String> login(@RequestParam("id") String id,@RequestParam("password") String password) {
+        int id2 = Integer.parseInt(id);
+      //  String password = userMap.get("password");
+        System.out.println("id:"+id+"password:"+password);
+        boolean result = userService.checkUserAndPassword(id2, password);
         if (result) {
-            String token = userService.getToken(userMap.get("id"));
+            String token = userService.getToken(id);
             Map map = new HashMap<String, String>();
             map.put("token", token);
+            map.put("r","1");
             return map;
         } else {
             Map map = new HashMap<String, String>();
             map.put("erro", "something wrong happern");
+            map.put("r","2" );
             return map;
         }
 
@@ -46,13 +49,14 @@ public class PageController {
 
 
 
-    @ResponseBody
-    @RequestMapping("showpermission/{id}")
+
+    @RequestMapping("gouserhome/{id}")
     public  ModelAndView showpermission(@PathVariable("id") String id )
     {
     System.out.println("restful传的参数:"+id);
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("showpermission");
+        modelAndView.setViewName("userhome");
+        modelAndView.addObject("id",id);
         return modelAndView;
     }
 

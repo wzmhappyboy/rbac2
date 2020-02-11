@@ -32,15 +32,6 @@ public interface UserMapper {
     List<Permission> findPermissionByUserId(int id);
 
 
-
-
-
-
-
-
-
-
-
     User getPerssionById(int id);
 
     List<RolePermissionRelation> queryUserrights(int id);
@@ -49,4 +40,5 @@ public interface UserMapper {
 
     List<Role> findRoleByUserId(int id);
 
+    User login(User user);
 }

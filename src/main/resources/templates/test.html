@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf Ajax Test</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+
+        /*<![CDATA[*/
+        function ajaxSubmit(){
+            var ad = $("#id").val();
+
+            $.ajax({
+                url: "permissionin",
+            type: "post",
+                dataType: "json",
+                contentType: "application/json",
+                data: ad,
+                async: true,
+                success: function(data){
+                    sessionStorage.setItem("list",data.list);
+                    var list=data.list;
+                    var td=list[0];
+                alert("data[0]:"+data.list[0]);
+                window.location.href='showpermission/'+ad;
+
+
+            },
+                error:function (data) {
+                    alert("系统错误");
+                }
+        });
+        }
+
+        /*]]>*/
+
+
+    </script>
+</head>
+<body>
+<input type="text" name="id" id="id">
+<button onclick="ajaxSubmit()">查看</button>
+
+</body>
+</html>

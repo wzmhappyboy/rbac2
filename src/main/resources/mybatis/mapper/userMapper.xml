@@ -34,8 +34,11 @@
         <id property="id" column="id"/>
         <result property="name" column="right_name"/>
         <result property="description" column="description"/>
-
-
+    </resultMap>
+    <resultMap id="userResultMap" type="com.cisco.rbac.entity.User">
+    <id property="id" column="id"/>
+    <result property="password" column="password"/>
+     <result property="name" column="name"/>
     </resultMap>
     <resultMap id="roleResultMap" type="com.cisco.rbac.entity.Role">
         <id property="id" column="id"/>
@@ -52,6 +55,13 @@
         select r.* from tuserrolerelation t,trole r where t.role_id=r.id and t.user_id=#{id}
 
     </select>
+
+<select id="login" parameterType="com.cisco.rbac.entity.User" resultMap="userResultMap">
+    select * from tuser
+    where id=#{id} and password=#{password}
+
+
+</select>
 
 
     <!--添加新用户-->

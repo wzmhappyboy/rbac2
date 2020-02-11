@@ -150,4 +150,8 @@ RoleMapper roleMapper;
     public Role  getByIdWithResult(int id){
         return  roleMapper.getByIdWithSelect(id);
     }
+
+
+
+
 }
