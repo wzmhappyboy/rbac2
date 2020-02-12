@@ -89,6 +89,9 @@ public class PageController {
     }
 
 
+
+
+
     @ResponseBody
     @RequestMapping("/permissionin")
     public Map<String,Object> showpermissions(@RequestBody String id)

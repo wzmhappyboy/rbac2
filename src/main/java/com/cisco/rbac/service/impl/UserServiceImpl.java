@@ -1,6 +1,7 @@
 package com.cisco.rbac.service.impl;
 
 
+import com.cisco.rbac.entity.Permission;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
 import com.cisco.rbac.entity.UserRoleRelation;
@@ -154,7 +155,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+@Override
+    public List<Permission> showUserRoles(int id){
+        List<Permission> list=userMapper.findPermissionByUserId(id);
+        return  list;
+}
 
 
     }

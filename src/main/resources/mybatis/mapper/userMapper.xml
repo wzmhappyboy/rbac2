@@ -89,8 +89,8 @@ values (#{id},#{name},#{password})
 
     <select id="findPermissionByUserId" parameterType="int" resultMap="permissionResultMap">
         select t3.*
-        from tuserrolerelation t1,trolerightrelation t2,tright t3
-        where t1.user_id=#{id} and t1.role_id=t2.role_id and t2.role_id=t3.id
+        from tuserrolerelation t1 join trolerightrelation t2 on t1.role_id=t2.role_id join  tright t3 on t2.right_id=t3.id
+        where t1.user_id=#{id}
     </select>
 
     <!--查询所有用户信息-->

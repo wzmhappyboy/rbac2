@@ -4,6 +4,7 @@ package com.cisco.rbac.controller;
 import com.cisco.rbac.JwtIgnore;
 import com.cisco.rbac.entity.*;
 import com.cisco.rbac.service.impl.UserServiceImpl;
+import com.cisco.rbac.util.JwtParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,22 +19,38 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
-
+    @Autowired
+    private JwtParam jwtParam;
     //插入用户
-    @PostMapping("/users")
-    public  String insertUser(@RequestBody Map<String,String> userMap){
+    @ResponseBody
+    @RequestMapping(value = "/ns")
+    @JwtIgnore
+    public  Map<String,Object> insertUser(@RequestParam("name") String name,@RequestParam("password") String password,@RequestParam("password2") String password2){
+        System.out.println("进入后台");
         User user=new User();
+        String r="0";
 //        int id=Integer.parseInt(userMap.get("id"));
 //        user.setId(id);
-        user.setName(userMap.get("name"));
-        user.setPassword(userMap.get("password"));
-        boolean result =userService.insertUser(user);
-        if (result){
-            return  "success";
+
+        user.setName(name);
+        user.setPassword(password);
+        boolean d=true;
+        boolean result=false;
+        if(!password.equals(password2)){
+            d=false;
+            r="3";
         }
-        else{
-            return  "fail";
+        if (d) {
+             result = userService.insertUser(user);
+            if (result) {
+                r = "1";
+            } else {
+                r = "2";
+            }
         }
+        Map<String,Object> map=new HashMap<>();
+        map.put("result",r);
+        return map;
     }
 
     //查询指定用户
@@ -55,7 +72,18 @@ public class UserController {
             return result;
     }
 
+@ResponseBody
+@RequestMapping(value = "/uroles")
 
+public  Map<String,Object> getUserroles(@RequestParam("id") String id){
+        System.out.println("id:"+id);
+        int id2=Integer.parseInt(id);
+        List<Permission> list=userService.showUserRoles(id2);
+        System.out.println(list);
+    Map<String,Object> result=new HashMap<>();
+    result.put("rightlist",list);
+    return result;
+}
     //列出所有用户
     @GetMapping("users")
     public  String getAllUser(){
@@ -91,6 +119,7 @@ public class UserController {
 
 //    用户添加角色
 @PostMapping("/userrolerelations")
+@JwtIgnore
 public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
     UserRoleRelation urr=new UserRoleRelation();
 //    int id=Integer.parseInt(userMap.get("id"));
@@ -151,6 +180,15 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
         List<User> userList=userService.queryUser();
         model.addObject("users",userList);
         model.setViewName("index");
+//      System.out.println(userList.get(0).toString());
+        return model;
+    }
+
+
+    @GetMapping("/logon")
+    @JwtIgnore
+    public ModelAndView login(ModelAndView model){
+        model.setViewName("logon");
 //      System.out.println(userList.get(0).toString());
         return model;
     }

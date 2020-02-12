@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RBAC System</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+
+        /*<![CDATA[*/
+        function ajaxSubmit(){
+            var uname = $("#uname").val();
+            var password =$("#password").val();
+            var password2 =$("#password2").val();
+
+            $.ajax({
+                url: "/ns",
+                type: "post",
+                dataType: "json",
+                data: {"name":uname,
+                    "password":password,
+                    "password2":password2
+                },
+                async: true,
+                success: function(data){
+                    var r=data.result;
+                    if (r==1) {
+                        alert("注册成功！");
+                        window.location.href = '/';
+                    }
+else if(r==3) {
+    alert("两次输入密码不一致！");
+                    }
+else {
+    alert("系统错误！");
+                    }
+                },
+                error:function (data) {
+                    alert("系统错误");
+                }
+            });
+        }
+
+        /*]]>*/
+
+    </script>
+</head>
+<body>
+
+<div style="text-align: center">
+    <h2>用户注册</h2><br>
+    <input type="text"  id="uname" placeholder="用户名"><br><br>
+    <input type="password" id="password" placeholder="密码" ><br><br>
+    <input type="password" id="password2" placeholder="确认密码" ><br><br>
+
+    <button onclick="ajaxSubmit()">注册</button>
+</div>
+
+</body>
+</html>

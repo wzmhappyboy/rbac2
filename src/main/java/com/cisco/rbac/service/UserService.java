@@ -1,5 +1,6 @@
 package com.cisco.rbac.service;
 
+import com.cisco.rbac.entity.Permission;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
 import com.cisco.rbac.entity.UserRoleRelation;
@@ -35,5 +36,7 @@ public interface UserService {
 
 
     User getPerssionById(int id);
+
+    List<Permission> showUserRoles(int id);
 
 }
