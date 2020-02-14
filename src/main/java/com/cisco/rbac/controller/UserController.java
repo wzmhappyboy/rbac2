@@ -85,10 +85,13 @@ public  Map<String,Object> getUserroles(@RequestParam("id") String id){
     return result;
 }
     //列出所有用户
-    @GetMapping("users")
-    public  String getAllUser(){
+    @ResponseBody
+    @RequestMapping("/showusers")
+    public  Map<String,Object> getAllUser(){
+        Map<String,Object> result=new HashMap<>();
         List<User> userList=userService.queryUser();
-        return  userList.toString();
+        result.put("userlist",userList);
+        return  result;
     }
 
     //删除指定用户

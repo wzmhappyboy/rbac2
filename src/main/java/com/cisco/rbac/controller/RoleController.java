@@ -7,6 +7,7 @@ import com.cisco.rbac.service.impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -130,10 +131,13 @@ public class RoleController {
 
 
     //列出所有权限
-    @GetMapping("roles")
-    public  String getAllPermissions(){
+    @ResponseBody
+    @RequestMapping("/showps")
+    public  Map<String,Object> getAllPermissions(){
         List<Role> permissionList = roleService.queryRole();
-        return  permissionList.toString();
+        Map<String,Object> result =new HashMap<>();
+        result.put("permissionslist",permissionList);
+        return  result;
     }
 
 

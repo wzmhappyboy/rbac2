@@ -34,8 +34,8 @@ public class PageController {
     @JwtIgnore
     public Map<String,String> login(@RequestParam("id") String id,@RequestParam("password") String password) {
         int id2 = Integer.parseInt(id);
-      //  String password = userMap.get("password");
-        System.out.println("id:"+id+"password:"+password);
+
+
         boolean result = userService.checkUserAndPassword(id2, password);
         if (result) {
             String token = JwtUtils.createToken(id+"", jwtParam);
@@ -50,10 +50,20 @@ public class PageController {
 
             // return JwtUtils.getAuthorizationHeader(token);
 
-
+            boolean root=false;
+            if (id2==10086&&password.equals("10086"))
+            {
+                root=true;
+            }
             Map map = new HashMap<String, String>();
             map.put("a", a);
-            map.put("r","1");
+            if (root==false) {
+                map.put("r", "1");
+            }
+            else {
+                map.put("r","3");
+            }
+
             return map;
 
 
@@ -62,9 +72,12 @@ public class PageController {
 
 
          else {
+//用户名密码都为root则进入超级管理员
+
             Map map = new HashMap<String, String>();
             map.put("erro", "something wrong happern");
-            map.put("r","2" );
+                map.put("r", "2");
+
             return map;
         }
 
@@ -88,7 +101,16 @@ public class PageController {
         return modelAndView;
     }
 
-
+    @RequestMapping("goroot/{a}")
+    @JwtIgnore
+    public  ModelAndView goRoot(@PathVariable("a") String a )
+    {
+        System.out.println("restful传的参数:"+a);
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("root");
+        modelAndView.addObject("a",a);
+        return modelAndView;
+    }
 
 
 

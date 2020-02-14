@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户权限</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        var a=[[${a}]];
+        function ajaxSubmit(){
+            $("#show").append(
+                "<tr><td>用户ID</td><td>用户姓名</td><td>用户密码</td>"
+            );
+            $('#showrights tr:gt(0)').remove();
+            $.ajax({
+                url: "/showusers",
+                headers: {'Authorization': a},
+                type: "post",
+                dataType: "json",
+                // contentType: "application/json",
+
+                async: true,
+
+                success: function(data){
+                    var list=data.userlist;
+                    for(var i=0;i<list.length;i++)
+
+                        $("#show").append(
+                            "<tr><td>"+list[i].id+"</td>"
+                            +"<td>"+list[i].name+"</ta></td>"
+                            +"<td>"+list[i].password+"</td></tr>"
+
+                        );
+
+                },
+                error:function (data) {
+                    alert("系统错误");
+                }
+            });
+        }
+
+
+        function ajaxSubmit2(){
+            $("#show").append(
+                "<tr><td>权限</td><td>权限描述</td>"
+            );
+            $('#showroles tr:gt(0)').remove();
+            $.ajax({
+                url: "/uroles",
+                headers: {'Authorization': a},
+                type: "post",
+                dataType: "json",
+                async: true,
+                data:  {"id":id,
+                },
+
+                success: function(data){
+                    var list=data.rightlist;
+                    for(var i=0;i<list.length;i++)
+
+                        $("#show").append(
+                            "<tr><td>"+list[i].name+"</td>"
+                            +"<td>"+list[i].description+"</ta></td>"
+
+                        );
+                },
+                error:function (data) {
+                    alert("调用urole接口失败");
+                }
+            });
+        }
+
+        function ajaxSubmit3() {
+            $("#show").append(
+                "<tr><td>权限ID</td><td>权限名称</td><td>权限简介</td>"
+            );
+            $('#showrights tr:gt(0)').remove();
+            $.ajax({
+                url: "/showps",
+                headers: {'Authorization': a},
+                type: "post",
+                dataType: "json",
+                // contentType: "application/json",
+
+                async: true,
+
+                success: function (data) {
+                    var list = data.permissionslist;
+                    for (var i = 0; i < list.length; i++)
+
+                        $("#show").append(
+                            "<tr><td>" + list[i].id + "</td>"
+                            + "<td>" + list[i].name + "</ta></td>"
+                            + "<td>" + list[i].description + "</td></tr>"
+                        );
+
+                },
+                error: function (data) {
+                    alert("系统错误");
+                }
+            });
+        }
+    </script>
+
+</head>
+<body>
+<div style="text-align: right">
+    <a href="/" style="">退出登陆</a>
+</div>
+<div style="text-align: center">
+
+    <p th:text="超级管理员">       </p>
+
+
+
+    <!--    <button >显示拥有角色信息</button>&nbsp;&nbsp;-->
+    <button onclick="ajaxSubmit()">显示用户</button>
+    <button onclick="ajaxSubmit2()">显示角色</button>
+    <button onclick="ajaxSubmit3()">管理权限</button>
+
+    <table style="text-align: center">
+        <tbody id="show">
+
+        </tbody>
+
+    </table>
+
+</div>
+</body>
+</html>
