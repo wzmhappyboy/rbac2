@@ -2,15 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>用户权限</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
         var a=[[${a}]];
         function ajaxSubmit(){
-            $("#show").append(
-                "<tr><td>用户ID</td><td>用户姓名</td><td>用户密码</td>"
+
+            $("#showusers").append(
+                "<tr><td>用户ID</td><td>用户姓名</td><td>用户密码</td><td>操作</td>"
             );
-            $('#showrights tr:gt(0)').remove();
+            $('#showusers tr:gt(0)').remove();
+
             $.ajax({
                 url: "/showusers",
                 headers: {'Authorization': a},
@@ -24,11 +30,11 @@
                     var list=data.userlist;
                     for(var i=0;i<list.length;i++)
 
-                        $("#show").append(
+                        $("#showusers").append(
                             "<tr><td>"+list[i].id+"</td>"
                             +"<td>"+list[i].name+"</ta></td>"
-                            +"<td>"+list[i].password+"</td></tr>"
-
+                            +"<td>"+list[i].password+"</td>"
+                            +"<td><a href='#'>修改</a>&nbsp;<a href='#'>删除</a></td></tr>"
                         );
 
                 },
@@ -40,40 +46,43 @@
 
 
         function ajaxSubmit2(){
-            $("#show").append(
-                "<tr><td>权限</td><td>权限描述</td>"
+
+            $("#showroles").append(
+                "<tr><td>角色id</td><td>角色名称</td><td>角色简介</td>"
             );
             $('#showroles tr:gt(0)').remove();
+
             $.ajax({
-                url: "/uroles",
+                url: "/showroles",
                 headers: {'Authorization': a},
                 type: "post",
                 dataType: "json",
                 async: true,
-                data:  {"id":id,
-                },
+
 
                 success: function(data){
-                    var list=data.rightlist;
+                    var list=data.roleslist;
                     for(var i=0;i<list.length;i++)
 
-                        $("#show").append(
-                            "<tr><td>"+list[i].name+"</td>"
-                            +"<td>"+list[i].description+"</ta></td>"
+                        $("#showroles").append(
+                            "<tr><td>"+list[i].id+"</td>"
+                    +"<td>"+list[i].name+"</td>"
+                    +"<td>"+list[i].description+"</ta></td>"
 
                         );
                 },
                 error:function (data) {
-                    alert("调用urole接口失败");
+                    alert("系统错误");
                 }
             });
         }
 
         function ajaxSubmit3() {
-            $("#show").append(
+            $("#showpermissions").append(
                 "<tr><td>权限ID</td><td>权限名称</td><td>权限简介</td>"
             );
-            $('#showrights tr:gt(0)').remove();
+            $('#showpermissions tr:gt(0)').remove();
+
             $.ajax({
                 url: "/showps",
                 headers: {'Authorization': a},
@@ -87,7 +96,7 @@
                     var list = data.permissionslist;
                     for (var i = 0; i < list.length; i++)
 
-                        $("#show").append(
+                        $("#showpermissions").append(
                             "<tr><td>" + list[i].id + "</td>"
                             + "<td>" + list[i].name + "</ta></td>"
                             + "<td>" + list[i].description + "</td></tr>"
@@ -116,14 +125,31 @@
     <button onclick="ajaxSubmit()">显示用户</button>
     <button onclick="ajaxSubmit2()">显示角色</button>
     <button onclick="ajaxSubmit3()">管理权限</button>
-
-    <table style="text-align: center">
-        <tbody id="show">
-
-        </tbody>
-
-    </table>
-
 </div>
+
+<div>
+    <div style="float: left">
+    <table style="width: 300px" class="table table-bordered" >
+        <tbody id="showusers" style="align-content: center">
+        </tbody>
+    </table>
+</div>
+<div style="float: left">
+<table style="width: 400px;" class="table table-bordered">
+    <tbody id="showroles">
+
+    </tbody>
+</table>
+</div>
+    <div style="float: left">
+        <table style="width: 300px;" class="table table-bordered">
+            <tbody id="showpermissions">
+
+            </tbody>
+        </table>
+
+    </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

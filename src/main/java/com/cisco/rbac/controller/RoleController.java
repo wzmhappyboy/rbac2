@@ -1,8 +1,10 @@
 package com.cisco.rbac.controller;
 
+import com.cisco.rbac.entity.Permission;
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
+import com.cisco.rbac.service.impl.PermissionServiceImpl;
 import com.cisco.rbac.service.impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ public class RoleController {
     @Autowired
     RoleServiceImpl roleService;
 
+    @Autowired
+    PermissionServiceImpl permissionService;
     //增加角色
     @PostMapping("/roles")
     public  String insertRole(@RequestBody Map<String,String> userMap){
@@ -129,12 +133,23 @@ public class RoleController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping("/showroles")
+    public  Map<String,Object> getAllRoles(){
+        List<Role> roleList = roleService.queryRole();
+        Map<String,Object> result =new HashMap<>();
+        result.put("roleslist",roleList);
+        return  result;
+    }
+
+
 
     //列出所有权限
     @ResponseBody
     @RequestMapping("/showps")
     public  Map<String,Object> getAllPermissions(){
-        List<Role> permissionList = roleService.queryRole();
+        List<Permission> permissionList = permissionService.queryPermission();
+
         Map<String,Object> result =new HashMap<>();
         result.put("permissionslist",permissionList);
         return  result;

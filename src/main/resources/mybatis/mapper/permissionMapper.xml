@@ -11,10 +11,14 @@ insert into
 values (#{id},#{name},#{description})
     </insert>
 
-
+    <resultMap id="permissionResultMap" type="com.cisco.rbac.entity.Permission">
+        <id property="id" column="id"/>
+        <result property="name" column="right_name"/>
+        <result property="description" column="description"/>
+    </resultMap>
 
     <!--查询所有权限信息-->
-    <select id="queryPermission" resultType="com.cisco.rbac.entity.Permission">
+    <select id="queryPermission" resultMap="permissionResultMap">
         select  *
         from  tright
     </select>

@@ -72,7 +72,13 @@ values (#{id},#{name},#{description})
     </update>
 
 
-    <select id="queryRole" resultType="com.cisco.rbac.entity.Role">
+    <resultMap id="roleResultMap" type="com.cisco.rbac.entity.Role">
+        <id property="id" column="id"/>
+        <result property="name" column="role_name"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="queryRole" resultMap="roleResultMap">
         select  *
         from  trole
     </select>
