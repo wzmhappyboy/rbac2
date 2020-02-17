@@ -81,9 +81,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public  boolean deleteUserrolerelationById(int id){
+    public  boolean deleteUserrolerelationById(UserRoleRelation urr){
+
         try {
-            int effecteNum=userMapper.deleteUserrolerelation(id);
+
+            int effecteNum=userMapper.deleteUserrolerelation(urr);
             if (effecteNum>0){
                 return  true;
             }

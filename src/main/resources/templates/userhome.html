@@ -13,11 +13,11 @@
         var a=[[${a}]];
         function ajaxSubmit(){
             $("#showrights").append(
-                "<tr><td>角色ID</td><td>权限ID</td><td>权限类型</td>"
+                "<tr><td>角色ID</td><td>角色名字</td><td>角色介绍</td>"
             );
                     $('#showrights tr:gt(0)').remove();
         $.ajax({
-            url: "/userrights/",
+            url: "/getrolesbyuserid",
             headers: {'Authorization': a},
             type: "post",
             dataType: "json",
@@ -29,13 +29,13 @@
             //     request.setRequestHeader("Authorization",a)
             // },
             success: function(data){
-                        var list=data.rightlist;
+                        var list=data.list;
                     for(var i=0;i<list.length;i++)
 
                         $("#showrights").append(
-                            "<tr><td>"+list[i].roleId+"</td>"
-                            +"<td>"+list[i].permissionId+"</ta></td>"
-                            +"<td>"+list[i].permissionType+"</td></tr>"
+                            "<tr><td>"+list[i].id+"</td>"
+                            +"<td>"+list[i].name+"</ta></td>"
+                            +"<td>"+list[i].description+"</td></tr>"
 
                 );
 

@@ -6,6 +6,7 @@ import com.cisco.rbac.entity.*;
 import com.cisco.rbac.service.impl.UserServiceImpl;
 import com.cisco.rbac.util.JwtParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -108,35 +109,44 @@ public  Map<String,Object> getUserroles(@RequestParam("id") String id){
     }
 
     //删除用户权限
-    @DeleteMapping("/userrolerelations/{id}")
-    public  String deleteUserrolerelaitonById(@PathVariable("id") int id){
-        boolean result=userService.deleteUserrolerelationById(id);
+    @ResponseBody
+    @RequestMapping("/removeurr")
+    public  Map<String,Object> deleteUserrolerelaitonById(@RequestParam("user_id") String user_id,@RequestParam("role_id") String role_id){
+        UserRoleRelation urr=new UserRoleRelation();
+        urr.setRoleId(Integer.parseInt(role_id));
+        urr.setUserId(Integer.parseInt(user_id));
+        boolean result=userService.deleteUserrolerelationById(urr);
+        Map<String,Object> r=new HashMap<>();
         if (result)
         {
-            return  "success";
+            r.put("s","1");
         }
         else{
-            return  "fail";
+            r.put("s","2");
         }
+        return r;
     }
 
 //    用户添加角色
-@PostMapping("/userrolerelations")
-@JwtIgnore
-public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
+    @ResponseBody
+@RequestMapping("/userrolerelations")
+
+public  Map<String,Object> insertUserrolerelation(@RequestParam("user_id") String user_id,@RequestParam("role_id") String role_id){
     UserRoleRelation urr=new UserRoleRelation();
 //    int id=Integer.parseInt(userMap.get("id"));
 //    user.setId(id);
 //    urr.setId(Integer.valueOf(userMap.get("id")));
-    urr.setRoleId(Integer.valueOf(userMap.get("role_id")));
-    urr.setUserId(Integer.valueOf(userMap.get("user_id")));
+    urr.setRoleId(Integer.valueOf(role_id));
+    urr.setUserId(Integer.valueOf(user_id));
+    Map<String,Object> r=new HashMap<>();
     boolean result =userService.insertUserrolerelation(urr);
     if (result){
-        return  "success";
+        r.put("s","1");
     }
     else{
-        return  "fail";
+        r.put("s","2");
     }
+    return  r;
 }
 
 //更新用户信息
@@ -147,7 +157,8 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
         int userId=Integer.valueOf((String) rrrMap.get("id"));
         user.setId(Integer.valueOf((String) rrrMap.get("id")));
         user.setPassword((String) rrrMap.get("password"));
-        userService.deleteUserrolerelationById(Integer.valueOf((String) rrrMap.get("id")));
+//        这方法临时改了，这个接口用别忘改一下
+      //  userService.deleteUserrolerelationById(Integer.valueOf((String) rrrMap.get("id")));
       //  roleidlist.forEach();
         List<Integer> roleidlist =(List<Integer>) rrrMap.get("rolelist");
         for (int i=0;i<roleidlist.size();i++){
@@ -167,21 +178,30 @@ public  String insertUserrolerelation(@RequestBody Map<String,String> userMap){
         }
     }
 
-    //返还类内的list<角色>
-    @GetMapping("/usersbyid/{id}")
-    public  String getUserByIdWithResult(@PathVariable("id") int id){
-        User user=userService.getByIdWithResult(id);
+    //返还用户拥有角色
+    @ResponseBody
+    @RequestMapping("/getrolesbyuserid")
+    public  Map<String,Object> getUserByIdWithResult(@RequestParam("id") String id){
+        Map<String,Object> result=new HashMap<>();
+
+
+        int ad=Integer.parseInt(id);
+        User user=userService.getByIdWithResult(ad);
         System.out.println(user);
         List<Role> roleList=user.getRoles();
-        roleList.forEach(n->System.out.println(n));
-        return  user.toString();
+        int l=roleList.size();
+//        for (int i=0;i<l;i++) {
+//            System.out.println(roleList.get(i).getId());
+//        }
+        result.put("list",roleList);
+        return  result;
     }
 
     @GetMapping("/")
     @JwtIgnore
     public ModelAndView index(ModelAndView model){
-        List<User> userList=userService.queryUser();
-        model.addObject("users",userList);
+//        List<User> userList=userService.queryUser();
+  //      model.addObject("users",userList);
         model.setViewName("index");
 //      System.out.println(userList.get(0).toString());
         return model;

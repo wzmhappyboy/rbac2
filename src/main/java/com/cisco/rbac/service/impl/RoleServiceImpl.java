@@ -85,9 +85,9 @@ RoleMapper roleMapper;
         }
 
     @Override
-    public  boolean deleteRolerightrelationById(int id){
+    public  boolean deleteRolerightrelationById(RolePermissionRelation rrr){
         try {
-            int effecteNum=roleMapper.deleteRolerightrelationById(id);
+            int effecteNum=roleMapper.deleteRolerightrelationById(rrr);
             if (effecteNum>0){
                 return  true;
             }
@@ -105,7 +105,7 @@ RoleMapper roleMapper;
     @Override
     public  boolean deleteRoleById(int id){
         try {
-            int effecteNum=roleMapper.deleteRolerightrelationById(id);
+            int effecteNum=roleMapper.deleteRoleById(id);
             if (effecteNum>0){
                 return  true;
             }
@@ -151,7 +151,10 @@ RoleMapper roleMapper;
         return  roleMapper.getByIdWithSelect(id);
     }
 
-
+    @Override
+    public List<RolePermissionRelation> showpermissionbyroleid(int id){
+        return roleMapper.showpermissionbyroleid(id);
+}
 
 
 }

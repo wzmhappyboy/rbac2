@@ -25,7 +25,7 @@ public interface UserMapper {
 
     boolean    updateUser(User user);
     int insertUserrolerelation(UserRoleRelation urr);
-    int deleteUserrolerelation(int id);
+    int deleteUserrolerelation(UserRoleRelation urr);
 
     User getUserById(int id);
     List<User> queryUser();

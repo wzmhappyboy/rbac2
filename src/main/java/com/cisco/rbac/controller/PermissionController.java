@@ -3,8 +3,11 @@ package com.cisco.rbac.controller;
 import com.cisco.rbac.entity.Permission;
 import com.cisco.rbac.service.impl.PermissionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,16 +44,20 @@ public class PermissionController {
     }
 
     //删除指定权限
-    @DeleteMapping("/rights/{id}")
-    public  String deleteUserById(@PathVariable("id") int id){
-        boolean result= permissionService.deletePermissionById(id);
+    @ResponseBody
+    @RequestMapping("/deleterights")
+    public  Map<String,Object> deleteUserById(@RequestParam("id") String id){
+        int id2= Integer.parseInt(id);
+        boolean result= permissionService.deletePermissionById(id2);
+        Map<String,Object> r=new HashMap<>();
         if (result)
         {
-            return  "success";
+            r.put("s","1");
         }
         else{
-            return  "fail";
+            r.put("s","0");
         }
+        return  r;
     }
 
 

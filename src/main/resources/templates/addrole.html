@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RBAC System</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        var a=[[${a}]];
+
+        /*<![CDATA[*/
+        function ajaxSubmit(){
+            var name = $("#name").val();
+            var description =$("#description").val();
+
+            $.ajax({
+                url: "/addroles",
+                type: "post",
+                dataType: "json",
+                data: {"name":name,
+                    "description":description
+                },
+                headers: {'Authorization': a},
+                async: true,
+                success: function(data){
+                    var r=data.s;
+                    if (r==1) {
+                        alert("增加成功！");
+                        window.location.href='goroot/'+a;
+                    }
+
+                    else {
+                        alert("增加失败！");
+                    }
+                },
+                error:function (data) {
+                    alert("系统错误");
+                }
+            });
+        }
+
+        /*]]>*/
+
+    </script>
+</head>
+<body>
+
+<div style="text-align: center">
+    <h2>添加角色</h2><br>
+    <input type="text"  id="name" placeholder="角色名"><br><br>
+    <input type="password" id="description" placeholder="角色描述" ><br><br>
+
+    <button onclick="ajaxSubmit()">添加</button>
+</div>
+
+</body>
+</html>

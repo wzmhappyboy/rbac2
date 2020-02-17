@@ -23,13 +23,27 @@
     <result property="password" column="password"/>
 </resultMap>
 
+    <resultMap id="rprResultMap" type="com.cisco.rbac.entity.RolePermissionRelation">
+        <id property="id" column="id"/>
+<result property="roleId" column="role_id"/>
+        <result property="permissionId" column="right_id"/>
+        <result property="permissionType" column="right_type"/>
+    </resultMap>
     <select id="findUserByRoleId" parameterType="int" resultMap="userResultMap">
         select  u.* from tuserrolerelation t,tuser u where t.user_id=u.id and t.role_id=#{id}
 
     </select>
 
+
+
+    <select id="showpermissionbyroleid" parameterType="int" resultMap="rprResultMap">
+select * from trolerightrelation where role_id=#{id}
+
+    </select>
+
+
     <!--添加新角色-->
-    <insert id="insertRole" parameterType="com.cisco.rbac.entity.Role">
+    <insert id="insertRole" parameterType="com.cisco.rbac.entity.Role" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 insert into
   trole(id,role_name,description)
 values (#{id},#{name},#{description})
@@ -51,10 +65,10 @@ values (#{id},#{name},#{description})
     </update>
 
     <!--给角色删权限-->
-    <delete id="deleteRolerightrelationById" parameterType="int">
+    <delete id="deleteRolerightrelationById" parameterType="com.cisco.rbac.entity.RolePermissionRelation">
         delete
         from trolerightrelation
-        where role_id=#{id}
+        where role_id=#{roleId} and right_id=#{permissionId}
     </delete>
 
 <!--    删除角色-->

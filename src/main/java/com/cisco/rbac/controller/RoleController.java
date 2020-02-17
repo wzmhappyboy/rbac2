@@ -7,6 +7,7 @@ import com.cisco.rbac.entity.User;
 import com.cisco.rbac.service.impl.PermissionServiceImpl;
 import com.cisco.rbac.service.impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -22,42 +23,43 @@ public class RoleController {
     @Autowired
     PermissionServiceImpl permissionService;
     //增加角色
-    @PostMapping("/roles")
-    public  String insertRole(@RequestBody Map<String,String> userMap){
+    @ResponseBody
+    @RequestMapping("/addroles")
+    public  Map<String,Object> insertRole(@RequestParam("name") String name,@RequestParam("description") String description){
         Role role=new Role();
-     int id=Integer.parseInt(userMap.get("id"));
-       role.setId(id);
-        role.setName(userMap.get("name"));
-        role.setDescription(userMap.get("description"));
+        role.setName(name);
+        role.setDescription(description);
         boolean result =roleService.insertRole(role);
+       Map<String,Object> r=new HashMap<>();
         if (result){
-            return  "success";
+            r.put("s","1");
         }
         else{
-            return  "fail";
+            r.put("s","2");
         }
+    return r;
     }
 
     //给角色赋予权限
-    @PostMapping("/rolerightrelations")
-    public  String insertRolerightrelation(@RequestBody Map<String,String> userMap){
+    @ResponseBody
+    @RequestMapping("/rolerightrelations")
+    public  Map<String,Object> insertRolerightrelation(@RequestParam("role_id") String role_id,@RequestParam("right_id") String right_id){
         RolePermissionRelation rrr=new RolePermissionRelation();
         //int id=Integer.parseInt(userMap.get("id"));
-        int role_id=Integer.parseInt(userMap.get("role_id"));
-        int right_id=Integer.parseInt(userMap.get("right_id"));
-        int right_type= Integer.parseInt(userMap.get("right_type"));
-        rrr.setPermissionId(right_id);
-        rrr.setPermissionType(right_type);
-        rrr.setRoleId(role_id);
+        Map<String,Object> r=new HashMap<>();
+        rrr.setPermissionId(Integer.parseInt(right_id));
+        rrr.setPermissionType(0);
+        rrr.setRoleId(Integer.parseInt(role_id));
 //        rrr.setId(id);
 
         boolean result =roleService.insertRolerightrelation(rrr);
         if (result){
-            return  "success";
+            r.put("s","1");
         }
         else{
-            return  "fail";
+            r.put("s","2");
         }
+        return r;
     }
 
     //给角色改权限
@@ -68,7 +70,7 @@ public class RoleController {
         rrr.setRoleId(Integer.valueOf((String) rrrMap.get("role_id")));
         rrr.setPermissionType(Integer.valueOf((String) rrrMap.get("right_type")));
         rrr.setPermissionId(Integer.valueOf((String) rrrMap.get("right_id")));
-        roleService.deleteRolerightrelationById(Integer.valueOf((String) rrrMap.get("role_id")));
+        roleService.deleteRolerightrelationById(rrr);
 
         List<Integer> rightlist =(List<Integer>) rrrMap.get("rightlist");
         for(int i=0;i<rightlist.size();i++)
@@ -91,30 +93,43 @@ public class RoleController {
     }
 
     //删除角色权限
-    @DeleteMapping("/rolerightrelations/{id}")
-    public  String deleteUserById(@PathVariable("id") int id){
-        boolean result=roleService.deleteRolerightrelationById(id);
+    @ResponseBody
+    @RequestMapping("/removerrr")
+    public  Map<String,Object> deleteUserById(@RequestParam("role_id") String role_id,@RequestParam("right_id") String right_id){
+    System.out.println("删除的角色ID:"+role_id+"删除的权限id:"+right_id);
+       RolePermissionRelation rolePermissionRelation=new RolePermissionRelation();
+       rolePermissionRelation.setRoleId(Integer.parseInt(role_id));
+       rolePermissionRelation.setPermissionId(Integer.parseInt(right_id));
+       rolePermissionRelation.setPermissionType(0);
+       Map<String,Object> r=new HashMap<>();
+       boolean result=roleService.deleteRolerightrelationById(rolePermissionRelation);
         if (result)
         {
-            return  "success";
+            r.put("s","1");
         }
         else{
-            return  "fail";
+            r.put("s","2");
         }
+        return  r;
     }
 
 
     //删除角色
-    @DeleteMapping("/roles/{id}")
-    public  String deleteRoleById(@PathVariable("id") int id){
-        boolean result=roleService.deleteRoleById(id);
+    @ResponseBody
+    @RequestMapping("/deleteroles")
+    public  Map<String,Object> deleteRoleById(@RequestParam("id") String id){
+        Map<String,Object> r=new HashMap<>();
+        System.out.println("要删除的角色id为："+id);
+        int id2=Integer.parseInt(id);
+        boolean result=roleService.deleteRoleById(id2);
         if (result)
         {
-            return  "success";
+            r.put("suceesee","1");
         }
         else{
-            return  "fail";
+            r.put("suceesee","0");
         }
+        return  r;
     }
 
     //改角色信息

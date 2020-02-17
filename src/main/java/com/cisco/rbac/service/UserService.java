@@ -32,7 +32,7 @@ public interface UserService {
 
     List<RolePermissionRelation> queryUserrights(int id);
 
-    boolean deleteUserrolerelationById(int id);
+    boolean deleteUserrolerelationById(UserRoleRelation urr);
 
 
     User getPerssionById(int id);

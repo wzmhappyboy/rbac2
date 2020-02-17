@@ -102,7 +102,7 @@ values (#{id},#{name},#{password})
     <!--删除用户信息-->
     <delete id="deleteUserById" parameterType="int">
         delete
-        from user
+        from tuser
         where id=#{id}
     </delete>
 
@@ -120,10 +120,18 @@ values (#{id},#{name},#{password})
         where id=#{id}
     </update>
 
-    <delete id="deleteUserrolerelation" parameterType="int">
+
+
+<!--    <parameterMap id="urrResultMap" type="com.cisco.rbac.entity.UserRoleRelation">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property="userId" column="user_id"/>-->
+<!--        <result property="roleId" column="role_id"/>-->
+<!--    </parameterMap>-->
+
+    <delete id="deleteUserrolerelation" parameterType="com.cisco.rbac.entity.UserRoleRelation">
         delete
         from  tuserrolerelation
-        where user_id=#{id}
+        where role_id=#{roleId} and user_id=#{userId}
     </delete>
 
 

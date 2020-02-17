@@ -31,10 +31,10 @@
                     for(var i=0;i<list.length;i++)
 
                         $("#showusers").append(
-                            "<tr><td>"+list[i].id+"</td>"
+                            "<tr id='"+list[i].id+"'><td>"+list[i].id+"</td>"
                             +"<td>"+list[i].name+"</ta></td>"
                             +"<td>"+list[i].password+"</td>"
-                            +"<td><a href='#'>修改</a>&nbsp;<a href='#'>删除</a></td></tr>"
+                            +"<td><a href='/manageur/"+list[i].id+"\/"+a+"'>编辑角色</a>&nbsp;<a href='javascript:void(0);' onclick='deleteUser(\""+list[i].id+"\")'>删除</a></td></tr>"
                         );
 
                 },
@@ -48,7 +48,7 @@
         function ajaxSubmit2(){
 
             $("#showroles").append(
-                "<tr><td>角色id</td><td>角色名称</td><td>角色简介</td>"
+                "<tr><td>角色id</td><td>角色名称</td><td>角色简介</td><td>操作：<a href='/addrole/"+a+"''>添加角色</a>\n</td>"
             );
             $('#showroles tr:gt(0)').remove();
 
@@ -65,9 +65,10 @@
                     for(var i=0;i<list.length;i++)
 
                         $("#showroles").append(
-                            "<tr><td>"+list[i].id+"</td>"
+                            "<tr id='"+list[i].id+"'><td>"+list[i].id+"</td>"
                     +"<td>"+list[i].name+"</td>"
                     +"<td>"+list[i].description+"</ta></td>"
+                            +"<td><a href='/managerp/"+list[i].id+"\/"+a+"''>编辑权限</a>&nbsp;<a href='javascript:;' onclick='deleteRole(\""+list[i].id+"\")'>删除</a></td></tr>"
 
                         );
                 },
@@ -75,11 +76,12 @@
                     alert("系统错误");
                 }
             });
+
         }
 
         function ajaxSubmit3() {
             $("#showpermissions").append(
-                "<tr><td>权限ID</td><td>权限名称</td><td>权限简介</td>"
+                "<tr ><td>权限ID</td><td>权限名称</td><td>权限简介</td><td>操作</td>"
             );
             $('#showpermissions tr:gt(0)').remove();
 
@@ -97,9 +99,11 @@
                     for (var i = 0; i < list.length; i++)
 
                         $("#showpermissions").append(
-                            "<tr><td>" + list[i].id + "</td>"
+                            "<tr id='"+list[i].id+"'><td>" + list[i].id + "</td>"
                             + "<td>" + list[i].name + "</ta></td>"
-                            + "<td>" + list[i].description + "</td></tr>"
+                            + "<td>" + list[i].description + "</td>"
+                            +"<td><a href='#'>修改</a>&nbsp;<a href='javascript:;' onclick='deletePermission(\""+list[i].id+"\")'>删除</a></td></tr>"
+
                         );
 
                 },
@@ -107,6 +111,107 @@
                     alert("系统错误");
                 }
             });
+        }
+        
+        
+        function deleteUser(byid) {
+
+                $.ajax({
+                    url: "/deletusers",
+                    headers: {'Authorization': a},
+                    type: "post",
+                    data:{"id":byid},
+                    dataType: "json",
+                    // contentType: "application/json",
+
+                    async: true,
+
+                    success: function (data) {
+                        var result=data.success;
+                            if (result==1)
+                            {
+                                $("#"+byid).hide();
+                                alert("删除成功");
+
+                                //document.getElementById("tr"+byid).parentNode.removeChild(document.getElementById(id));
+                            }
+                            else {
+                                alert("有外键约束等问题删不了");
+                            }
+
+                    },
+                    error: function (data) {
+                        alert("系统错误");
+                    }
+                });
+
+        }
+
+
+
+        function deleteRole(byid) {
+
+            $.ajax({
+                url: "/deleteroles",
+                headers: {'Authorization': a},
+                type: "post",
+                data:{"id":byid},
+                dataType: "json",
+                // contentType: "application/json",
+
+                async: true,
+
+                success: function (data) {
+                    var result=data.suceesee;
+                    if (result==1)
+                    {
+                        $("#"+byid).hide();
+                        alert("删除成功");
+
+                        //document.getElementById("tr"+byid).parentNode.removeChild(document.getElementById(id));
+                    }
+else {
+    alert("有外键约束等问题删不了");
+                    }
+                },
+                error: function (data) {
+                    alert("系统错误");
+                }
+            });
+
+        }
+
+        function deletePermission(byid) {
+
+            $.ajax({
+                url: "/deleterights",
+                headers: {'Authorization': a},
+                type: "post",
+                data:{"id":byid},
+                dataType: "json",
+                // contentType: "application/json",
+
+                async: true,
+
+                success: function (data) {
+                    var result=data.s;
+                    if (result==1)
+                    {
+                        $("#"+byid).hide();
+                        alert("删除成功");
+
+                        //document.getElementById("tr"+byid).parentNode.removeChild(document.getElementById(id));
+                    }
+                    else {
+                        alert("有外键约束等问题删不了");
+                    }
+
+                },
+                error: function (data) {
+                    alert("系统错误");
+                }
+            });
+
         }
     </script>
 
@@ -129,7 +234,7 @@
 
 <div>
     <div style="float: left">
-    <table style="width: 300px" class="table table-bordered" >
+    <table style="width: 400px" class="table table-bordered" >
         <tbody id="showusers" style="align-content: center">
         </tbody>
     </table>
@@ -142,7 +247,7 @@
 </table>
 </div>
     <div style="float: left">
-        <table style="width: 300px;" class="table table-bordered">
+        <table style="width: 400px;" class="table table-bordered">
             <tbody id="showpermissions">
 
             </tbody>
@@ -150,6 +255,12 @@
 
     </div>
     </div>
+
+
+
+
+
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

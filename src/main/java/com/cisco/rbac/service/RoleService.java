@@ -15,11 +15,13 @@ public interface RoleService {
 
     List<Role> queryRole();
 
+    List<RolePermissionRelation> showpermissionbyroleid(int id);
+
     boolean insertRolerightrelation(RolePermissionRelation rolePermissionRelation);
 
     boolean updateRolerightrelation(RolePermissionRelation rolePermissionRelation);
 
-    boolean deleteRolerightrelationById(int id);
+    boolean deleteRolerightrelationById(RolePermissionRelation rolePermissionRelation);
 
     Role getByIdWithResult(int id);
 }
