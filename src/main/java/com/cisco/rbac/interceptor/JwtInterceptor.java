@@ -1,8 +1,10 @@
-package com.cisco.rbac.util;
+package com.cisco.rbac.interceptor;
 
 import com.alibaba.druid.util.StringUtils;
-import com.cisco.rbac.JwtConstant;
-import com.cisco.rbac.JwtIgnore;
+import com.cisco.rbac.jwt.JwtConstant;
+import com.cisco.rbac.annotation.JwtIgnore;
+import com.cisco.rbac.jwt.JwtParam;
+import com.cisco.rbac.jwt.JwtUtils;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static com.cisco.rbac.jwt.JwtConstant.ROLE_ID_KEY;
+import static com.cisco.rbac.jwt.JwtConstant.USER_ID_KEY;
 
 /**
  * jwt 拦截器
@@ -70,6 +75,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 传递所需信息
         request.setAttribute("CLAIMS", claims);
+        System.out.println("claims:"+claims.get("rolelist"));
         return true;
     }
 

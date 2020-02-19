@@ -1,13 +1,13 @@
 package com.cisco.rbac.controller;
 
 
-import com.cisco.rbac.JwtIgnore;
+import com.cisco.rbac.annotation.JwtIgnore;
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
 import com.cisco.rbac.service.impl.RoleServiceImpl;
 import com.cisco.rbac.service.impl.UserServiceImpl;
-import com.cisco.rbac.util.JwtParam;
+import com.cisco.rbac.jwt.JwtParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.cisco.rbac;
+package com.cisco.rbac.annotation;
 
 import java.lang.annotation.*;
 

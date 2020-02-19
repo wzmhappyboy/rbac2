@@ -1,5 +1,7 @@
-package com.cisco.rbac.util;
+package com.cisco.rbac;
 
+import com.cisco.rbac.interceptor.JwtInterceptor;
+import com.cisco.rbac.interceptor.SecurityInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -18,10 +20,18 @@ public class MyWebConfigurer extends WebMvcConfigurerAdapter {
         return new JwtInterceptor();
     }
 
+    @Bean
+    public SecurityInterceptor securityInterceptor() {
+        return new SecurityInterceptor();
+    }
+
     // 自定义过滤规则
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(securityInterceptor()).excludePathPatterns("/static/*")
+                .addPathPatterns("/getrolesbyuserid");
+        super.addInterceptors(registry);
     }
 }
 

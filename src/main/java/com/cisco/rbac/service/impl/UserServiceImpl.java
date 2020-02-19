@@ -1,19 +1,16 @@
 package com.cisco.rbac.service.impl;
 
 
-import com.cisco.rbac.entity.Permission;
-import com.cisco.rbac.entity.RolePermissionRelation;
-import com.cisco.rbac.entity.User;
-import com.cisco.rbac.entity.UserRoleRelation;
+import com.cisco.rbac.entity.*;
 import com.cisco.rbac.mapper.UserMapper;
 import com.cisco.rbac.service.UserService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -163,6 +160,24 @@ public class UserServiceImpl implements UserService {
         return  list;
 }
 
+@Override
+  public   Set<String> getPermissionSet(List<Role> roleList) {
+ Set<String> result=new HashSet<>();
 
+    ObjectMapper mapper = new ObjectMapper();
+    List<Role> list = mapper.convertValue(roleList, new TypeReference<List<Role>>() { });
+
+
+    int l = roleList.size();
+    for (int i = 0; i < l; i++) {
+        System.out.println("返回权限的方法："+list.get(i));
+if (list.get(0).getId()==1){
+    result.add("admin_permission");
+}
+else {
+    result.add("user_permission");
+}
     }
-
+    return result;
+}
+}

@@ -1,4 +1,4 @@
-package com.cisco.rbac.util;
+package com.cisco.rbac.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

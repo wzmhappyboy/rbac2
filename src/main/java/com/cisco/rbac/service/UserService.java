@@ -1,11 +1,9 @@
 package com.cisco.rbac.service;
 
-import com.cisco.rbac.entity.Permission;
-import com.cisco.rbac.entity.RolePermissionRelation;
-import com.cisco.rbac.entity.User;
-import com.cisco.rbac.entity.UserRoleRelation;
+import com.cisco.rbac.entity.*;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 //    int insert(User user);
@@ -39,4 +37,5 @@ public interface UserService {
 
     List<Permission> showUserRoles(int id);
 
+    Set<String> getPermissionSet(List<Role> roleList);
 }

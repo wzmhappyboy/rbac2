@@ -1,6 +1,6 @@
-package com.cisco.rbac.util;
+package com.cisco.rbac.jwt;
 
-import com.cisco.rbac.JwtConstant;
+import com.cisco.rbac.entity.Role;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,7 +58,7 @@ public class JwtUtils {
      * @return
      */
     public static String createToken(String userId, JwtParam jwtParam) {
-        return createToken(userId, null, jwtParam);
+        return createToken(userId,null,  jwtParam);
     }
 
     /**
@@ -67,7 +68,7 @@ public class JwtUtils {
      * @param jwtParam JWT加密所需信息
      * @return
      */
-    public static String createToken(String userId, Map<String, Object> claim, JwtParam jwtParam) {
+    public static String createToken(String userId,Map<String, Object> claim, JwtParam jwtParam) {
         try {
             // 使用HS256加密算法
             SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -84,6 +85,7 @@ public class JwtUtils {
             // 添加构成JWT的参数
             JwtBuilder jwtBuilder = Jwts.builder().setHeaderParam("typ", "JWT")
                     .claim(JwtConstant.USER_ID_KEY, userId)
+                    //.claim(JwtConstant.ROLE_ID_KEY, list)
                     .addClaims(claim)
                     .setIssuer(jwtParam.getName())
                     .setIssuedAt(now)

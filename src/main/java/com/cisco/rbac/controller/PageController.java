@@ -1,13 +1,13 @@
 package com.cisco.rbac.controller;
 
-import com.cisco.rbac.JwtIgnore;
+import com.cisco.rbac.annotation.JwtIgnore;
+import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
 import com.cisco.rbac.service.impl.UserServiceImpl;
-import com.cisco.rbac.util.JwtParam;
-import com.cisco.rbac.util.JwtUtils;
+import com.cisco.rbac.jwt.JwtParam;
+import com.cisco.rbac.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,7 +38,11 @@ public class PageController {
 
         boolean result = userService.checkUserAndPassword(id2, password);
         if (result) {
-            String token = JwtUtils.createToken(id+"", jwtParam);
+            User user=userService.getByIdWithResult(id2);
+            List<Role> roleList=user.getRoles();
+            Map<String,Object> claim=new HashMap<>();
+            claim.put("rolelist",roleList);
+            String token = JwtUtils.createToken(id+"", claim,jwtParam);
             if (token == null) {
                // log.error("===== 用户签名失败 =====");
                 System.out.println("用户签名失败");

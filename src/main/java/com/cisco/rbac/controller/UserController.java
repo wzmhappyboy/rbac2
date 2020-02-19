@@ -1,12 +1,13 @@
 package com.cisco.rbac.controller;
 
 
-import com.cisco.rbac.JwtIgnore;
+import com.cisco.rbac.PermissionConstants;
+import com.cisco.rbac.annotation.JwtIgnore;
+import com.cisco.rbac.annotation.RequiredPermission;
 import com.cisco.rbac.entity.*;
 import com.cisco.rbac.service.impl.UserServiceImpl;
-import com.cisco.rbac.util.JwtParam;
+import com.cisco.rbac.jwt.JwtParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -181,13 +182,14 @@ public  Map<String,Object> insertUserrolerelation(@RequestParam("user_id") Strin
     //返还用户拥有角色
     @ResponseBody
     @RequestMapping("/getrolesbyuserid")
+    @RequiredPermission(PermissionConstants.USER_PERMISSION)
     public  Map<String,Object> getUserByIdWithResult(@RequestParam("id") String id){
         Map<String,Object> result=new HashMap<>();
 
 
         int ad=Integer.parseInt(id);
         User user=userService.getByIdWithResult(ad);
-        System.out.println(user);
+ //       System.out.println(user);
         List<Role> roleList=user.getRoles();
         int l=roleList.size();
 //        for (int i=0;i<l;i++) {
