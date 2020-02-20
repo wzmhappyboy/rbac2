@@ -49,11 +49,10 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
         //ObjectMapper objectMapper = new ObjectMapper();
            //  List<Role> roleList=objectMapper.convertValue(claims.get("rolelist"),List<Role>.class );
-       System.out.println("claims-rolelist:"+claims.get("rolelist"));
+   //    System.out.println("claims-rolelist:"+claims.get("rolelist"));
         List<Role> roleList=(List<Role>) claims.get("rolelist");
-        System.out.println("强制转换后"+roleList);
+   //     System.out.println("强制转换后"+roleList);
        Set<String> permissionSet = userService.getPermissionSet(roleList);
-System.out.println("permissionSet:"+permissionSet);
 
 
         if (handler instanceof HandlerMethod) {

@@ -30,7 +30,7 @@ public class MyWebConfigurer extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor()).addPathPatterns("/**");
         registry.addInterceptor(securityInterceptor()).excludePathPatterns("/static/*")
-                .addPathPatterns("/getrolesbyuserid");
+                .addPathPatterns("/getrolesbyuserid").addPathPatterns("/uroles").addPathPatterns("/showusers").addPathPatterns("/showroles").addPathPatterns("/showps");
         super.addInterceptors(registry);
     }
 }

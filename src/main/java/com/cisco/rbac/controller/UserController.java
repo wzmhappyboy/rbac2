@@ -74,9 +74,12 @@ public class UserController {
             return result;
     }
 
+
+
+//    普通用户查询自己角色
 @ResponseBody
 @RequestMapping(value = "/uroles")
-
+@RequiredPermission(PermissionConstants.USER_PERMISSION)
 public  Map<String,Object> getUserroles(@RequestParam("id") String id){
         System.out.println("id:"+id);
         int id2=Integer.parseInt(id);
@@ -89,6 +92,7 @@ public  Map<String,Object> getUserroles(@RequestParam("id") String id){
     //列出所有用户
     @ResponseBody
     @RequestMapping("/showusers")
+    @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
     public  Map<String,Object> getAllUser(){
         Map<String,Object> result=new HashMap<>();
         List<User> userList=userService.queryUser();
@@ -158,9 +162,6 @@ public  Map<String,Object> insertUserrolerelation(@RequestParam("user_id") Strin
         int userId=Integer.valueOf((String) rrrMap.get("id"));
         user.setId(Integer.valueOf((String) rrrMap.get("id")));
         user.setPassword((String) rrrMap.get("password"));
-//        这方法临时改了，这个接口用别忘改一下
-      //  userService.deleteUserrolerelationById(Integer.valueOf((String) rrrMap.get("id")));
-      //  roleidlist.forEach();
         List<Integer> roleidlist =(List<Integer>) rrrMap.get("rolelist");
         for (int i=0;i<roleidlist.size();i++){
             int  roleId=roleidlist.get(i);
@@ -185,31 +186,16 @@ public  Map<String,Object> insertUserrolerelation(@RequestParam("user_id") Strin
     @RequiredPermission(PermissionConstants.USER_PERMISSION)
     public  Map<String,Object> getUserByIdWithResult(@RequestParam("id") String id){
         Map<String,Object> result=new HashMap<>();
-
-
         int ad=Integer.parseInt(id);
         User user=userService.getByIdWithResult(ad);
- //       System.out.println(user);
         List<Role> roleList=user.getRoles();
         int l=roleList.size();
-//        for (int i=0;i<l;i++) {
-//            System.out.println(roleList.get(i).getId());
-//        }
         result.put("list",roleList);
         return  result;
     }
 
-    @GetMapping("/")
-    @JwtIgnore
-    public ModelAndView index(ModelAndView model){
-//        List<User> userList=userService.queryUser();
-  //      model.addObject("users",userList);
-        model.setViewName("index");
-//      System.out.println(userList.get(0).toString());
-        return model;
-    }
 
-
+//用户进入注册界面
     @GetMapping("/logon")
     @JwtIgnore
     public ModelAndView login(ModelAndView model){
@@ -218,13 +204,5 @@ public  Map<String,Object> insertUserrolerelation(@RequestParam("user_id") Strin
         return model;
     }
 
-    //返回List<权限>
-//    @GetMapping("/permissionsbyid/{id}")
-//    public  String getPerssionById(@PathVariable("id") int id){
-//        User user=userService.getPerssionById(id);
-//        System.out.println(user);
-//        List<Permission> permissions=user.getPermissions();
-//        permissions.forEach(n->System.out.println(n));
-//        return  user.toString();
-//    }
+
 }

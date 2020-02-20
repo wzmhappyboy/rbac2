@@ -28,7 +28,16 @@ public class PageController {
     @Autowired
     private JwtParam jwtParam;
 
+//用户访问进入首页
+    @GetMapping("/")
+    @JwtIgnore
+    public ModelAndView index(ModelAndView model){
+        model.setViewName("index");
+        return model;
+    }
 
+
+//登陆
     @ResponseBody
     @RequestMapping(value = "/login")
     @JwtIgnore
@@ -44,16 +53,11 @@ public class PageController {
             claim.put("rolelist",roleList);
             String token = JwtUtils.createToken(id+"", claim,jwtParam);
             if (token == null) {
-               // log.error("===== 用户签名失败 =====");
                 System.out.println("用户签名失败");
                 return null;
             }
             String a=JwtUtils.getAuthorizationHeader(token);
-            //log.info("===== 用户{}生成签名{} =====", userId, token);
            System.out.println("用户生成签名:"+a);
-
-            // return JwtUtils.getAuthorizationHeader(token);
-
             boolean root=false;
             if (id2==10086&&password.equals("10086"))
             {
@@ -72,12 +76,8 @@ public class PageController {
 
 
         }
-
-
-
          else {
 //用户名密码都为root则进入超级管理员
-
             Map map = new HashMap<String, String>();
             map.put("erro", "something wrong happern");
                 map.put("r", "2");
@@ -88,11 +88,7 @@ public class PageController {
     }
 
 
-
-
-
-
-
+//普通用户进入用户首页
     @RequestMapping("gouserhome/{id}/{a}")
     @JwtIgnore
     public  ModelAndView showpermission(@PathVariable("id") String id,@PathVariable("a") String a )
@@ -105,6 +101,7 @@ public class PageController {
         return modelAndView;
     }
 
+//    管理员进入管理员首页
     @RequestMapping("goroot/{a}")
     @JwtIgnore
     public  ModelAndView goRoot(@PathVariable("a") String a )
@@ -117,26 +114,21 @@ public class PageController {
     }
 
 
-
+//根据用户ID返还用户权限
     @ResponseBody
     @RequestMapping("/permissionin")
     public Map<String,Object> showpermissions(@RequestBody String id)
     {
         Map<String,Object> result=new HashMap<String, Object>();
-        System.out.println("ajax传过去的id:"+id);
         int id2=Integer.parseInt(id);
         List<RolePermissionRelation> rightsList=userService.queryUserrights(Integer.parseInt(id));
         List<Integer> list=new ArrayList<>();
         for(int i=0;i<rightsList.size();i++)
         {
             list.add(rightsList.get(i).getPermissionId());
-            System.out.println(rightsList.get(i).getPermissionId());
         }
         result.put("list",list);
-//        ModelAndView mv=new ModelAndView();
-//        mv.addObject("id",id);
-//        mv.addObject("plist",list);
-//        mv.setViewName("showpermission");
+
         return result;
     }
 }

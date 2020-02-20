@@ -21,8 +21,6 @@ public class PermissionController {
     @PostMapping("/permissions")
     public  String insertPermission(@RequestBody Map<String,String> userMap){
         Permission permission =new Permission();
-       // int id=Integer.parseInt(userMap.get("id"));
-      //  permission.setId(id);
         permission.setName(userMap.get("name"));
         permission.setDescription(userMap.get("description"));
         boolean result = permissionService.insertPermission(permission);

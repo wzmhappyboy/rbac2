@@ -27,6 +27,9 @@ public class HandleController {
 
     @Autowired
     RoleServiceImpl roleService;
+
+
+//    删除用户
     @ResponseBody
     @RequestMapping("/deletusers")
     public Map<String,Object> deleteUserById(@RequestParam("id") String id){
@@ -45,17 +48,15 @@ System.out.println("排进来要删除的id："+id);
         return r;
     }
 
+
+//    进入管理用户界面
     @RequestMapping("/manageur/{id}/{a}")
     @JwtIgnore
     public ModelAndView manageur(@PathVariable("id") String id, @PathVariable("a") String a )
     {
-        System.out.println("管理界面传的参数:"+a);
         int ad=Integer.parseInt(id);
-
         User user=userService.getByIdWithResult(ad);
         List<Role> roleList=user.getRoles();
-
-
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("manageuserrolerelation");
         modelAndView.addObject("id",id);
@@ -64,11 +65,11 @@ System.out.println("排进来要删除的id："+id);
         return modelAndView;
     }
 
+//    进入管理角色界面
     @RequestMapping("/managerp/{id}/{a}")
     @JwtIgnore
     public ModelAndView managerp(@PathVariable("id") String id, @PathVariable("a") String a )
     {
-       //System.out.println("管理界面传的参数:"+a);
         int ad=Integer.parseInt(id);
 
 List<RolePermissionRelation> list=roleService.showpermissionbyroleid(ad);
@@ -81,13 +82,11 @@ List<RolePermissionRelation> list=roleService.showpermissionbyroleid(ad);
         return modelAndView;
     }
 
+//    进入添加角色界面
     @RequestMapping("/addrole/{a}")
     @JwtIgnore
     public ModelAndView addrole( @PathVariable("a") String a )
     {
-        //System.out.println("管理界面传的参数:"+a);
-
-
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("addrole");
         modelAndView.addObject("a",a);

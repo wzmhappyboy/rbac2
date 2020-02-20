@@ -1,5 +1,7 @@
 package com.cisco.rbac.controller;
 
+import com.cisco.rbac.PermissionConstants;
+import com.cisco.rbac.annotation.RequiredPermission;
 import com.cisco.rbac.entity.Permission;
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
@@ -22,6 +24,8 @@ public class RoleController {
 
     @Autowired
     PermissionServiceImpl permissionService;
+
+
     //增加角色
     @ResponseBody
     @RequestMapping("/addroles")
@@ -148,8 +152,10 @@ public class RoleController {
         }
     }
 
+//   返还所有角色
     @ResponseBody
     @RequestMapping("/showroles")
+    @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
     public  Map<String,Object> getAllRoles(){
         List<Role> roleList = roleService.queryRole();
         Map<String,Object> result =new HashMap<>();
@@ -162,6 +168,7 @@ public class RoleController {
     //列出所有权限
     @ResponseBody
     @RequestMapping("/showps")
+    @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
     public  Map<String,Object> getAllPermissions(){
         List<Permission> permissionList = permissionService.queryPermission();
 
@@ -171,14 +178,6 @@ public class RoleController {
     }
 
 
-    //返还类内的list<role>
-    //实现错误，最终返回的是根据角色Id的角色本身
-    @GetMapping("/rolesbyid/{id}")
-    public  String getUserByIdWithResult(@PathVariable("id") int id){
-        Role role=roleService.getByIdWithResult(id);
-        System.out.println(role);
-        List<User> userList=role.getUsers();
-        userList.forEach(n->System.out.println(n));
-        return role.toString();
-    }
+
+
 }

@@ -75,7 +75,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 传递所需信息
         request.setAttribute("CLAIMS", claims);
-        System.out.println("claims:"+claims.get("rolelist"));
+        System.out.println("claims:"+claims);
         return true;
     }
 
