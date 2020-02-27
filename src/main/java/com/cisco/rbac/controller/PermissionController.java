@@ -18,18 +18,23 @@ public class PermissionController {
 
 
     //新增权限
-    @PostMapping("/permissions")
-    public  String insertPermission(@RequestBody Map<String,String> userMap){
+    @ResponseBody
+    @RequestMapping("/addper")
+    public  Map<String,Object> insertPermission(@RequestParam("name") String name,@RequestParam("description") String description){
         Permission permission =new Permission();
-        permission.setName(userMap.get("name"));
-        permission.setDescription(userMap.get("description"));
+        permission.setName(name);
+        permission.setDescription(description);
         boolean result = permissionService.insertPermission(permission);
+
+        Map<String,Object> r=new HashMap<>();
         if (result){
-            return  "success";
+            r.put("s","1");
         }
         else{
-            return  "fail";
+            r.put("s","2");
         }
+        return r;
+
     }
 
 

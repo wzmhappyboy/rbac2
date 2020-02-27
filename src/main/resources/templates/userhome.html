@@ -15,7 +15,7 @@
             $("#showrights").append(
                 "<tr><td>角色ID</td><td>角色名字</td><td>角色介绍</td>"
             );
-                    $('#showrights tr:gt(0)').remove();
+                    $('#showrights ').empty();
         $.ajax({
             url: "/getrolesbyuserid",
             headers: {'Authorization': a},
@@ -48,10 +48,10 @@
 
 
             function ajaxSubmit2(){
-                $("#showroles").append(
+                $("#showrights").append(
                     "<tr><td>权限</td><td>权限描述</td>"
                 );
-                $('#showroles tr:gt(0)').remove();
+                $('#showrights').empty();
                 $.ajax({
                     url: "/uroles",
                     headers: {'Authorization': a},
@@ -65,7 +65,7 @@
                         var list=data.rightlist;
                         for(var i=0;i<list.length;i++)
 
-                            $("#showroles").append(
+                            $("#showrights").append(
                                 "<tr><td>"+list[i].name+"</td>"
                                 +"<td>"+list[i].description+"</ta></td>"
 
@@ -82,36 +82,29 @@
 
         </head>
 <body>
-<div style="text-align: right">
-<a href="/" style="">退出登陆</a>
+<div class="page-header">
+    <h1>RBAC <small th:text="'当前用户id:'+${id} "></small></h1>
+
+    <a href="/" style="float: right" >退出登陆</a>
 </div>
-<div style="text-align: center">
 
-    <p th:text="'用户id:'+${id}">       </p>
+<div>
+    <div style="float: left;width: 400px">
 
 
-
-    <!--    <button >显示拥有角色信息</button>&nbsp;&nbsp;-->
-    <button onclick="ajaxSubmit()">显示拥有角色、权限编号</button>
-    <button onclick="ajaxSubmit2()">显示拥有权限</button>
-</div>
-<div >
-<div style="float: left;margin-left: 150px" >
+    <button onclick="ajaxSubmit()" class="btn btn-primary btn-lg" style="width: 200px">显示拥有角色、权限编号</button>
+    <button onclick="ajaxSubmit2()"class="btn btn-primary btn-lg" style="width: 200px">显示拥有权限</button>
+</div >
+    <div class="text-center" style="float: left">
     <table style="width: 400px" class="table table-bordered">
 <tbody id="showrights">
 
 </tbody>
 
-    </table></div>
-    <div style="float: right;margin-right: 150px">
-    <table style="width: 400px " class="table table-bordered">
-        <tbody  id="showroles">
-        </tbody>
-
-
-
     </table>
+    </div>
 </div>
+
 </div>
 
 

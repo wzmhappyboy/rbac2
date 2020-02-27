@@ -92,4 +92,14 @@ List<RolePermissionRelation> list=roleService.showpermissionbyroleid(ad);
         modelAndView.addObject("a",a);
         return modelAndView;
     }
+
+    @RequestMapping("/addp/{a}")
+    @JwtIgnore
+    public ModelAndView addp( @PathVariable("a") String a )
+    {
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("addpermission");
+        modelAndView.addObject("a",a);
+        return modelAndView;
+    }
 }

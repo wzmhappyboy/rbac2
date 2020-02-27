@@ -11,11 +11,11 @@
     <script type="text/javascript" th:inline="javascript">
         var a=[[${a}]];
         function ajaxSubmit(){
+            $('#showusers ').empty();
 
             $("#showusers").append(
                 "<tr><td>用户ID</td><td>用户姓名</td><td>用户密码</td><td>操作</td>"
             );
-            $('#showusers tr:gt(0)').remove();
 
             $.ajax({
                 url: "/showusers",
@@ -46,11 +46,11 @@
 
 
         function ajaxSubmit2(){
+            $('#showusers ').empty();
 
-            $("#showroles").append(
+            $("#showusers").append(
                 "<tr><td>角色id</td><td>角色名称</td><td>角色简介</td><td>操作：<a href='/addrole/"+a+"''>添加角色</a>\n</td>"
             );
-            $('#showroles tr:gt(0)').remove();
 
             $.ajax({
                 url: "/showroles",
@@ -64,7 +64,7 @@
                     var list=data.roleslist;
                     for(var i=0;i<list.length;i++)
 
-                        $("#showroles").append(
+                        $("#showusers").append(
                             "<tr id='"+list[i].id+"'><td>"+list[i].id+"</td>"
                     +"<td>"+list[i].name+"</td>"
                     +"<td>"+list[i].description+"</ta></td>"
@@ -80,10 +80,11 @@
         }
 
         function ajaxSubmit3() {
-            $("#showpermissions").append(
-                "<tr ><td>权限ID</td><td>权限名称</td><td>权限简介</td><td>操作</td>"
+            $('#showusers ').empty();
+
+            $("#showusers").append(
+                "<tr ><td>权限ID</td><td>权限名称</td><td>权限简介</td><td>操作<a href='/addp/"+a+"''>添加权限</a></td>"
             );
-            $('#showpermissions tr:gt(0)').remove();
 
             $.ajax({
                 url: "/showps",
@@ -98,7 +99,7 @@
                     var list = data.permissionslist;
                     for (var i = 0; i < list.length; i++)
 
-                        $("#showpermissions").append(
+                        $("#showusers").append(
                             "<tr id='"+list[i].id+"'><td>" + list[i].id + "</td>"
                             + "<td>" + list[i].name + "</ta></td>"
                             + "<td>" + list[i].description + "</td>"
@@ -217,43 +218,28 @@ else {
 
 </head>
 <body>
-<div style="text-align: right">
-    <a href="/" style="">退出登陆</a>
+<div class="page-header">
+    <h1>RBAC <small>当前用户：管理员</small></h1>
+
+    <a href="/" style="float: right" >退出登陆</a>
 </div>
-<div style="text-align: center">
-
-    <p th:text="超级管理员">       </p>
-
-
-
-    <!--    <button >显示拥有角色信息</button>&nbsp;&nbsp;-->
-    <button onclick="ajaxSubmit()">显示用户</button>
-    <button onclick="ajaxSubmit2()">显示角色</button>
-    <button onclick="ajaxSubmit3()">管理权限</button>
-</div>
-
 <div>
-    <div style="float: left">
-    <table style="width: 400px" class="table table-bordered" >
+<div style="float: left;width: 400px">
+    <!--    <button >显示拥有角色信息</button>&nbsp;&nbsp;-->
+    <button onclick="ajaxSubmit()" class="btn btn-primary btn-lg" style="width: 200px">显示用户</button><br>
+    <button onclick="ajaxSubmit2()" class="btn btn-primary btn-lg" style="width: 200px">显示角色</button><br>
+    <button onclick="ajaxSubmit3()" class="btn btn-primary btn-lg"style="width: 200px">管理权限</button>
+</div>
+
+
+    <div class="text-center" style="float: left">
+    <table style="width: 400px" class="table" >
         <tbody id="showusers" style="align-content: center">
         </tbody>
     </table>
 </div>
-<div style="float: left">
-<table style="width: 400px;" class="table table-bordered">
-    <tbody id="showroles">
 
-    </tbody>
-</table>
-</div>
-    <div style="float: left">
-        <table style="width: 400px;" class="table table-bordered">
-            <tbody id="showpermissions">
 
-            </tbody>
-        </table>
-
-    </div>
     </div>
 
 

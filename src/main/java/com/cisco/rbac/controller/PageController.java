@@ -123,6 +123,17 @@ public class PageController {
         modelAndView.addObject("a",a);
         return modelAndView;
     }
+
+    @RequestMapping("addp/goroot/{a}")
+    @JwtIgnore
+    public  ModelAndView goRoot3(@PathVariable("a") String a )
+    {
+        System.out.println("restful传的参数:"+a);
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("root");
+        modelAndView.addObject("a",a);
+        return modelAndView;
+    }
 //根据用户ID返还用户权限
     @ResponseBody
     @RequestMapping("/permissionin")
