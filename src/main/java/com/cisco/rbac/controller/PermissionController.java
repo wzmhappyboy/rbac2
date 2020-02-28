@@ -40,11 +40,11 @@ public class PermissionController {
 
 
     //查询所有权限
-    @GetMapping("/permissions")
-    public  String getAllPermissions(){
-        List<Permission> permissionList = permissionService.queryPermission();
-        return  permissionList.toString();
-    }
+//    @GetMapping("/permissions")
+//    public  String getAllPermissions(){
+//        List<Permission> permissionList = permissionService.queryPermission();
+//        return  permissionList.toString();
+//    }
 
     //删除指定权限
     @ResponseBody

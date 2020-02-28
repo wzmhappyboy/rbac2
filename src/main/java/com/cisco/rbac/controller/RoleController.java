@@ -8,6 +8,8 @@ import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
 import com.cisco.rbac.service.impl.PermissionServiceImpl;
 import com.cisco.rbac.service.impl.RoleServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
@@ -169,11 +171,29 @@ public class RoleController {
     @ResponseBody
     @RequestMapping("/showps")
     @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
-    public  Map<String,Object> getAllPermissions(){
-        List<Permission> permissionList = permissionService.queryPermission();
+    public  Map<String,Object> getAllPermissions(@RequestParam(value = "page",defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "3") String pageSize){
+
+
+        PageInfo<Permission> pageInfo = permissionService.queryPermission(page,Integer.parseInt(pageSize));
 
         Map<String,Object> result =new HashMap<>();
-        result.put("permissionslist",permissionList);
+
+//        //获得当前页
+        result.put("pageNum",pageInfo.getPageNum());
+//        //获得一页显示的条数
+        System.out.println("显示第："+page+"页");
+        result.put("pageSize",pageInfo.getPageSize());
+//        //是否是第一页
+        result.put("isFirstPage",pageInfo.isIsFirstPage());
+ //       System.out.println("isFirstPage:"+pageInfo.isIsFirstPage());
+//        //获得总页数
+        result.put("totalPages",pageInfo.getPages());
+//        //是否是最后一页
+        result.put("isLastPage",pageInfo.isIsLastPage());
+//System.out.println("isLastPage:"+pageInfo.isIsLastPage());
+          result.put("permissionslist",pageInfo.getList());
+
+
         return  result;
     }
 

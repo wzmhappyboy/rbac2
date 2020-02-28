@@ -79,7 +79,7 @@
 
         }
 
-        function ajaxSubmit3() {
+        function ajaxSubmit3(pageNum) {
             $('#showusers ').empty();
 
             $("#showusers").append(
@@ -92,11 +92,16 @@
                 type: "post",
                 dataType: "json",
                 // contentType: "application/json",
-
+                data:{"page":pageNum},
                 async: true,
 
                 success: function (data) {
                     var list = data.permissionslist;
+                    var pageNum=data.pageNum;
+                    var pageSize=data.pageSize;
+                    var isFirstPage=data.isFirstPage;
+                    var totalPages=data.totalPages;
+                    var isLastPage=data.isLastPage;
                     for (var i = 0; i < list.length; i++)
 
                         $("#showusers").append(
@@ -106,6 +111,45 @@
                             +"<td><a href='#'>修改</a>&nbsp;<a href='javascript:;' onclick='deletePermission(\""+list[i].id+"\")'>删除</a></td></tr>"
 
                         );
+                    if (!isFirstPage===true){
+                        $("#showusers").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +" <a  'th:href='javascript:;' onclick='ajaxSubmit3(\""+[pageNum-1]+"\")'>上一页</a>");
+                    }
+                    else {
+                        $("#showusers").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +      " <p>首页</p>"
+                            +"   </td>");
+                    }
+                    if (isLastPage===true)
+                    {
+                        $("#showusers").append(
+                            +"<td>"
+                            +"<p>尾页</p>"
+                            +"</td>"
+                            +"<td><a href=''#'>&raquo;</a></td>"
+                            +"</tr>"
+                        );
+                    }
+                    else {
+                        $("#showusers").append(
+                            "<td>"
+                            +" <a  'th:href='javascript:;' onclick='ajaxSubmit3(\""+[pageNum+1]+"\")'>下一页</a>"
+                            +"</td>"
+                            +"<td><a href=''#'>&raquo;</a></td>"
+                            +"</tr>"
+
+                        );
+                    }
+
+
 
                 },
                 error: function (data) {

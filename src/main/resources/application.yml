@@ -34,3 +34,10 @@ jwt:
   base64Secret: SG1sb3g=
 
   jwtExpires: 120
+
+# 配置pagehelper参数
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

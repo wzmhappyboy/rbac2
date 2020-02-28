@@ -3,6 +3,8 @@ package com.cisco.rbac.service.impl;
 import com.cisco.rbac.entity.Permission;
 import com.cisco.rbac.mapper.PermissionMapper;
 import com.cisco.rbac.service.PermissionService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +42,12 @@ public class PermissionServiceImpl implements PermissionService {
 
 
     @Override
-    public List<Permission> queryPermission(){
-        return permissionMapper.queryPermission();
+    public PageInfo<Permission> queryPermission(Integer page, Integer pageSize){
+        PageHelper.startPage(page, pageSize);
+        List<Permission> list=permissionMapper.queryPermission();
+
+return new PageInfo<>(list);
+
     }
 
     @Override
