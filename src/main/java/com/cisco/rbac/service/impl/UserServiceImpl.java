@@ -6,6 +6,8 @@ import com.cisco.rbac.mapper.UserMapper;
 import com.cisco.rbac.service.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,8 +55,11 @@ public class UserServiceImpl implements UserService {
         public  User getPerssionById(int id){return  userMapper.getPerssionById(id);}
 
         @Override
-        public List<User> queryUser(){
-        return userMapper.queryUser();
+        public PageInfo<User> queryUser(Integer page, Integer pageSize){
+            PageHelper.startPage(page, pageSize);
+
+            List<User> list= userMapper.queryUser();
+            return new PageInfo<>(list);
         }
 
         @Override

@@ -8,6 +8,7 @@ import com.cisco.rbac.entity.User;
 import com.cisco.rbac.service.impl.RoleServiceImpl;
 import com.cisco.rbac.service.impl.UserServiceImpl;
 import com.cisco.rbac.jwt.JwtParam;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -50,18 +51,28 @@ System.out.println("排进来要删除的id："+id);
 
 
 //    进入管理用户界面
-    @RequestMapping("/manageur/{id}/{a}")
+    @RequestMapping("/manageur/{id}/{a}/{page}")
     @JwtIgnore
-    public ModelAndView manageur(@PathVariable("id") String id, @PathVariable("a") String a )
+    public ModelAndView manageur(@PathVariable("id") String id, @PathVariable("a") String a ,@PathVariable(value = "page") int page)
     {
         int ad=Integer.parseInt(id);
         User user=userService.getByIdWithResult(ad);
+        PageInfo<Role> pageInfo = roleService.queryRole(page,5);
+
         List<Role> roleList=user.getRoles();
         ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("isFirstPage", pageInfo.isIsFirstPage());
+        modelAndView.addObject("isLastPage", pageInfo.isIsLastPage());
+        modelAndView.addObject("roles", pageInfo.getList());
         modelAndView.setViewName("manageuserrolerelation");
         modelAndView.addObject("id",id);
         modelAndView.addObject("a",a);
         modelAndView.addObject("list",roleList);
+        modelAndView.addObject("page",page);
+        modelAndView.addObject("pageNum", pageInfo.getPageNum());
+        modelAndView.addObject("pageSize", pageInfo.getPageSize());
+        modelAndView.addObject("totalPages", pageInfo.getPages());
+
         return modelAndView;
     }
 

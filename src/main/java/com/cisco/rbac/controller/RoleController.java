@@ -158,10 +158,25 @@ public class RoleController {
     @ResponseBody
     @RequestMapping("/showroles")
     @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
-    public  Map<String,Object> getAllRoles(){
-        List<Role> roleList = roleService.queryRole();
+    public  Map<String,Object> getAllRoles(@RequestParam(value = "page",defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "3") String pageSize){
+        PageInfo<Role> pageInfo = roleService.queryRole(page,Integer.parseInt(pageSize));
         Map<String,Object> result =new HashMap<>();
-        result.put("roleslist",roleList);
+
+
+        //        //获得当前页
+        result.put("pageNum",pageInfo.getPageNum());
+//        //获得一页显示的条数
+        System.out.println("显示第："+page+"页");
+        result.put("pageSize",pageInfo.getPageSize());
+//        //是否是第一页
+        result.put("isFirstPage",pageInfo.isIsFirstPage());
+        //       System.out.println("isFirstPage:"+pageInfo.isIsFirstPage());
+//        //获得总页数
+        result.put("totalPages",pageInfo.getPages());
+//        //是否是最后一页
+        result.put("isLastPage",pageInfo.isIsLastPage());
+//System.out.println("isLastPage:"+pageInfo.isIsLastPage());
+        result.put("roleslist",pageInfo.getList());
         return  result;
     }
 

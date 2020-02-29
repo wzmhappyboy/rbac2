@@ -7,6 +7,7 @@ import com.cisco.rbac.annotation.RequiredPermission;
 import com.cisco.rbac.entity.*;
 import com.cisco.rbac.service.impl.UserServiceImpl;
 import com.cisco.rbac.jwt.JwtParam;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -93,10 +94,24 @@ public  Map<String,Object> getUserroles(@RequestParam("id") String id){
     @ResponseBody
     @RequestMapping("/showusers")
     @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
-    public  Map<String,Object> getAllUser(){
+    public  Map<String,Object> getAllUser(@RequestParam(value = "page",defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "3")String pageSize){
         Map<String,Object> result=new HashMap<>();
-        List<User> userList=userService.queryUser();
-        result.put("userlist",userList);
+        PageInfo<User> pageInfo=userService.queryUser(page,Integer.parseInt(pageSize));
+
+        //        //获得当前页
+        result.put("pageNum",pageInfo.getPageNum());
+//        //获得一页显示的条数
+        System.out.println("显示第："+page+"页");
+        result.put("pageSize",pageInfo.getPageSize());
+//        //是否是第一页
+        result.put("isFirstPage",pageInfo.isIsFirstPage());
+        //       System.out.println("isFirstPage:"+pageInfo.isIsFirstPage());
+//        //获得总页数
+        result.put("totalPages",pageInfo.getPages());
+//        //是否是最后一页
+        result.put("isLastPage",pageInfo.isIsLastPage());
+//System.out.println("isLastPage:"+pageInfo.isIsLastPage());
+        result.put("userlist",pageInfo.getList());
         return  result;
     }
 

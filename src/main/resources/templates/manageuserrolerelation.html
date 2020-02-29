@@ -81,12 +81,64 @@
 </div>
 <div style="text-align: center">
 
-    <p th:text="'用户id:'+${id}+'拥有的角色'+${list}">       </p>
+    <table style="text-align: center"><tr>
+        <th th:text="'用户id:'+${id}+'拥有的角色'"></th></tr>
+
+        <tr>
+            <th>角色id</th>
+            <th>角色名</th>
+            <th>角色描述</th>
+        </tr>
+        <tr th:each="role : ${list}">
+            <th th:text="${role.id}"></th>
+            <th th:text="${role.name}"></th>
+            <th th:text="${role.description}"></th>
+        </tr>
+    </table>
 
 
 <input type="text" placeholder="请输入要操作的角色编号" id="roleid"><br>
     <button onclick="ajaxSubmit()">添加</button>
     <button onclick="ajaxSubmit2()">消除</button>
+
+    <table style="text-align: center">
+        <thead>
+        <tr>
+            <th>角色id</th>
+            <th>角色名</th>
+            <th>角色描述</th>
+        </tr>
+        </thead>
+        <tr th:each="role : ${roles}">
+            <th th:text="${role.id}"></th>
+            <th th:text="${role.name}"></th>
+            <th th:text="${role.description}"></th>
+        </tr>
+
+        <tr>
+            <td>
+                <a th:if="${not isFirstPage}" th:href="'/manageur/'+${id}+'/'+${a}+'/'+${pageNum-1}">Previous</a>
+                <p th:if="${isFirstPage}" >Previous</p>
+            </td>
+
+            <td th:each="pageNo : ${#numbers.sequence(1, totalPages)}">
+                <a th:if="${pageNum eq pageNo}" href="javascript:void(0);">
+                    <span th:text="${pageNo}"></span>
+                </a>
+
+                <a th:if="${not (pageNum eq pageNo)}" th:href="'/manageur/'+${id}+'/'+${a}+'/'+${pageNo}">
+                    <span th:text="${pageNo}"></span>
+                </a>
+            </td>
+            <td>
+                <a th:if="${not isLastPage}" th:href="'/manageur/'+${id}+'/'+${a}+'/'+${pageNum+1}">Next</a>
+                <p th:if="${isLastPage}" >Next</p>
+            </td>
+
+        </tr>
+    </table>
+
+
 
 </div>
 <div >

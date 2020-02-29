@@ -1,10 +1,13 @@
 package com.cisco.rbac.service.impl;
 
+import com.cisco.rbac.annotation.JwtIgnore;
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
 import com.cisco.rbac.mapper.RoleMapper;
 import com.cisco.rbac.service.RoleService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -142,8 +145,12 @@ RoleMapper roleMapper;
     }
 
     @Override
-    public List<Role> queryRole(){
-        return roleMapper.queryRole();
+    @JwtIgnore
+    public PageInfo<Role> queryRole(Integer page, Integer pageSize){
+        PageHelper.startPage(page, pageSize);
+
+        List<Role> list= roleMapper.queryRole();
+        return new PageInfo<>(list);
     }
 
     @Override

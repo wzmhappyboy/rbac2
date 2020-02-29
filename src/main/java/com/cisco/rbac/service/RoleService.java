@@ -3,6 +3,7 @@ package com.cisco.rbac.service;
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface RoleService {
 
     boolean updateRole(Role role);
 
-    List<Role> queryRole();
+    PageInfo<Role> queryRole(Integer page, Integer pageSize);
 
     List<RolePermissionRelation> showpermissionbyroleid(int id);
 

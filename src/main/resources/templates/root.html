@@ -10,10 +10,10 @@
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
         var a=[[${a}]];
-        function ajaxSubmit(){
-            $('#showusers ').empty();
+        function ajaxSubmit(pageNum){
+            $('#show ').empty();
 
-            $("#showusers").append(
+            $("#show").append(
                 "<tr><td>用户ID</td><td>用户姓名</td><td>用户密码</td><td>操作</td>"
             );
 
@@ -23,19 +23,63 @@
                 type: "post",
                 dataType: "json",
                 // contentType: "application/json",
-
+                data:{"page":pageNum},
                 async: true,
 
                 success: function(data){
                     var list=data.userlist;
+
+                    var pageNum=data.pageNum;
+                    var pageSize=data.pageSize;
+                    var isFirstPage=data.isFirstPage;
+                    var totalPages=data.totalPages;
+                    var isLastPage=data.isLastPage;
                     for(var i=0;i<list.length;i++)
 
-                        $("#showusers").append(
+                        $("#show").append(
                             "<tr id='"+list[i].id+"'><td>"+list[i].id+"</td>"
                             +"<td>"+list[i].name+"</ta></td>"
                             +"<td>"+list[i].password+"</td>"
-                            +"<td><a href='/manageur/"+list[i].id+"\/"+a+"'>编辑角色</a>&nbsp;<a href='javascript:void(0);' onclick='deleteUser(\""+list[i].id+"\")'>删除</a></td></tr>"
+                            +"<td><a href='/manageur/"+list[i].id+"\/"+a+"\/"+1+"'>编辑角色</a>&nbsp;<a href='javascript:void(0);' onclick='deleteUser(\""+list[i].id+"\")'>删除</a></td></tr>"
+                        );                            //    +a+"\/"+1+"''
+
+                    if (!isFirstPage===true){
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +" <a  'th:href='javascript:;' onclick='ajaxSubmit(\""+[pageNum-1]+"\")'>上一页</a>");
+                    }
+                    else {
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +      " <p>首页</p>"
+                            +"   </td>");
+                    }
+                    if (isLastPage===true)
+                    {
+                        $("#show").append(
+                            +"<td>"
+                            +"<p>尾页</p>"
+                            +"</td>"
+                            +"<td><a href=''#'>&raquo;</a></td>"
+                            +"</tr>"
                         );
+                    }
+                    else {
+                        $("#show").append(
+                            "<td>"
+                            + " <a  'th:href='javascript:;' onclick='ajaxSubmit(\"" + [pageNum + 1] + "\")'>下一页</a>"
+                            + "</td>"
+                            + "<td><a href=''#'>&raquo;</a></td>"
+                            + "</tr>"
+                        );
+                    }
+
 
                 },
                 error:function (data) {
@@ -45,10 +89,10 @@
         }
 
 
-        function ajaxSubmit2(){
-            $('#showusers ').empty();
+        function ajaxSubmit2(pageNum){
+            $('#show ').empty();
 
-            $("#showusers").append(
+            $("#show").append(
                 "<tr><td>角色id</td><td>角色名称</td><td>角色简介</td><td>操作：<a href='/addrole/"+a+"''>添加角色</a>\n</td>"
             );
 
@@ -58,19 +102,65 @@
                 type: "post",
                 dataType: "json",
                 async: true,
-
+                data:{"page":pageNum},
 
                 success: function(data){
                     var list=data.roleslist;
+
+                    var pageNum=data.pageNum;
+                    var pageSize=data.pageSize;
+                    var isFirstPage=data.isFirstPage;
+                    var totalPages=data.totalPages;
+                    var isLastPage=data.isLastPage;
+
+
+
                     for(var i=0;i<list.length;i++)
 
-                        $("#showusers").append(
+                        $("#show").append(
                             "<tr id='"+list[i].id+"'><td>"+list[i].id+"</td>"
                     +"<td>"+list[i].name+"</td>"
                     +"<td>"+list[i].description+"</ta></td>"
-                            +"<td><a href='/managerp/"+list[i].id+"\/"+a+"''>编辑权限</a>&nbsp;<a href='javascript:;' onclick='deleteRole(\""+list[i].id+"\")'>删除</a></td></tr>"
+                            +"<td><a href='/managerp/"+list[i].id+"\/"+a+"\/"+1+"''>编辑权限</a>&nbsp;<a href='javascript:;' onclick='deleteRole(\""+list[i].id+"\")'>删除</a></td></tr>"
 
                         );
+
+                    if (!isFirstPage===true){
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +" <a  'th:href='javascript:;' onclick='ajaxSubmit2(\""+[pageNum-1]+"\")'>上一页</a>");
+                    }
+                    else {
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +      " <p>首页</p>"
+                            +"   </td>");
+                    }
+                    if (isLastPage===true)
+                    {
+                        $("#show").append(
+                            +"<td>"
+                            +"<p>尾页</p>"
+                            +"</td>"
+                            +"<td><a href=''#'>&raquo;</a></td>"
+                            +"</tr>"
+                        );
+                    }
+                    else {
+                        $("#show").append(
+                            "<td>"
+                            + " <a  'th:href='javascript:;' onclick='ajaxSubmit2(\"" + [pageNum + 1] + "\")'>下一页</a>"
+                            + "</td>"
+                            + "<td><a href=''#'>&raquo;</a></td>"
+                            + "</tr>"
+                        );
+                    }
                 },
                 error:function (data) {
                     alert("系统错误");
@@ -80,9 +170,9 @@
         }
 
         function ajaxSubmit3(pageNum) {
-            $('#showusers ').empty();
+            $('#show ').empty();
 
-            $("#showusers").append(
+            $("#show").append(
                 "<tr ><td>权限ID</td><td>权限名称</td><td>权限简介</td><td>操作<a href='/addp/"+a+"''>添加权限</a></td>"
             );
 
@@ -104,7 +194,7 @@
                     var isLastPage=data.isLastPage;
                     for (var i = 0; i < list.length; i++)
 
-                        $("#showusers").append(
+                        $("#show").append(
                             "<tr id='"+list[i].id+"'><td>" + list[i].id + "</td>"
                             + "<td>" + list[i].name + "</ta></td>"
                             + "<td>" + list[i].description + "</td>"
@@ -112,7 +202,7 @@
 
                         );
                     if (!isFirstPage===true){
-                        $("#showusers").append(
+                        $("#show").append(
 
                             "<td><a href=''>&laquo;</a></td>"
 
@@ -120,7 +210,7 @@
                             +" <a  'th:href='javascript:;' onclick='ajaxSubmit3(\""+[pageNum-1]+"\")'>上一页</a>");
                     }
                     else {
-                        $("#showusers").append(
+                        $("#show").append(
 
                             "<td><a href=''>&laquo;</a></td>"
 
@@ -130,7 +220,7 @@
                     }
                     if (isLastPage===true)
                     {
-                        $("#showusers").append(
+                        $("#show").append(
                             +"<td>"
                             +"<p>尾页</p>"
                             +"</td>"
@@ -139,7 +229,7 @@
                         );
                     }
                     else {
-                        $("#showusers").append(
+                        $("#show").append(
                             "<td>"
                             +" <a  'th:href='javascript:;' onclick='ajaxSubmit3(\""+[pageNum+1]+"\")'>下一页</a>"
                             +"</td>"
@@ -278,7 +368,7 @@ else {
 
     <div class="text-center" style="float: left">
     <table style="width: 400px" class="table" >
-        <tbody id="showusers" style="align-content: center">
+        <tbody id="show" style="align-content: center">
         </tbody>
     </table>
 </div>

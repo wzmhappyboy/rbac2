@@ -1,6 +1,7 @@
 package com.cisco.rbac.service;
 
 import com.cisco.rbac.entity.*;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,7 @@ public interface UserService {
     boolean updateUser(User user);
 
     User getUserById(int id);
-    List<User> queryUser();
+    PageInfo<User> queryUser(Integer page, Integer pageSize);
     User getByIdWithResult(int id);
 
 
