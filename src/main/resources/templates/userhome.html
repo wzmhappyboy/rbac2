@@ -12,10 +12,11 @@
         var id =[[${id}]];
         var a=[[${a}]];
         function ajaxSubmit(){
+
+                    $('#showrights ').empty();
             $("#showrights").append(
                 "<tr><td>角色ID</td><td>角色名字</td><td>角色介绍</td>"
             );
-                    $('#showrights ').empty();
         $.ajax({
             url: "/getrolesbyuserid",
             headers: {'Authorization': a},
@@ -48,10 +49,11 @@
 
 
             function ajaxSubmit2(){
+
+                $('#showrights').empty();
                 $("#showrights").append(
                     "<tr><td>权限</td><td>权限描述</td>"
                 );
-                $('#showrights').empty();
                 $.ajax({
                     url: "/uroles",
                     headers: {'Authorization': a},

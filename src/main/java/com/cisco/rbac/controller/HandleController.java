@@ -2,9 +2,11 @@ package com.cisco.rbac.controller;
 
 
 import com.cisco.rbac.annotation.JwtIgnore;
+import com.cisco.rbac.entity.Permission;
 import com.cisco.rbac.entity.Role;
 import com.cisco.rbac.entity.RolePermissionRelation;
 import com.cisco.rbac.entity.User;
+import com.cisco.rbac.service.impl.PermissionServiceImpl;
 import com.cisco.rbac.service.impl.RoleServiceImpl;
 import com.cisco.rbac.service.impl.UserServiceImpl;
 import com.cisco.rbac.jwt.JwtParam;
@@ -29,7 +31,8 @@ public class HandleController {
     @Autowired
     RoleServiceImpl roleService;
 
-
+    @Autowired
+    PermissionServiceImpl permissionService;
 //    删除用户
     @ResponseBody
     @RequestMapping("/deletusers")
@@ -77,11 +80,13 @@ System.out.println("排进来要删除的id："+id);
     }
 
 //    进入管理角色界面
-    @RequestMapping("/managerp/{id}/{a}")
+    @RequestMapping("/managerp/{id}/{a}/{page}")
     @JwtIgnore
-    public ModelAndView managerp(@PathVariable("id") String id, @PathVariable("a") String a )
+    public ModelAndView managerp(@PathVariable("id") String id, @PathVariable("a") String a,@PathVariable(value = "page") int page )
     {
         int ad=Integer.parseInt(id);
+
+        PageInfo<Permission> pageInfo = permissionService.queryPermission(page,5);
 
 List<RolePermissionRelation> list=roleService.showpermissionbyroleid(ad);
 
@@ -90,6 +95,17 @@ List<RolePermissionRelation> list=roleService.showpermissionbyroleid(ad);
         modelAndView.addObject("id",id);
         modelAndView.addObject("a",a);
         modelAndView.addObject("list",list);
+
+
+        modelAndView.addObject("isFirstPage", pageInfo.isIsFirstPage());
+        modelAndView.addObject("isLastPage", pageInfo.isIsLastPage());
+        modelAndView.addObject("ps", pageInfo.getList());
+        modelAndView.addObject("page",page);
+        modelAndView.addObject("pageNum", pageInfo.getPageNum());
+        modelAndView.addObject("pageSize", pageInfo.getPageSize());
+        modelAndView.addObject("totalPages", pageInfo.getPages());
+
+
         return modelAndView;
     }
 

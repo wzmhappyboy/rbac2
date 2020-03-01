@@ -13,8 +13,7 @@
         var a=[[${a}]];
         var list=[[${list}]];
 
-        function ajaxSubmit(){
-            var role_id = $("#roleid").val();
+        function ajaxSubmit(role_id){
 
 
             $.ajax({
@@ -30,7 +29,7 @@
                 var r=data.s;
                 if (r==1) {
                     alert("增加成功！");
-                    window.location.href = '/manageur/'+id+'/'+a;
+                    window.location.href = '/manageur/'+id+'/'+a+'/'+1;
                 }
 
                 else {
@@ -43,8 +42,7 @@
         });
         }
 
-        function ajaxSubmit2(){
-            var role_id = $("#roleid").val();
+        function ajaxSubmit2(role_id){
 
 
             $.ajax({
@@ -60,7 +58,7 @@
                     var r=data.s;
                     if (r==1) {
                         alert("删除成功！");
-                        window.location.href = '/manageur/'+id+'/'+a;
+                        window.location.href = '/manageur/'+id+'/'+a+'/'+1;
                     }
 
                     else {
@@ -77,42 +75,52 @@
 </head>
 <body>
 <div style="text-align: right">
+    <span th:text="'当前用户ID:'+${id}" style="float: left"></span>
     <a href="/" style="">退出登陆</a>
 </div>
 <div style="text-align: center">
 
-    <table style="text-align: center"><tr>
-        <th th:text="'用户id:'+${id}+'拥有的角色'"></th></tr>
+<!--    <input type="text" placeholder="请输入要操作的角色编号" id="roleid"><br>-->
+<!--    <button onclick="ajaxSubmit()">添加</button>-->
+<!--    <button onclick="ajaxSubmit2()">消除</button>-->
+</div>
+<div>
+    <div style="width: 40%;float:left;">
+    <table style="text-align: center" class="table table-bordered">
+        <caption style="text-align: center">已拥有的权限</caption>
 
         <tr>
             <th>角色id</th>
             <th>角色名</th>
             <th>角色描述</th>
+            <th>操作</th>
         </tr>
         <tr th:each="role : ${list}">
             <th th:text="${role.id}"></th>
             <th th:text="${role.name}"></th>
             <th th:text="${role.description}"></th>
+            <th> <a href="javascript:void(0);"th:onclick="'javascript:ajaxSubmit2('+${role.id}+')'">删除</a></th>
         </tr>
     </table>
+</div>
 
+<div style="float: right;width: 40%">
 
-<input type="text" placeholder="请输入要操作的角色编号" id="roleid"><br>
-    <button onclick="ajaxSubmit()">添加</button>
-    <button onclick="ajaxSubmit2()">消除</button>
-
-    <table style="text-align: center">
+    <table style="text-align: center" class="table table-bordered">
         <thead>
         <tr>
             <th>角色id</th>
             <th>角色名</th>
             <th>角色描述</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tr th:each="role : ${roles}">
             <th th:text="${role.id}"></th>
             <th th:text="${role.name}"></th>
             <th th:text="${role.description}"></th>
+            <th> <a href="javascript:void(0);"th:onclick="'javascript:ajaxSubmit('+${role.id}+')'">增加</a></th>
+
         </tr>
 
         <tr>
@@ -137,27 +145,9 @@
 
         </tr>
     </table>
-
-
-
 </div>
-<div >
-    <div style="float: left;margin-left: 150px" >
-        <table style="width: 400px" class="table table-bordered">
-            <tbody id="showrights">
-
-            </tbody>
-
-        </table></div>
-    <div style="float: right;margin-right: 150px">
-        <table style="width: 400px " class="table table-bordered">
-            <tbody  id="showroles">
-            </tbody>
 
 
-
-        </table>
-    </div>
 </div>
 
 
