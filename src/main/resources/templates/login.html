@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>RBAC System</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/static/libs/vue.min.js"></script>
+
+
+    <script type="text/javascript" inline="javascript">
+        function ajaxSubmit2(){
+            window.location.href='/logon';
+        }
+    </script>
+</head>
+<body>
+
+<div style="text-align: center" id="rrapp">
+    <h2>Welcome to RBAC</h2><br>
+    <label>
+        <input type="text"  v-model="id" placeholder="账号">
+    </label><br><br>
+    <input type="password" v-model="password" placeholder="请输入密码" ><br><br>
+<button v-on:click="login">登陆</button>
+    <button onclick="ajaxSubmit2()">注册</button>
+
+</div>
+
+<script type="text/javascript">
+    function setCookie(c_name,value,expiredays) {
+        var exdate=new Date();
+        exdate.setDate(exdate.getDate()+expiredays)
+        document.cookie=c_name+"="+escape(value)+
+            ((expiredays ==null) ? "" : ";expires=" + exdate.toGMTString())
+    }
+
+
+
+
+    function getCookie(c_name) {
+        if(document.cookie.length>0){
+            c_start=document.cookie.indexOf(c_name+"=")
+            if (c_start!=-1)
+            {
+                c_start=c_start+c_name.length+1
+                c_end=document.cookie.indexOf(";",c_start)
+                if(c_end==-1) c_end=document.cookie.length
+                return unescape(document.cookie.substring(c_start,c_end) )
+            }
+        }
+        return ""
+    }
+    
+    
+    
+    
+    var vue=new Vue({
+        el:'#rrapp',
+        data:{
+            id: '',
+            password: ''
+        },
+        methods: {
+            login: function (event) {
+                var id=vue.id;
+                var password=vue.password;
+                $.ajax({
+
+                    url: "/login",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "id": id,
+                        "password": password
+                    },
+                    async: true,
+                    success: function (data) {
+                        var r = data.r;
+                        var a = data.a;
+                        if (r == 1) {
+                            setCookie("token",a)
+                            window.location.href = 'gouserhome/' + id + '/' + a;
+
+                        } else if (r == 2) {
+                            alert("Log in faild!");
+
+                        } else {
+                            setCookie("token",a);
+                            window.location.href = '/goroot';
+                        }
+
+
+                    },
+                    error: function (data) {
+                        alert("系统错误");
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

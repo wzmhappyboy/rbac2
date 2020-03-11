@@ -1,36 +1,115 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>RBAC System</title>
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" th:inline="javascript">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="">
+<!--<html lang="en">-->
 
-        /*<![CDATA[*/
-        function ajaxSubmit(){
-            var id = $("#id").val();
-            var password =$("#password").val();
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>用户首页</title>
+
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/static/dist/css/adminlte.min.css}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+<!--    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>-->
+
+    <script src="/static/libs/vue.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        function getCookie(c_name) {
+            if(document.cookie.length>0){
+                c_start=document.cookie.indexOf(c_name+"=")
+                if (c_start!=-1)
+                {
+                    c_start=c_start+c_name.length+1
+                    c_end=document.cookie.indexOf(";",c_start)
+                    if(c_end==-1) c_end=document.cookie.length
+                    return unescape(document.cookie.substring(c_start,c_end) )
+                }
+            }
+            return ""
+        }
+
+
+
+
+
+
+        var a=[[${a}]];
+        function ajaxSubmit(pageNum){
+
+            $('#show ').empty();
+
+            $("#show").append(
+                "<tr><td>用户ID</td><td>用户姓名</td><td>用户密码</td><td>操作</td>"
+            );
+
             $.ajax({
-                url: "/login",
+                url: "/showusers",
+                headers: {'Authorization': a},
                 type: "post",
                 dataType: "json",
-                data: {"id":id,
-                    "password":password},
+                // contentType: "application/json",
+                data:{"page":pageNum},
                 async: true,
+
                 success: function(data){
-                    var r=data.r;
-                    var a=data.a;
-                    if(r==1)
-                    {
-                        window.location.href='gouserhome/'+id+'/'+a;
+                    var list=data.userlist;
 
-                    }
-                    else if(r==2){
-                        alert("Log in faild!");
+                    var pageNum=data.pageNum;
+                    var pageSize=data.pageSize;
+                    var isFirstPage=data.isFirstPage;
+                    var totalPages=data.totalPages;
+                    var isLastPage=data.isLastPage;
+                    for(var i=0;i<list.length;i++)
 
+                        $("#show").append(
+                            "<tr id='"+list[i].id+"'><td>"+list[i].id+"</td>"
+                            +"<td>"+list[i].name+"</ta></td>"
+                            +"<td>"+list[i].password+"</td>"
+                            +"<td><a href='/manageur/"+list[i].id+"\/"+a+"\/"+1+"'>编辑角色</a>&nbsp;<a href='javascript:void(0);' onclick='deleteUser(\""+list[i].id+"\")'>删除</a></td></tr>"
+                        );                            //    +a+"\/"+1+"''
+
+                    if (!isFirstPage===true){
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +" <a  'th:href='javascript:;' onclick='ajaxSubmit(\""+[pageNum-1]+"\")'>上一页</a>");
                     }
                     else {
-                        window.location.href='goroot/'+a;
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +      " <p>首页</p>"
+                            +"   </td>");
+                    }
+                    if (isLastPage===true)
+                    {
+                        $("#show").append(
+                            +"<td>"
+                            +"<p>尾页</p>"
+                            +"</td>"
+                            +"<td><a href=''#'>&raquo;</a></td>"
+                            +"</tr>"
+                        );
+                    }
+                    else {
+                        $("#show").append(
+                            "<td>"
+                            + " <a  'th:href='javascript:;' onclick='ajaxSubmit(\"" + [pageNum + 1] + "\")'>下一页</a>"
+                            + "</td>"
+                            + "<td><a href=''#'>&raquo;</a></td>"
+                            + "</tr>"
+                        );
                     }
 
 
@@ -41,25 +120,381 @@
             });
         }
 
-        /*]]>*/
 
-        function ajaxSubmit2(){
-            window.location.href='/logon';
+        function ajaxSubmit2(pageNum){
+            $('#show ').empty();
 
+            $("#show").append(
+                "<tr><td>角色id</td><td>角色名称</td><td>角色简介</td><td>操作：<a href='/addrole/"+a+"''>添加角色</a>\n</td>"
+            );
+
+            $.ajax({
+                url: "/showroles",
+                headers: {'Authorization': a},
+                type: "post",
+                dataType: "json",
+                async: true,
+                data:{"page":pageNum},
+
+                success: function(data){
+                    var list=data.roleslist;
+
+                    var pageNum=data.pageNum;
+                    var pageSize=data.pageSize;
+                    var isFirstPage=data.isFirstPage;
+                    var totalPages=data.totalPages;
+                    var isLastPage=data.isLastPage;
+
+
+
+                    for(var i=0;i<list.length;i++)
+
+                        $("#show").append(
+                            "<tr id='"+list[i].id+"'><td>"+list[i].id+"</td>"
+                    +"<td>"+list[i].name+"</td>"
+                    +"<td>"+list[i].description+"</ta></td>"
+                            +"<td><a href='/managerp/"+list[i].id+"\/"+a+"\/"+1+"''>编辑权限</a>&nbsp;<a href='javascript:;' onclick='deleteRole(\""+list[i].id+"\")'>删除</a></td></tr>"
+
+                        );
+
+                    if (!isFirstPage===true){
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +" <a  'th:href='javascript:;' onclick='ajaxSubmit2(\""+[pageNum-1]+"\")'>上一页</a>");
+                    }
+                    else {
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +      " <p>首页</p>"
+                            +"   </td>");
+                    }
+                    if (isLastPage===true)
+                    {
+                        $("#show").append(
+                            +"<td>"
+                            +"<p>尾页</p>"
+                            +"</td>"
+                            +"<td><a href=''#'>&raquo;</a></td>"
+                            +"</tr>"
+                        );
+                    }
+                    else {
+                        $("#show").append(
+                            "<td>"
+                            + " <a  'th:href='javascript:;' onclick='ajaxSubmit2(\"" + [pageNum + 1] + "\")'>下一页</a>"
+                            + "</td>"
+                            + "<td><a href=''#'>&raquo;</a></td>"
+                            + "</tr>"
+                        );
+                    }
+                },
+                error:function (data) {
+                    alert("系统错误");
+                }
+            });
+
+        }
+
+        function ajaxSubmit3(pageNum) {
+            $('#show ').empty();
+
+            $("#show").append(
+                "<tr ><td>权限ID</td><td>权限名称</td><td>权限简介</td><td>操作<a href='/addp/"+a+"''>添加权限</a></td>"
+            );
+
+            $.ajax({
+                url: "/showps",
+                headers: {'Authorization': a},
+                type: "post",
+                dataType: "json",
+                // contentType: "application/json",
+                data:{"page":pageNum},
+                async: true,
+
+                success: function (data) {
+                    var list = data.permissionslist;
+                    var pageNum=data.pageNum;
+                    var pageSize=data.pageSize;
+                    var isFirstPage=data.isFirstPage;
+                    var totalPages=data.totalPages;
+                    var isLastPage=data.isLastPage;
+                    for (var i = 0; i < list.length; i++)
+
+                        $("#show").append(
+                            "<tr id='"+list[i].id+"'><td>" + list[i].id + "</td>"
+                            + "<td>" + list[i].name + "</ta></td>"
+                            + "<td>" + list[i].description + "</td>"
+                            +"<td>&nbsp;<a href='javascript:;' onclick='deletePermission(\""+list[i].id+"\")'>删除</a></td></tr>"
+
+                        );
+                    if (!isFirstPage===true){
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +" <a  'th:href='javascript:;' onclick='ajaxSubmit3(\""+[pageNum-1]+"\")'>上一页</a>");
+                    }
+                    else {
+                        $("#show").append(
+
+                            "<td><a href=''>&laquo;</a></td>"
+
+                            +"<td>"
+                            +      " <p>首页</p>"
+                            +"   </td>");
+                    }
+                    if (isLastPage===true)
+                    {
+                        $("#show").append(
+                            +"<td>"
+                            +"<p>尾页</p>"
+                            +"</td>"
+                            +"<td><a href=''#'>&raquo;</a></td>"
+                            +"</tr>"
+                        );
+                    }
+                    else {
+                        $("#show").append(
+                            "<td>"
+                            +" <a  'th:href='javascript:;' onclick='ajaxSubmit3(\""+[pageNum+1]+"\")'>下一页</a>"
+                            +"</td>"
+                            +"<td><a href=''#'>&raquo;</a></td>"
+                            +"</tr>"
+
+                        );
+                    }
+
+
+
+                },
+                error: function (data) {
+                    alert("系统错误");
+                }
+            });
+        }
+        
+        
+        function deleteUser(byid) {
+
+                $.ajax({
+                    url: "/deletusers",
+                    headers: {'Authorization': a},
+                    type: "post",
+                    data:{"id":byid},
+                    dataType: "json",
+                    // contentType: "application/json",
+
+                    async: true,
+
+                    success: function (data) {
+                        var result=data.success;
+                            if (result==1)
+                            {
+                                $("#"+byid).hide();
+                                alert("删除成功");
+
+                                //document.getElementById("tr"+byid).parentNode.removeChild(document.getElementById(id));
+                            }
+                            else {
+                                alert("有外键约束等问题删不了");
+                            }
+
+                    },
+                    error: function (data) {
+                        alert("系统错误");
+                    }
+                });
+
+        }
+
+
+
+        function deleteRole(byid) {
+
+            $.ajax({
+                url: "/deleteroles",
+                headers: {'Authorization': a},
+                type: "post",
+                data:{"id":byid},
+                dataType: "json",
+                // contentType: "application/json",
+
+                async: true,
+
+                success: function (data) {
+                    var result=data.suceesee;
+                    if (result==1)
+                    {
+                        $("#"+byid).hide();
+                        alert("删除成功");
+
+                        //document.getElementById("tr"+byid).parentNode.removeChild(document.getElementById(id));
+                    }
+else {
+    alert("有外键约束等问题删不了");
+                    }
+                },
+                error: function (data) {
+                    alert("系统错误");
+                }
+            });
+
+        }
+
+        function deletePermission(byid) {
+
+            $.ajax({
+                url: "/deleterights",
+                headers: {'Authorization': a},
+                type: "post",
+                data:{"id":byid},
+                dataType: "json",
+                // contentType: "application/json",
+
+                async: true,
+
+                success: function (data) {
+                    var result=data.s;
+                    if (result==1)
+                    {
+                        $("#"+byid).hide();
+                        alert("删除成功");
+
+                        //document.getElementById("tr"+byid).parentNode.removeChild(document.getElementById(id));
+                    }
+                    else {
+                        alert("有外键约束等问题删不了");
+                    }
+
+                },
+                error: function (data) {
+                    alert("系统错误");
+                }
+            });
 
         }
     </script>
-</head>
-<body>
 
-<div style="text-align: center">
-    <h2>Welcome to RBAC</h2><br>
-<input type="text" name="id" id="id" placeholder="请输入账户"><br><br>
-    <input type="password" id="password" placeholder="请输入密码" ><br><br>
-<button onclick="ajaxSubmit()">登陆</button>
-    <button onclick="ajaxSubmit2()">注册</button>
+</head>
+<body class="hold-transition sidebar-mini;.ajax-template.fixed">
+
+<div class="wrapper" id="">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+
+            </li>
+
+        </ul>
+
+
+
+
+    </nav>
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="index3.html" class="brand-link">
+            <img src="/static/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">RBAC</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="rrapp">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="/static/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">当前用户ID:</a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item has-treeview menu-open">
+<!--                        <a href="#" class="nav-link active">-->
+<!--                            <i class="nav-icon fas fa-tachometer-alt"></i>-->
+<!--                            <p>-->
+<!--                                系统管理-->
+<!--                                <i class="right fas fa-angle-left"></i>-->
+<!--                            </p>-->
+<!--                        </a>-->
+<!--                        <ul class="nav nav-treeview">-->
+
+
+
+
+
+                            <menu-item  :item="item"    v-for="item in menuList"  ></menu-item>
+
+
+                </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+    <div class="content-wrapper">
+
+
+
+
+
+
+
+
+
+<!--<div>-->
+<!--<div style="float: left;width: 400px">-->
+<!--    &lt;!&ndash;    <button >显示拥有角色信息</button>&nbsp;&nbsp;&ndash;&gt;-->
+<!--    <button th:href="'/addrole/'+a" class="btn btn-primary btn-lg" style="width: 200px">显示用户</button><br>-->
+<!--    <button onclick="ajaxSubmit2()" class="btn btn-primary btn-lg" style="width: 200px">显示角色</button><br>-->
+<!--    <button onclick="ajaxSubmit3()" class="btn btn-primary btn-lg"style="width: 200px">管理权限</button>-->
+<!--</div>-->
+
+
+    <div class="text-center" style="">
+    <table style="width: 800px" class="table" >
+        <tbody id="show" style="align-content: center">
+        </tbody>
+    </table>
+</div>
+
+
+
 
 </div>
 
+
+
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/dist/js/adminlte.min.js"></script>
+<script src="/static/js/index.js"></script>
+</div>
 </body>
 </html>

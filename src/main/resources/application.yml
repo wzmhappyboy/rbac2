@@ -2,6 +2,13 @@ server:
   port: 8084
 
 spring:
+  mvc:
+    static-path-pattern: /static/**
+#  resources:
+#    static-locations: classpath:/static/
+#  thymeleaf:
+#    cache: false
+
   datasource:
     druid:
       username: root
@@ -23,6 +30,10 @@ spring:
       useGlobalDataSourceStat: true
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 
+
+
+
+
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
@@ -41,3 +52,4 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+

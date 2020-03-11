@@ -2,45 +2,41 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cisco.rbac.mapper.UserMapper">
-    <resultMap id="permissionRM" type="com.cisco.rbac.entity.RolePermissionRelation">
+<mapper namespace="com.cisco.rbac.model.mapper.UserMapper">
+    <resultMap id="permissionRM" type="com.cisco.rbac.model.entity.RolePermissionRelation">
         <id column="id" property="id"/>
         <result column="role_id" property="roleId"/>
         <result column="right_id" property="permissionId"/>
         <result column="right_type" property="permissionType"/>
     </resultMap>
 
-    <resultMap id="userResultMapWithSelect" type="com.cisco.rbac.entity.User">
+    <resultMap id="userResultMapWithSelect" type="com.cisco.rbac.model.entity.User">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="password" column="password"/>
-        <collection property="roles" ofType="com.cisco.rbac.entity.Role" column="id"
-                    select="com.cisco.rbac.mapper.UserMapper.findRoleByUserId"></collection>
+        <collection property="roles" ofType="com.cisco.rbac.model.entity.Role" column="id"
+                    select="com.cisco.rbac.model.mapper.UserMapper.findRoleByUserId"></collection>
     </resultMap>
 
-    <resultMap id="userResultMapWithSelect2" type="com.cisco.rbac.entity.User">
+    <resultMap id="userResultMapWithSelect2" type="com.cisco.rbac.model.entity.User">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="password" column="password"/>
-        <collection property="permissions" ofType="com.cisco.rbac.entity.Permission" column="id"
-                    select="com.cisco.rbac.mapper.UserMapper.findPermissionByUserId"></collection>
+        <collection property="permissions" ofType="com.cisco.rbac.model.entity.Permission" column="id"
+                    select="com.cisco.rbac.model.mapper.UserMapper.findPermissionByUserId"></collection>
     </resultMap>
 
     <select id="getByIdWithSelect2" parameterType="int" resultMap="userResultMapWithSelect2">
         select  * from tuser where id=#{id}
     </select>
 
-    <resultMap id="permissionResultMap" type="com.cisco.rbac.entity.Permission">
-        <id property="id" column="id"/>
-        <result property="name" column="right_name"/>
-        <result property="description" column="description"/>
-    </resultMap>
-    <resultMap id="userResultMap" type="com.cisco.rbac.entity.User">
+
+    <resultMap id="userResultMap" type="com.cisco.rbac.model.entity.User">
     <id property="id" column="id"/>
     <result property="password" column="password"/>
      <result property="name" column="name"/>
     </resultMap>
-    <resultMap id="roleResultMap" type="com.cisco.rbac.entity.Role">
+    <resultMap id="roleResultMap" type="com.cisco.rbac.model.entity.Role">
         <id property="id" column="id"/>
         <result property="name" column="role_name"/>
         <result property="description" column="description"/>
@@ -51,12 +47,16 @@
         select  * from tuser where id=#{id}
     </select>
 
+
+
+
+
     <select id="findRoleByUserId" parameterType="int" resultMap="roleResultMap">
         select r.* from tuserrolerelation t,trole r where t.role_id=r.id and t.user_id=#{id}
 
     </select>
 
-<select id="login" parameterType="com.cisco.rbac.entity.User" resultMap="userResultMap">
+<select id="login" parameterType="com.cisco.rbac.model.entity.User" resultMap="userResultMap">
     select * from tuser
     where id=#{id} and password=#{password}
 
@@ -66,14 +66,14 @@
 
     <!--添加新用户-->
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
-            parameterType="com.cisco.rbac.entity.User">
+            parameterType="com.cisco.rbac.model.entity.User">
 insert into
   tuser(id,name,password)
 values (#{id},#{name},#{password})
     </insert>
 
     <!--根据id查找用户信息-->
-    <select id="getUserById" resultType="com.cisco.rbac.entity.User" parameterType="int">
+    <select id="getUserById" resultType="com.cisco.rbac.model.entity.User" parameterType="int">
   select *
   from tuser
   where id=#{id}
@@ -87,6 +87,19 @@ values (#{id},#{name},#{password})
 
     </select>
 
+
+    <resultMap id="permissionResultMap" type="com.cisco.rbac.model.entity.Permission">
+        <id property="id" column="id"/>
+        <result property="name" column="right_name"/>
+        <result property="url" column="url"/>
+<collection property="list" column="id" select="com.cisco.rbac.model.mapper.UserMapper.selectChildrenPermissionById"></collection>
+    </resultMap>
+
+    <select id="selectChildrenPermissionById" parameterType="int" resultMap="permissionResultMap">
+select * from tright where parent_id=#{id}
+
+    </select>
+
     <select id="findPermissionByUserId" parameterType="int" resultMap="permissionResultMap">
         select t3.*
         from tuserrolerelation t1 join trolerightrelation t2 on t1.role_id=t2.role_id join  tright t3 on t2.right_id=t3.id
@@ -94,7 +107,7 @@ values (#{id},#{name},#{password})
     </select>
 
     <!--查询所有用户信息-->
-    <select id="queryUser" resultType="com.cisco.rbac.entity.User">
+    <select id="queryUser" resultType="com.cisco.rbac.model.entity.User">
         select  *
         from  tuser
     </select>
@@ -114,7 +127,7 @@ values (#{id},#{name},#{password})
         values (#{id},#{userId},#{roleId})
     </insert>
 
-    <update id="updateUser" parameterType="com.cisco.rbac.entity.User">
+    <update id="updateUser" parameterType="com.cisco.rbac.model.entity.User">
         update  tuser
         set name=#{name},password=#{password}
         where id=#{id}
@@ -122,13 +135,13 @@ values (#{id},#{name},#{password})
 
 
 
-<!--    <parameterMap id="urrResultMap" type="com.cisco.rbac.entity.UserRoleRelation">-->
+<!--    <parameterMap id="urrResultMap" type="com.cisco.rbac.model.entity.UserRoleRelation">-->
 <!--        <id property="id" column="id"/>-->
 <!--        <result property="userId" column="user_id"/>-->
 <!--        <result property="roleId" column="role_id"/>-->
 <!--    </parameterMap>-->
 
-    <delete id="deleteUserrolerelation" parameterType="com.cisco.rbac.entity.UserRoleRelation">
+    <delete id="deleteUserrolerelation" parameterType="com.cisco.rbac.model.entity.UserRoleRelation">
         delete
         from  tuserrolerelation
         where role_id=#{roleId} and user_id=#{userId}

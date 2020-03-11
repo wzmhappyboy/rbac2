@@ -2,16 +2,16 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cisco.rbac.mapper.PermissionMapper">
+<mapper namespace="com.cisco.rbac.model.mapper.PermissionMapper">
 
     <!--添加新权限-->
-    <insert id="insertPermission" parameterType="com.cisco.rbac.entity.Permission">
+    <insert id="insertPermission" parameterType="com.cisco.rbac.model.entity.Permission">
 insert into
   tright(id,right_name,description)
 values (#{id},#{name},#{description})
     </insert>
 
-    <resultMap id="permissionResultMap" type="com.cisco.rbac.entity.Permission">
+    <resultMap id="permissionResultMap" type="com.cisco.rbac.model.entity.Permission">
         <id property="id" column="id"/>
         <result property="name" column="right_name"/>
         <result property="description" column="description"/>
@@ -31,7 +31,7 @@ values (#{id},#{name},#{description})
     </delete>
 
 <!--给权限改信息-->
-    <update id="updatePermission" parameterType="com.cisco.rbac.entity.Permission">
+    <update id="updatePermission" parameterType="com.cisco.rbac.model.entity.Permission">
         update  tright
         set right_name=#{name},description=#{description}
         where id=#{id}
