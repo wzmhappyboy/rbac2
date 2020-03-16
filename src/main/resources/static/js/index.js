@@ -27,7 +27,7 @@ var menuItem = Vue.extend({
        //   '<ul     class="nav nav-treeview">',
 
             '<li class="nav-item">',
-            '<a href="#" class="nav-link">',
+            '<a  class="nav-link" :href="\'#\'+item.url">',
           '<i class="far fa-circle nav-icon"></i>',
             '<p>{{item.name}}</p>',
             '</a>',
@@ -47,32 +47,75 @@ Vue.component('menuItem',menuItem);
 var vm=new Vue({
     el:'#rrapp',
     data:{
-        menuList:{}
-
+        user:{},
+        menuList:{},
+        main:"main"
     },
     methods:{
         getMenuList: function (event) {
-alert("Cookie:"+getCookie("token"));
             $.ajax({
-                url: "/uroles",
+                url: "/permissions",
                 headers: {'Authorization': getCookie("token")},
-                type: "post",
+                type: "get",
                 dataType: "json",
                 // contentType: "application/json",
-                data: {"id": 1},
+             //   data: {"id": 1},
                 async: true,
 
                 success: function(data) {
-                    vm.menuList=data.rightlist;
+                    vm.menuList=data.list;
                 },
                 error:function (data) {
                     alert("系统错误");
                 }
 
                 });
+        },
+        getUser: function (event) {
+            $.ajax({
+                url: "/info",
+                headers: {'Authorization': getCookie("token")},
+                type: "post",
+                dataType: "json",
+                async: true,
+
+                success: function(data) {
+                    vm.user=data.user;
+                },
+                error:function (data) {
+                    alert("系统错误");
+                }
+
+            });
         }
+
+
     },
     created:function () {
+        this.getUser();
         this.getMenuList();
+    },
+    updated:function () {
+        //路由
+        var router =new Router();
+        routerList(router, vm.menuList);
+        router.start();
     }
 });
+
+function routerList(router, menuList){
+    for(var key in menuList){
+        var menu = menuList[key];
+        if(menu.type == 0){
+            routerList(router, menu.list);
+        }else if(menu.type == 1){
+            router.add('#'+menu.url, function() {
+                var url = window.location.hash;
+                //替换iframe的url
+                vm.main = url.replace('#', '');
+
+
+            });
+        }
+    }
+}

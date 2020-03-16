@@ -33,24 +33,7 @@ public class HandleController {
 
     @Autowired
     PermissionServiceImpl permissionService;
-//    删除用户
-    @ResponseBody
-    @RequestMapping("/deletusers")
-    public Map<String,Object> deleteUserById(@RequestParam("id") String id){
-        int ad=Integer.parseInt(id);
-System.out.println("排进来要删除的id："+id);
-        boolean result=userService.deleteUserById(ad);
-        Map<String,Object> r=new HashMap<>();
-        if (result)
-        {
-            r.put("success","1");
-        }
-        else{
-            r.put("success","0");
-        }
 
-        return r;
-    }
 
 
 //    进入管理用户界面

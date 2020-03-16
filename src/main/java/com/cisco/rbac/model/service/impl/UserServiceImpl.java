@@ -165,14 +165,12 @@ public class UserServiceImpl implements UserService {
         return  list;
 }
 
+//根据JWT角色内容进行权限判断
 @Override
   public   Set<String> getPermissionSet(List<Role> roleList) {
  Set<String> result=new HashSet<>();
-
     ObjectMapper mapper = new ObjectMapper();
     List<Role> list = mapper.convertValue(roleList, new TypeReference<List<Role>>() { });
-
-
     int l = roleList.size();
     for (int i = 0; i < l; i++) {
 if (list.get(0).getId()==1){

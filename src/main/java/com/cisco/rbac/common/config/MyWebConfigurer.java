@@ -32,7 +32,7 @@ public class MyWebConfigurer extends WebMvcConfigurerAdapter {
         System.out.println("拦截器已启动");
         registry.addInterceptor(jwtInterceptor()).addPathPatterns("/controller/").excludePathPatterns("/**");
         registry.addInterceptor(securityInterceptor())
-                .addPathPatterns("/getrolesbyuserid").addPathPatterns("/uroles").addPathPatterns("/showusers").addPathPatterns("/showroles").addPathPatterns("/showps");
+                .addPathPatterns("/userlist").addPathPatterns("/permissions").addPathPatterns("/showusers").addPathPatterns("/showroles").addPathPatterns("/showps");
         super.addInterceptors(registry);
     }
 

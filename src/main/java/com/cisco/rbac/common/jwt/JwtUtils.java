@@ -2,6 +2,7 @@ package com.cisco.rbac.common.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -17,6 +18,9 @@ import java.util.Map;
 public class JwtUtils {
 
     private static final String AUTHORIZATION_HEADER_PREFIX = "Bearer ";
+
+    @Autowired
+    private JwtParam jwtParam;
 
     // 构造私有
     private JwtUtils() {}
@@ -106,6 +110,17 @@ public class JwtUtils {
         }
     }
 
+    public static int getuseridbytoken(String token,String base64Secret)
+    {
+        System.out.println("方法里的base64:"+base64Secret);
+        Claims claims = Jwts.parser()
+                .setSigningKey(DatatypeConverter.parseBase64Binary(base64Secret))
+                .parseClaimsJws(token).getBody();
+System.out.println("getuserid方法里的claims："+claims);
+        int userId= (int) claims.get("userId");
+        System.out.println("方法里的userId:"+userId);
+        return userId;
+    }
     /**
      * 解析token
      * @param authToken 授权头部信息
@@ -114,10 +129,11 @@ public class JwtUtils {
      */
     public static Claims parseToken(String authToken, String base64Secret) {
         try{
+           // System.out.println("base64:"+base64Secret);
             Claims claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(base64Secret))
                     .parseClaimsJws(authToken).getBody();
-         //   System.out.println("userId:"+claims.get("userId"));
+            System.out.println("userId:"+claims.get("userId"));
            // System.out.println("claim:"+claims);
             return claims;
         } catch (SignatureException se) {

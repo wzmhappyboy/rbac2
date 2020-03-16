@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:v-for="http://www.w3.org/1999/xhtml"
+      xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-show="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>用户管理</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/static/dist/css/adminlte.min.css}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <script src="/static/libs/vue.min.js"></script>
+
+</head>
+<body>
+<div id="rrapp">
+
+  <div   v-if="showList">
+<input type="text" class="form-control" id="" placeholder="输入你想查询的内容" style="width: 250px">
+<button class="btn btn-default" type="submit">查询</button>&nbsp;  <button type="submit" class="btn btn-primary" v-on:click="shift">新增</button>
+<table class="table table-bordered" style="width: 600px;text-align:center" >
+
+    <tr><td>用户ID</td><td>用户姓名</td><td>用户密码</td><td>操作</td></tr>
+<tr v-for="user in users">
+<td v-text="user.id"></td>
+<td v-text="user.name"></td>
+<td v-text="user.password"></td>
+    <td><a href="javascript:;" v-on:click="deleteUser(user.id)">删除</a>&nbsp;&nbsp;<a href="#">修改</a></td>
+</tr>
+    <tr>  <td><a v-show="!isFirstPage" href="javascript:;" v-on:click="getUserList(pageNum-1)">上一页</a><a v-show="isFirstPage" >上一页</a></td>
+        <td colspan="2">当前第{{page}} 页</td>
+        <td><a v-show="!isLastPage" href="javascript:;" v-on:click="getUserList(pageNum+1);">下一页</a><a v-show="isLastPage">下一页</a></td></tr>
+</table>
+  </div>
+
+    <div v-show="!showList">
+        <form>
+            <div class="form-group">
+                <label for="exampleInputEmail1">用户名</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="请设置用户名" style="width: 350px">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">密码</label>
+                <input type="text" class="form-control" id="exampleInputPassword1" placeholder="请设置密码" style="width: 350px">
+            </div>
+
+            <button type="submit" class="btn btn-default">添加</button>
+            <button type="submit" class="btn btn-primary" v-on:click="shift">返回</button>
+        </form>
+
+
+    </div>
+
+</div>
+
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+<script src="/static/js/users.js"></script>
+
+
+</body>
+</html>

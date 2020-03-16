@@ -62,7 +62,7 @@ public class PermissionController {
 
 
     //更改权限
-    @PostMapping("/permission")
+    @PutMapping("/permission")
     public  String updatePermission(@RequestBody Map<String,String> rrrMap){
 
         Permission permission=new Permission();

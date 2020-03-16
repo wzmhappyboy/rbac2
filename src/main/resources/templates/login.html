@@ -79,19 +79,13 @@
                     success: function (data) {
                         var r = data.r;
                         var a = data.a;
-                        if (r == 1) {
-                            setCookie("token",a)
-                            window.location.href = 'gouserhome/' + id + '/' + a;
-
-                        } else if (r == 2) {
+                         if (r == 2) {
                             alert("Log in faild!");
-
-                        } else {
-                            setCookie("token",a);
-                            window.location.href = '/goroot';
                         }
-
-
+                         else {
+                            setCookie("token",a);
+                            window.location.href = '/index';
+                        }
                     },
                     error: function (data) {
                         alert("系统错误");

@@ -28,7 +28,6 @@ public class PageController {
     @Autowired
     private JwtParam jwtParam;
 
-//用户访问进入首页
     @GetMapping("/")
     @JwtIgnore
     public String index(){
@@ -36,83 +35,62 @@ public class PageController {
     }
 
 
-//登陆
+//登录
     @ResponseBody
     @RequestMapping(value = "/login")
     @JwtIgnore
     public Map<String,String> login(@RequestParam("id") String id, @RequestParam("password") String password, HttpServletResponse response) {
         int id2 = Integer.parseInt(id);
-
-
+        Map map = new HashMap<String, String>();
         boolean result = userService.checkUserAndPassword(id2, password);
         if (result) {
-            User user=userService.getByIdWithResult(id2);
-            List<Role> roleList=user.getRoles();
-            Map<String,Object> claim=new HashMap<>();
-            //将用户拥有角色插入token
-            claim.put("rolelist",roleList);
-            String token = JwtUtils.createToken(id+"", claim,jwtParam);
+            User user = userService.getByIdWithResult(id2);
+            List<Role> roleList = user.getRoles();
+            Map<String, Object> claim = new HashMap<>();
+            //生成JWT存储用户角色信息
+            claim.put("rolelist", roleList);
+            String token = JwtUtils.createToken(id + "", claim, jwtParam);
             if (token == null) {
                 System.out.println("用户签名失败");
                 return null;
             }
-            String a=JwtUtils.getAuthorizationHeader(token);
-           System.out.println("用户生成签名:"+a);
-//            Cookie cookie=new Cookie("token",a);
-//            cookie.setDomain("localhost");
-//            cookie.setPath("/");
-//            response.addCookie(cookie);
-            boolean root=false;
-            if (id2==10086&&password.equals("10086"))
-            {
-                root=true;
-            }
-            Map map = new HashMap<String, String>();
+            String a = JwtUtils.getAuthorizationHeader(token);
+            System.out.println("用户生成签名:" + a);
             map.put("a", a);
-            if (root==false) {
-                map.put("r", "1");
-            }
-            else {
-                map.put("r","3");
-            }
-
+            map.put("r", "1");
             return map;
+        } else {
 
-
-        }
-         else {
-//用户名密码都为root则进入超级管理员
-            Map map = new HashMap<String, String>();
             map.put("erro", "something wrong happern");
-                map.put("r", "2");
-
+            map.put("r", "2");
             return map;
         }
-
     }
 
 
-//普通用户进入用户首页
-    @RequestMapping("gouserhome/{id}/{a}")
+    //用户进入注册界面
+    @RequestMapping("/logon")
     @JwtIgnore
-    public  ModelAndView showpermission(@PathVariable("id") String id,@PathVariable("a") String a )
-    {
-    System.out.println("restful传的参数:"+a);
+    public String login(){
+        return "logon";
+    }
+
+
+
+    @RequestMapping("/unauthorized")
+    @JwtIgnore
+    public ModelAndView unauth(){
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("userhome");
-        modelAndView.addObject("id",id);
-        modelAndView.addObject("a",a);
+        modelAndView.setViewName("unauth");
         return modelAndView;
     }
 
-//    管理员进入管理员首页
-    @RequestMapping("/goroot")
+
+    @RequestMapping("/index")
     @JwtIgnore
-    public  ModelAndView goRoot()
+    public  String home()
     {
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("index");
-        return modelAndView;
+        return "index";
     }
 
     @RequestMapping("addrole/goroot")
@@ -134,22 +112,21 @@ public class PageController {
         modelAndView.addObject("a",a);
         return modelAndView;
     }
-//根据用户ID返还用户权限
-    @ResponseBody
-    @RequestMapping("/permissionin")
-    public Map<String,Object> showpermissions(@RequestBody String id)
-    {
-        Map<String,Object> result=new HashMap<String, Object>();
-        int id2=Integer.parseInt(id);
-        List<RolePermissionRelation> rightsList=userService.queryUserrights(Integer.parseInt(id));
-        List<Integer> list=new ArrayList<>();
-        for(int i=0;i<rightsList.size();i++)
-        {
-            list.add(rightsList.get(i).getPermissionId());
-        }
-        result.put("list",list);
 
-        return result;
+
+
+    @RequestMapping("main")
+    public String main(){
+        return "main";
     }
+
+
+    @RequestMapping("users.html")
+    public String test(){return "users";}
+
+@RequestMapping("druid")
+public String druid(){
+        return "http://localhost:8084/druid/index.html";
+}
 }
 
