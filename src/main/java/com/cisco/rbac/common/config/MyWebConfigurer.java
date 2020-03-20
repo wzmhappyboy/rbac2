@@ -30,9 +30,9 @@ public class MyWebConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         System.out.println("拦截器已启动");
-        registry.addInterceptor(jwtInterceptor()).addPathPatterns("/controller/").excludePathPatterns("/**");
-        registry.addInterceptor(securityInterceptor())
-                .addPathPatterns("/userlist").addPathPatterns("/permissions").addPathPatterns("/showusers").addPathPatterns("/showroles").addPathPatterns("/showps");
+        registry.addInterceptor(jwtInterceptor()).addPathPatterns("/info").addPathPatterns("/permissions").addPathPatterns("/users").addPathPatterns("/roles").excludePathPatterns("/**");
+//        registry.addInterceptor(securityInterceptor())
+//                .addPathPatterns("/users").addPathPatterns("/permissions").addPathPatterns("/roles");
         super.addInterceptors(registry);
     }
 

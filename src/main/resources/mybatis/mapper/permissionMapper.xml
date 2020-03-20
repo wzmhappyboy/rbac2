@@ -7,20 +7,29 @@
     <!--添加新权限-->
     <insert id="insertPermission" parameterType="com.cisco.rbac.model.entity.Permission">
 insert into
-  tright(id,right_name,description)
-values (#{id},#{name},#{description})
+  tright(id,right_name,description,url)
+values (#{id},#{name},#{description},#{url})
     </insert>
 
     <resultMap id="permissionResultMap" type="com.cisco.rbac.model.entity.Permission">
         <id property="id" column="id"/>
         <result property="name" column="right_name"/>
         <result property="description" column="description"/>
+        <result property="url" column="url"/>
+        <result property="type" column="type"/>
+        <result property="parentId" column="parent_id"/>
     </resultMap>
 
     <!--查询所有权限信息-->
     <select id="queryPermission" resultMap="permissionResultMap">
         select  *
         from  tright
+    </select>
+
+<!--    根据id查询权限-->
+    <select id="queryPermissionById" resultMap="permissionResultMap" parameterType="int">
+        select * from tright
+        where id=#{id}
     </select>
 
     <!--删除权限信息-->
@@ -33,7 +42,7 @@ values (#{id},#{name},#{description})
 <!--给权限改信息-->
     <update id="updatePermission" parameterType="com.cisco.rbac.model.entity.Permission">
         update  tright
-        set right_name=#{name},description=#{description}
+        set right_name=#{name},description=#{description},url=#{url},type=#{type}
         where id=#{id}
     </update>
 </mapper>

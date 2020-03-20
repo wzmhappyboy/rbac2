@@ -100,4 +100,17 @@ values (#{id},#{name},#{description})
         select  *
         from  trole
     </select>
+
+
+<!--    <select id="selectRoleHandlePermission" parameterType="int" resultMap="permissionResultMap">-->
+<!--        select *-->
+<!--        from tright-->
+<!--        where id  in (select right_id from trolerightrelation where role_id=#{id})-->
+<!--    </select>-->
+
+<!--    <select id="selectRoleNotHandlePermission" parameterType="int" resultMap="permissionResultMap">-->
+<!--        select *-->
+<!--        from tright-->
+<!--        where id  in (select right_id from trolerightrelation where role_id=#{id})-->
+<!--    </select>-->
 </mapper>

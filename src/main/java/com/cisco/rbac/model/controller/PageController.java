@@ -122,11 +122,21 @@ public class PageController {
 
 
     @RequestMapping("users.html")
-    public String test(){return "users";}
+    public String users(){return "users";}
+
+    @RequestMapping("roles.html")
+public String roles(){return "roles";}
+
 
 @RequestMapping("druid")
 public String druid(){
         return "http://localhost:8084/druid/index.html";
+}
+
+
+@RequestMapping("permissions.html")
+    public  String permissions(){
+        return "permissions";
 }
 }
 

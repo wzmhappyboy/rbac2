@@ -2,8 +2,10 @@ package com.cisco.rbac.model.service;
 
 import com.cisco.rbac.model.entity.*;
 import com.github.pagehelper.PageInfo;
+import org.springframework.data.relational.core.sql.In;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface UserService {
@@ -16,8 +18,10 @@ public interface UserService {
 
     boolean checkUserAndPassword(Integer id,String password);
 
-    boolean insertUser(User user);
+    Map<String,Object> insertUser(User user);
     boolean deleteUserById(int id);
+
+    boolean clearUserRoles(int id);
 
     boolean updateUser(User user);
 

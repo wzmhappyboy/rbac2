@@ -48,7 +48,6 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
-       // System.out.println("方法进来了");
         HttpServletRequest req = (HttpServletRequest) request;
         String token = req.getHeader("Authorization");
         return token != null;
@@ -65,8 +64,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
         getSubject(request, response).login(jwtToken);
 
-       User user=(User) SecurityUtils.getSubject().getPrincipal();
-      // System.out.println("getPrincipal方法得到的user:"+user);
+
         // 如果没有抛出异常则代表登入成功，返回true
         return true;
     }

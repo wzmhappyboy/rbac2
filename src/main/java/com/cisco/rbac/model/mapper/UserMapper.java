@@ -27,6 +27,8 @@ public interface UserMapper {
     int insertUserrolerelation(UserRoleRelation urr);
     int deleteUserrolerelation(UserRoleRelation urr);
 
+    int clearUserRoles(int id);
+
     User getUserById(int id);
     List<User> queryUser();
     List<Permission> findPermissionByUserId(int id);

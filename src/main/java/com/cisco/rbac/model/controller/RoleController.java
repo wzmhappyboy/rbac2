@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,18 +28,21 @@ public class RoleController {
 
     //增加角色
     @ResponseBody
-    @RequestMapping("/addroles")
+    @PostMapping("/roles")
+    @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
     public  Map<String,Object> insertRole(@RequestParam("name") String name,@RequestParam("description") String description){
+       System.out.println("执行添加角色方法");
         Role role=new Role();
         role.setName(name);
         role.setDescription(description);
         boolean result =roleService.insertRole(role);
+        System.out.println("执行添加程序成功，result:"+result);
        Map<String,Object> r=new HashMap<>();
         if (result){
             r.put("s","1");
         }
         else{
-            r.put("s","2");
+            r.put("s","0");
         }
     return r;
     }
@@ -119,7 +123,7 @@ public class RoleController {
 
     //删除角色
     @ResponseBody
-    @RequestMapping("/deleteroles")
+    @DeleteMapping("/roles")
     public  Map<String,Object> deleteRoleById(@RequestParam("id") String id){
         Map<String,Object> r=new HashMap<>();
         System.out.println("要删除的角色id为："+id);
@@ -136,7 +140,7 @@ public class RoleController {
     }
 
     //改角色信息
-    @PostMapping("/newroles")
+    @PutMapping("/roles")
     public  String updateRole(@RequestBody Map<String,String> rrrMap){
         Role r=new Role();
         r.setDescription(rrrMap.get("description"));
@@ -151,61 +155,39 @@ public class RoleController {
         }
     }
 
-//   返还所有角色
+//   分页显示角色
     @ResponseBody
-    @RequestMapping("/showroles")
+    @GetMapping("/roles")
     @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
     public  Map<String,Object> getAllRoles(@RequestParam(value = "page",defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "3") String pageSize){
         PageInfo<Role> pageInfo = roleService.queryRole(page,Integer.parseInt(pageSize));
         Map<String,Object> result =new HashMap<>();
-
-
-        //        //获得当前页
+         //当前页
         result.put("pageNum",pageInfo.getPageNum());
-//        //获得一页显示的条数
-        System.out.println("显示第："+page+"页");
+        //一页显示的条数
         result.put("pageSize",pageInfo.getPageSize());
-//        //是否是第一页
+          //是否是第一页
         result.put("isFirstPage",pageInfo.isIsFirstPage());
-        //       System.out.println("isFirstPage:"+pageInfo.isIsFirstPage());
-//        //获得总页数
+          //获得总页数
         result.put("totalPages",pageInfo.getPages());
 //        //是否是最后一页
         result.put("isLastPage",pageInfo.isIsLastPage());
-//System.out.println("isLastPage:"+pageInfo.isIsLastPage());
         result.put("roleslist",pageInfo.getList());
+        System.out.println("获取角色列表成功，roleslist:"+pageInfo.getList());
         return  result;
     }
 
 
-
-    //列出所有权限
     @ResponseBody
-    @RequestMapping("/showps")
-    @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
-    public  Map<String,Object> getAllPermissions(@RequestParam(value = "page",defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "3") String pageSize){
-
-
-        PageInfo<Permission> pageInfo = permissionService.queryPermission(page,Integer.parseInt(pageSize));
-
-        Map<String,Object> result =new HashMap<>();
-
-//        //获得当前页
-        result.put("pageNum",pageInfo.getPageNum());
-//        //获得一页显示的条数
-        System.out.println("显示第："+page+"页");
-        result.put("pageSize",pageInfo.getPageSize());
-//        //是否是第一页
-        result.put("isFirstPage",pageInfo.isIsFirstPage());
- //       System.out.println("isFirstPage:"+pageInfo.isIsFirstPage());
-//        //获得总页数
-        result.put("totalPages",pageInfo.getPages());
-//        //是否是最后一页
-        result.put("isLastPage",pageInfo.isIsLastPage());
-//System.out.println("isLastPage:"+pageInfo.isIsLastPage());
-          result.put("permissionslist",pageInfo.getList());
-
-
+    @GetMapping("/roles/{id}")
+    public  Map<String,Object> getRoleById(@PathVariable("id") int id){
+        Role role=roleService.getByIdWithResult(id);
+        System.out.println("返回角色:");
+        List<Role> rolelist=new LinkedList<>();
+        rolelist.add(role);
+        Map<String,Object> result=new HashMap<>();
+        result.put("role",rolelist);
+        result.put("r",role);
         return  result;
     }
 

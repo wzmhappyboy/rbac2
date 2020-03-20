@@ -38,7 +38,7 @@ public class ShiroConfig {
         Map<String, String> filterRuleMap = new HashMap<>();
         // 所有请求通过我们自己的JWT Filter
         filterRuleMap.put("/permissions", "jwt");
-        filterRuleMap.put("/userlist", "jwt");
+        filterRuleMap.put("/users", "jwt");
 
         filterRuleMap.put("/info","jwt");
         // 访问 /unauthorized/** 不通过JWTFilter

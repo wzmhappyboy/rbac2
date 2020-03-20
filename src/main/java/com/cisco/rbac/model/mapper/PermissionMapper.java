@@ -17,6 +17,8 @@ public interface PermissionMapper {
     //查询所有权限信息
     List<Permission> queryPermission();
 
+    //查询指定权限
+    Permission queryPermissionById(int id);
     //改权限信息
     boolean updatePermission(Permission P);
 }

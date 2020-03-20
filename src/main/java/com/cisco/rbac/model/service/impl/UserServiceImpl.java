@@ -21,13 +21,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public  boolean insertUser(User user){
+    public  Map<String,Object> insertUser(User user){
+        Map<String,Object> result=new HashMap<>();
+        Boolean success=false;
 //        if(user.getId()!=null&&!"".equals(user.getId())){
             try {
                 int effecteNum = userMapper.insertUser(user);
                 if (effecteNum > 0) {
                     System.out.println("增加成功，用户id为" + user.getId());
-                    return true;
+                    success=true;
+                    result.put("success",success);
+                    result.put("user_id",user.getId());
                 } else {
                     throw new RuntimeException("插入信息失败，插入行数有误");
                 }
@@ -35,6 +39,7 @@ public class UserServiceImpl implements UserService {
             catch (Exception e){
                 throw new RuntimeException("插入信息失败"+e.getMessage());
             }
+            return result;
             }
 //        else {
 //            throw  new RuntimeException("id不能为空！！！");
@@ -75,6 +80,22 @@ public class UserServiceImpl implements UserService {
              else {
                  return false;
              }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return  false;
+        }
+    }
+
+    @Override
+    public  boolean clearUserRoles(int id){
+        try {
+            int effecteNum = userMapper.clearUserRoles(id);
+            if (effecteNum > 0) {
+                return true;
+            } else {
+                return false;
+            }
         }
         catch (Exception e){
             e.printStackTrace();

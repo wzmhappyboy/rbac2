@@ -74,7 +74,7 @@ var vm=new Vue({
         getUser: function (event) {
             $.ajax({
                 url: "/info",
-                headers: {'Authorization': getCookie("token")},
+               headers: {'Authorization': getCookie("token")},
                 type: "post",
                 dataType: "json",
                 async: true,

@@ -45,9 +45,14 @@ public class PermissionServiceImpl implements PermissionService {
     public PageInfo<Permission> queryPermission(Integer page, Integer pageSize){
         PageHelper.startPage(page, pageSize);
         List<Permission> list=permissionMapper.queryPermission();
+        return new PageInfo<>(list);
+    }
 
-return new PageInfo<>(list);
-
+    @Override
+    public  Permission queryPermissionById(int id)
+    {
+        Permission permission=permissionMapper.queryPermissionById(id);
+        return  permission;
     }
 
     @Override

@@ -47,7 +47,10 @@
         select  * from tuser where id=#{id}
     </select>
 
-
+    <select id="queryUser" resultMap="userResultMapWithSelect">
+            select  *
+            from  tuser
+        </select>
 
 
 
@@ -107,10 +110,10 @@ select * from tright where parent_id=#{id}
     </select>
 
     <!--查询所有用户信息-->
-    <select id="queryUser" resultType="com.cisco.rbac.model.entity.User">
-        select  *
-        from  tuser
-    </select>
+<!--    <select id="queryUser" resultType="com.cisco.rbac.model.entity.User">-->
+<!--        select  *-->
+<!--        from  tuser-->
+<!--    </select>-->
 
     <!--删除用户信息-->
     <delete id="deleteUserById" parameterType="int">
@@ -119,6 +122,12 @@ select * from tright where parent_id=#{id}
         where id=#{id}
     </delete>
 
+<!--    清空用户角色-->
+<delete id="clearUserRoles" parameterType="int">
+    delete
+    from tuserrolerelation
+    where user_id=#{id}
+</delete>
 
     <!--    给用户加角色-->
     <insert id="insertUserrolerelation" useGeneratedKeys="true" keyProperty="id" keyColumn="id">

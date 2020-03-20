@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,44 +26,41 @@ public class UserController extends AbstractController{
 
     @Autowired
     private JwtParam jwtParam;
-    //插入用户
+    //注册用户
     @ResponseBody
     @PostMapping(value = "/users")
     @JwtIgnore
-    public  Map<String,Object> insertUser(@RequestParam("name") String name,@RequestParam("password") String password){
-        System.out.println("进入后台");
+    public  Map<String,Object> insertUser(@RequestParam("name") String name,@RequestParam("password") String password,@RequestParam("role_id") String role_id){
         User user=new User();
-        String r="0";
         user.setName(name);
         user.setPassword(password);
-        boolean result=false;
-        result = userService.insertUser(user);
+     Map<String,Object>   result = userService.insertUser(user);
+     int roleId=Integer.parseInt(role_id);
+     int userId= (int) result.get("user_id");
+
+        UserRoleRelation urr=new UserRoleRelation();
+        urr.setRoleId(roleId);
+        urr.setUserId(userId);
+        boolean r =userService.insertUserrolerelation(urr);
         Map<String,Object> map=new HashMap<>();
-        map.put("success",result);
+        map.put("success",r);
         return map;
     }
 
     //查询指定用户
     @GetMapping("/users/{id}")
-    public  String getUserById(@PathVariable("id") int id){
-        User user=userService.getUserById(id);
-        return  user.toString();
+    public  Map<String,Object> getUserById(@PathVariable("id") int id){
+        User user=userService.getByIdWithResult(id);
+        List<User> userlist=new LinkedList<>();
+        userlist.add(user);
+        Map<String,Object> result=new HashMap<>();
+        result.put("user",userlist);
+        result.put("u",user);
+        return  result;
     }
 
-//    //显示指定用户权限
-//    @ResponseBody
-//    @RequestMapping("/userrights")
-//    public  Map<String,Object> getUserrights(@RequestParam("id") String id){
-//        int id2=Integer.parseInt(id);
-//        List<RolePermissionRelation> rightsList=userService.queryUserrights(id2);
-//            Map<String,Object> result=new HashMap<>();
-//            result.put("rightlist",rightsList);
-//            return result;
-//    }
 
-
-
-//返还用户拥有权限
+//返回用户拥有权限
 @ResponseBody
 @GetMapping(value = "/permissions")
 @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
@@ -75,13 +73,12 @@ public  Map<String,Object> getUserroles(){
 
 //获取用户信息
     @ResponseBody
+
     @RequestMapping(value = "/info")
     @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
     public Map<String,Object> getUserInfo()
     {
-        // User user=getUser();
         Map<String,Object> result=new HashMap<>();
-
         result.put("user",getUser());
         System.out.println("user/info:"+getUser());
         return  result;
@@ -91,7 +88,7 @@ public  Map<String,Object> getUserroles(){
     @ResponseBody
     @GetMapping(value = "/users")
     @RequiredPermission(PermissionConstants.ADMIN_PERMISSION)
-    public  Map<String,Object> getAllUser(@RequestParam(value = "page",defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "6")String pageSize){
+    public  Map<String,Object> getAllUser(@RequestParam(value = "page",defaultValue = "1") int page,@RequestParam(value = "pageSize",defaultValue = "3")String pageSize){
         Map<String,Object> result=new HashMap<>();
         PageInfo<User> pageInfo=userService.queryUser(page,Integer.parseInt(pageSize));
         //获得当前页
@@ -115,7 +112,6 @@ public  Map<String,Object> getUserroles(){
     @DeleteMapping("/users")
     public Map<String,Object> deleteUserById(@RequestParam("id") String id){
         int ad=Integer.parseInt(id);
-        System.out.println("排进来要删除的id："+id);
         boolean result=userService.deleteUserById(ad);
         Map<String,Object> r=new HashMap<>();
         if (result)
@@ -129,7 +125,7 @@ public  Map<String,Object> getUserroles(){
         return r;
     }
 
-    //删除用户权限
+    //删除用户角色
     @ResponseBody
     @RequestMapping("/removeurr")
     public  Map<String,Object> deleteUserrolerelaitonById(@RequestParam("user_id") String user_id,@RequestParam("role_id") String role_id){
@@ -167,29 +163,30 @@ public  Map<String,Object> insertUserrolerelation(@RequestParam("user_id") Strin
 }
 
 //更新用户信息
-    @PutMapping("/newusers")
-    public  String updateUser(@RequestBody Map rrrMap){
+    @PutMapping("/users")
+    public  Map<String,Object> updateUser(@RequestParam("id") String id,@RequestParam("name") String name,@RequestParam("password") String password,@RequestParam("id2") String id2){
+        Map<String,Object> result=new HashMap<>();
         User user=new User();
-        user.setName((String) rrrMap.get("name"));
-        int userId=Integer.valueOf((String) rrrMap.get("id"));
-        user.setId(Integer.valueOf((String) rrrMap.get("id")));
-        user.setPassword((String) rrrMap.get("password"));
-        List<Integer> roleidlist =(List<Integer>) rrrMap.get("rolelist");
-        for (int i=0;i<roleidlist.size();i++){
-            int  roleId=roleidlist.get(i);
+        user.setName(name);
+        int userId=Integer.parseInt(id);
+        userService.clearUserRoles(userId);
+        user.setId(userId);
+        user.setPassword(password);
+
             UserRoleRelation urr=new UserRoleRelation();
             urr.setUserId(userId);
-            urr.setRoleId(roleId);
+            urr.setRoleId(Integer.parseInt(id2));
             userService.insertUserrolerelation(urr);
-        }
 
-        boolean result =userService.updateUser(user);
-        if (result){
-            return  "success";
+
+        boolean r =userService.updateUser(user);
+        if (r){
+            result.put("s","1");
         }
         else {
-            return  "fail";
+            result.put("s","0");
         }
+        return result;
     }
 
     //返还用户拥有角色

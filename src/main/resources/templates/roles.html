@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:v-for="http://www.w3.org/1999/xhtml"
+      xmlns:v-on="http://www.w3.org/1999/xhtml"   xmlns:v-show="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>角色管理</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/static/dist/css/adminlte.min.css}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <script src="/static/libs/vue.min.js"></script>
+
+</head>
+<body>
+<div id="rrapp">
+
+    <!--  <div  v-show="showList">-->
+    <div v-if="showList">
+        <input type="text" class="form-control"  placeholder="查询角色ID" v-model="role_id" style="width: 250px">
+        <button class="btn btn-default" type="submit" v-on:click="getRoleById">查询</button>
+          <button type="submit" class="btn btn-primary" v-on:click="shift">新增</button>
+        <table class="table table-bordered" style="width: 600px;text-align:center" >
+
+            <tr><td>ID</td><td>名称</td><td>描述</td><td>操作</td></tr>
+            <tr v-for="role in roles">
+                <td v-text="role.id"></td>
+                <td v-text="role.name"></td>
+                <td v-text="role.description"></td>
+
+
+                <td><a href="javascript:;" v-on:click="deleteRole(role.id)">删除</a>&nbsp;&nbsp;<a href="#">修改</a></td>
+            </tr>
+            <tr>  <td><a v-if="!isFirstPage" href="javascript:;" v-on:click="getRoleList(pageNum-1)">上一页</a><a v-show="isFirstPage" >上一页</a></td>
+                <td colspan="2">总共{{totalPages}}页，当前第{{page}} 页</td>
+                <td><a v-show="!isLastPage" href="javascript:;" v-on:click="getRoleList(pageNum+1);">下一页</a><a v-show="isLastPage">下一页</a></td></tr>
+        </table>
+    </div>
+
+    <div v-if="!showList">
+        <form>
+            <div class="form-group">
+                <label >角色名称</label>
+                <input type="text" class="form-control"  placeholder="请设置角色名称" v-model="name" style="width: 350px">
+            </div>
+            <div class="form-group">
+                <label >描述</label>
+                <input type="text" class="form-control"  placeholder="角色描述" v-model="description" style="width: 350px">
+            </div>
+
+
+            <button type="submit" class="btn btn-default" v-on:click="addRole">添加</button>
+            <button type="submit" class="btn btn-primary" v-on:click="shift">返回</button>
+        </form>
+
+
+    </div>
+
+</div>
+
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+<script src="/static/js/roles.js"></script>
+
+
+</body>
+</html>

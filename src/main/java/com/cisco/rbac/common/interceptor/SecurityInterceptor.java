@@ -52,7 +52,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
             if (requiredPermission == null) {
                 requiredPermission = handlerMethod.getMethod().getDeclaringClass().getAnnotation(RequiredPermission.class);
             }
-            System.out.println("方法所需权限"+requiredPermission.value());
+//            System.out.println("方法所需权限"+requiredPermission.value());
             return permissionSet.contains(requiredPermission.value());
 
         }

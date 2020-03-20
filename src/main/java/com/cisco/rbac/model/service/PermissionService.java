@@ -8,6 +8,8 @@ public interface PermissionService {
 
     PageInfo<Permission> queryPermission(Integer page, Integer pageSize);
 
+    Permission queryPermissionById(int id);
+
     boolean deletePermissionById(int id);
 
     boolean updatePermission(Permission permission);
